@@ -1,0 +1,49 @@
+version: "3.9"
+
+# ─────────────────────────────────────────────────────────────────────────────
+# QA Intelligence Agent – Docker Compose
+# Usage:
+#   1. cp .env.example .env && fill in OPENAI_API_KEY
+#   2. docker compose up -d
+#   3. View reports in ./reports/
+# ─────────────────────────────────────────────────────────────────────────────
+
+services:
+  qa-agent:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: qa-intelligence-agent
+    env_file: .env
+    environment:
+      - DATABASE_URL=sqlite:////app/data/qa_agent.db
+      - REPORTS_DIR=/app/reports
+      - LOG_DIR=/app/logs
+    volumes:
+      # Persist the database and reports between container restarts
+      - qa_agent_data:/app/data
+      - qa_reports:/app/reports
+      - qa_logs:/app/logs
+    restart: unless-stopped
+    command: ["python", "main.py", "schedule"]
+
+  # One-shot runner (for CI / cron job external triggers)
+  qa-agent-run-once:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: qa-intelligence-run-once
+    env_file: .env
+    environment:
+      - DATABASE_URL=sqlite:////app/data/qa_agent.db
+      - REPORTS_DIR=/app/reports
+    volumes:
+      - qa_agent_data:/app/data
+      - qa_reports:/app/reports
+    profiles: ["run-once"]
+    command: ["python", "main.py", "run"]
+
+volumes:
+  qa_agent_data:
+  qa_reports:
+  qa_logs:

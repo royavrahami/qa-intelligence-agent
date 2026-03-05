@@ -1,0 +1,43 @@
+# Environment – never commit secrets
+.env
+
+# Database (local state)
+data/
+*.db
+*.sqlite
+
+# Generated reports (output files, not source)
+reports/
+# But keep source templates
+!src/reports/
+!src/reports/**
+
+# Logs
+logs/
+*.log
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+.Python
+.venv/
+venv/
+env/
+*.egg-info/
+dist/
+build/
+.eggs/
+
+# Test / coverage artifacts
+.pytest_cache/
+htmlcov/
+.coverage
+coverage.xml
+
+# IDE
+.vscode/
+.idea/
+*.swp
+*.swo

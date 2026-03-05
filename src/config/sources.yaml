@@ -1,0 +1,237 @@
+# ─────────────────────────────────────────────────────────────────────────────
+# Information Sources Configuration
+# Add / remove sources freely; the agent discovers new ones automatically too.
+# category: primary category tag used for trend grouping
+# relevance_boost: extra weight (+N) for this source's items in scoring
+# ─────────────────────────────────────────────────────────────────────────────
+
+rss_feeds:
+  # ── GenAI & LLM ─────────────────────────────────────────────────────────────
+  - name: "OpenAI News"
+    url: "https://openai.com/news/rss.xml"
+    category: "genai"
+    relevance_boost: 15
+
+  - name: "Google AI Blog"
+    url: "https://blog.google/technology/ai/rss/"
+    category: "genai"
+    relevance_boost: 10
+
+  - name: "Hugging Face Blog"
+    url: "https://huggingface.co/blog/feed.xml"
+    category: "genai"
+    relevance_boost: 12
+
+  - name: "LangChain Blog"
+    url: "https://blog.langchain.dev/rss/"
+    category: "agents"
+    relevance_boost: 12
+
+  - name: "Last Week in AI"
+    url: "https://lastweekin.ai/feed"
+    category: "genai"
+    relevance_boost: 12
+
+  - name: "Ahead of AI (Sebastian Raschka)"
+    url: "https://magazine.sebastianraschka.com/feed"
+    category: "genai"
+    relevance_boost: 12
+
+  - name: "NLP / AI Newsletter (Elvis Saravia)"
+    url: "https://elvissaravia.substack.com/feed"
+    category: "genai"
+    relevance_boost: 10
+
+  - name: "AI Supremacy"
+    url: "https://aisupremacy.substack.com/feed"
+    category: "genai"
+    relevance_boost: 10
+
+  - name: "Ben's Bites (AI daily digest)"
+    url: "https://www.bensbites.com/feed"
+    category: "genai"
+    relevance_boost: 10
+
+  - name: "Medium – Generative AI"
+    url: "https://medium.com/feed/tag/generative-ai"
+    category: "genai"
+    relevance_boost: 6
+
+  - name: "Medium – AI Agents"
+    url: "https://medium.com/feed/tag/ai-agents"
+    category: "agents"
+    relevance_boost: 8
+
+  # ── AI Agents & Automation ───────────────────────────────────────────────────
+  - name: "Simon Willison's Blog"
+    url: "https://simonwillison.net/atom/everything/"
+    category: "agents"
+    relevance_boost: 10
+
+  - name: "Towards Data Science"
+    url: "https://towardsdatascience.com/feed"
+    category: "genai"
+    relevance_boost: 5
+
+  - name: "Import AI (Jack Clark)"
+    url: "https://jack-clark.net/feed/"
+    category: "genai"
+    relevance_boost: 8
+
+  # ── QA & Testing ────────────────────────────────────────────────────────────
+  - name: "Google Testing Blog"
+    url: "https://testing.googleblog.com/feeds/posts/default"
+    category: "qa_testing"
+    relevance_boost: 12
+
+  - name: "Applitools Blog"
+    url: "https://applitools.com/blog/feed/"
+    category: "qa_testing"
+    relevance_boost: 12
+
+  - name: "BrowserStack Blog"
+    url: "https://www.browserstack.com/blog/feed/"
+    category: "qa_testing"
+    relevance_boost: 10
+
+  - name: "Mabl Blog (AI Testing)"
+    url: "https://www.mabl.com/blog/rss.xml"
+    category: "qa_testing"
+    relevance_boost: 10
+
+  - name: "Software Testing Help"
+    url: "https://www.softwaretestinghelp.com/feed/"
+    category: "qa_testing"
+    relevance_boost: 8
+
+  - name: "InfoQ – Software Quality"
+    url: "https://www.infoq.com/feed/?topic=software-quality"
+    category: "qa_testing"
+    relevance_boost: 10
+
+  - name: "Medium – QA Engineering"
+    url: "https://medium.com/feed/tag/qa-engineering"
+    category: "qa_testing"
+    relevance_boost: 8
+
+  # ── DevOps & CI/CD ──────────────────────────────────────────────────────────
+  - name: "Martin Fowler"
+    url: "https://martinfowler.com/feed.atom"
+    category: "devops"
+    relevance_boost: 10
+
+  - name: "The New Stack"
+    url: "https://thenewstack.io/feed/"
+    category: "devops"
+    relevance_boost: 6
+
+  - name: "DevOps.com"
+    url: "https://devops.com/feed/"
+    category: "devops"
+    relevance_boost: 6
+
+  # ── Developer Tools ─────────────────────────────────────────────────────────
+  - name: "Hacker News (Top)"
+    url: "https://hnrss.org/frontpage"
+    category: "tools"
+    relevance_boost: 5
+
+  - name: "GitHub Blog"
+    url: "https://github.blog/feed/"
+    category: "tools"
+    relevance_boost: 8
+
+  - name: "Dev.to"
+    url: "https://dev.to/feed"
+    category: "tools"
+    relevance_boost: 4
+
+  # ── Project Management ───────────────────────────────────────────────────────
+  - name: "Agile Alliance Blog"
+    url: "https://www.agilealliance.org/feed/"
+    category: "project_management"
+    relevance_boost: 8
+
+web_sources:
+  # ── GitHub Trending ─────────────────────────────────────────────────────────
+  - name: "GitHub Trending – AI/ML"
+    url: "https://github.com/trending/python?since=weekly&spoken_language_code=en"
+    type: "github_trending"
+    category: "tools"
+    relevance_boost: 10
+
+  - name: "GitHub Trending – All"
+    url: "https://github.com/trending?since=daily"
+    type: "github_trending"
+    category: "tools"
+    relevance_boost: 6
+
+  # ── Arxiv Papers ────────────────────────────────────────────────────────────
+  - name: "Arxiv – AI / Agents"
+    url: "https://arxiv.org/search/?query=ai+agents+llm&searchtype=all&start=0"
+    type: "arxiv"
+    category: "genai"
+    relevance_boost: 12
+
+  - name: "Arxiv – Software Testing AI"
+    url: "https://arxiv.org/search/?query=software+testing+llm+automation&searchtype=all&start=0"
+    type: "arxiv"
+    category: "qa_testing"
+    relevance_boost: 15
+
+  # Product Hunt blocks automated access (403) – removed
+
+keywords:
+  # Items containing these keywords get an extra relevance boost
+  high_relevance:
+    - "ai agent"
+    - "autonomous agent"
+    - "agentic"
+    - "llm testing"
+    - "ai qa"
+    - "test automation"
+    - "genai"
+    - "gpt-4"
+    - "claude"
+    - "gemini"
+    - "copilot"
+    - "cursor"
+    - "mcp"
+    - "multi-agent"
+    - "rag"
+    - "fine-tuning"
+    - "playwright"
+    - "selenium ai"
+    - "quality engineering"
+    - "shift left"
+    - "dora metrics"
+    - "ci/cd ai"
+
+  medium_relevance:
+    - "machine learning"
+    - "neural network"
+    - "automation"
+    - "devops"
+    - "agile"
+    - "scrum"
+    - "software testing"
+    - "api testing"
+    - "performance testing"
+    - "observability"
+    - "monitoring"
+    - "microservices"
+    - "docker"
+    - "kubernetes"
+    - "github actions"
+    - "product management"
+    - "project management"
+
+  low_relevance:
+    - "ai"
+    - "tool"
+    - "framework"
+    - "open source"
+    - "developer"
+    - "engineering"
+    - "cloud"
+    - "data"

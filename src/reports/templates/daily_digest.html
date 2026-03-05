@@ -1,0 +1,282 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Digest – {{ date_label }}</title>
+  <style>
+    :root {
+      --primary: #0f3460; --accent: #e94560; --light: #f5f7fa;
+      --card: #ffffff; --border: #e0e6ed; --text: #1a1a2e; --muted: #6b7280;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--light); color: var(--text); }
+
+    /* ── Header ── */
+    .header { background: linear-gradient(135deg, var(--primary) 0%, #1a237e 100%); color: white; padding: 32px 40px; }
+    .header h1 { font-size: 1.9rem; font-weight: 800; letter-spacing: -0.5px; }
+    .header p  { opacity: 0.72; margin-top: 5px; font-size: 0.9rem; }
+    .stats-row { display: flex; gap: 18px; margin-top: 22px; flex-wrap: wrap; }
+    .stat { background: rgba(255,255,255,0.13); border-radius: 10px; padding: 12px 20px; text-align: center; min-width: 90px; }
+    .stat .num { font-size: 1.9rem; font-weight: 800; line-height: 1; }
+    .stat .lbl { font-size: 0.7rem; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
+    /* ── Category pills ── */
+    .cat-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .cat-pill {
+      background: rgba(255,255,255,0.18); border-radius: 999px;
+      padding: 4px 12px; font-size: 0.78rem; font-weight: 600;
+    }
+
+    /* ── Layout ── */
+    .container { max-width: 1200px; margin: 0 auto; padding: 32px 20px; }
+    section { margin-bottom: 48px; }
+    h2 { font-size: 1.35rem; color: var(--primary); border-bottom: 3px solid var(--accent);
+         padding-bottom: 10px; margin-bottom: 20px; }
+
+    /* ── Alert cards ── */
+    .alert-card { background: #fff8f8; border-left: 5px solid var(--accent);
+                  border-radius: 8px; padding: 14px 18px; margin-bottom: 10px; }
+    .alert-name { font-weight: 700; color: var(--accent); font-size: 1rem; }
+    .alert-meta { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+
+    /* ── Keyword cloud ── */
+    .kw-cloud { background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+                padding: 20px 24px; line-height: 2.2; }
+    .kw-tag {
+      display: inline-block; background: #ede9fe; color: #5b21b6;
+      border-radius: 999px; padding: 3px 12px; margin: 3px;
+      font-size: 0.82rem; font-weight: 600; cursor: default;
+    }
+    .kw-tag.top { background: #ddd6fe; font-size: 0.95rem; }
+    .kw-count { font-size: 0.7rem; color: #7c3aed; margin-left: 3px; }
+
+    /* ── Main table ── */
+    .digest-table-wrap { overflow-x: auto; border-radius: 12px;
+                         box-shadow: 0 1px 6px rgba(0,0,0,0.08); }
+    table { width: 100%; border-collapse: collapse; background: var(--card); }
+    thead th {
+      background: var(--primary); color: white; padding: 11px 14px;
+      text-align: left; font-size: 0.82rem; font-weight: 600;
+      white-space: nowrap; position: sticky; top: 0;
+    }
+    thead th:first-child { border-radius: 12px 0 0 0; }
+    thead th:last-child  { border-radius: 0 12px 0 0; }
+    tbody td { padding: 10px 14px; border-bottom: 1px solid #f3f4f6; vertical-align: top; font-size: 0.88rem; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover td { background: #fafbff; }
+
+    .td-title a { color: var(--primary); font-weight: 600; text-decoration: none; }
+    .td-title a:hover { color: var(--accent); text-decoration: underline; }
+    .td-title small { display: block; color: var(--muted); font-size: 0.77rem; margin-top: 3px; }
+
+    .badge-cat {
+      display: inline-block; border-radius: 999px;
+      padding: 2px 9px; font-size: 0.75rem; font-weight: 600;
+      white-space: nowrap;
+    }
+    .kw-inline { font-size: 0.78rem; color: #4b5563; }
+    .kw-chip {
+      display: inline-block; background: #f3f4f6; border-radius: 4px;
+      padding: 1px 6px; margin: 1px; font-size: 0.75rem;
+    }
+    .score-cell { text-align: center; font-weight: 700; }
+    .date-cell { font-size: 0.78rem; color: var(--muted); white-space: nowrap; }
+
+    /* Score colour helpers */
+    .score-high  { color: #059669; }
+    .score-mid   { color: #d97706; }
+    .score-low   { color: #9ca3af; }
+
+    /* ── Category cards section ── */
+    .cat-section-header {
+      display: flex; align-items: center; gap: 10px;
+      margin: 36px 0 14px;
+    }
+    .cat-icon { font-size: 1.6rem; }
+    .cat-title { font-size: 1.05rem; font-weight: 700; color: var(--primary); }
+    .cat-badge { font-size: 0.78rem; color: var(--muted); }
+
+    .article-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+      padding: 16px 20px; margin-bottom: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .article-card:hover { box-shadow: 0 3px 12px rgba(0,0,0,0.09); }
+    .article-card h4 a { color: var(--primary); text-decoration: none; font-size: 1rem; }
+    .article-card h4 a:hover { color: var(--accent); text-decoration: underline; }
+    .article-meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 10px; font-size: 0.78rem; color: var(--muted); }
+    .article-summary { font-size: 0.9rem; color: #374151; margin-bottom: 8px; }
+    .article-kws { display: flex; flex-wrap: wrap; gap: 4px; }
+    .article-kw-tag {
+      background: #ede9fe; color: #5b21b6; border-radius: 4px;
+      padding: 2px 8px; font-size: 0.75rem; font-weight: 600;
+    }
+
+    /* ── Footer ── */
+    .footer { text-align: center; padding: 24px; font-size: 0.75rem;
+              color: var(--muted); border-top: 1px solid var(--border); margin-top: 40px; }
+
+    @media (max-width: 700px) {
+      .header { padding: 20px; }
+      .container { padding: 16px; }
+      .stats-row { gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<div class="header">
+  <h1>📋 Daily Digest – {{ date_label }}</h1>
+  <p>End-of-day intelligence summary &nbsp;|&nbsp; Generated {{ generated_at.strftime("%H:%M UTC") }}</p>
+
+  <div class="stats-row">
+    <div class="stat">
+      <div class="num">{{ stats.total_articles }}</div>
+      <div class="lbl">Articles</div>
+    </div>
+    <div class="stat">
+      <div class="num">{{ "%.0f" | format(stats.avg_relevance) }}</div>
+      <div class="lbl">Avg Score</div>
+    </div>
+    <div class="stat">
+      <div class="num">{{ stats.alert_count }}</div>
+      <div class="lbl">Alerts</div>
+    </div>
+    <div class="stat">
+      <div class="num">{{ stats.category_counts | length }}</div>
+      <div class="lbl">Categories</div>
+    </div>
+    <div class="stat">
+      <div class="num">{{ digest_articles | selectattr('has_summary') | list | length }}</div>
+      <div class="lbl">Summarised</div>
+    </div>
+  </div>
+
+  <!-- Category breakdown pills -->
+  <div class="cat-pills">
+    {% for cat, cnt in stats.category_counts.items() | sort(attribute='1', reverse=True) %}
+    <span class="cat-pill">{{ cat | cat_icon }} {{ cat | cat_label }}: {{ cnt }}</span>
+    {% endfor %}
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ── Alert Trends ── -->
+  {% if alert_trends %}
+  <section>
+    <h2>🚨 Alert Trends</h2>
+    {% for trend in alert_trends %}
+    <div class="alert-card">
+      <div class="alert-name">{{ trend.category | cat_icon }} {{ trend.name }}</div>
+      <div class="alert-meta">
+        {{ trend.category | cat_label }} &nbsp;|&nbsp;
+        Momentum: {{ "%.1f" | format(trend.momentum_score) }} &nbsp;|&nbsp;
+        Articles: {{ trend.article_count }}
+      </div>
+      {% if trend.description %}<p style="margin-top:6px;font-size:0.9em;color:#374151;">{{ trend.description }}</p>{% endif %}
+    </div>
+    {% endfor %}
+  </section>
+  {% endif %}
+
+  <!-- ── Keyword Cloud ── -->
+  <section>
+    <h2>🔤 Keywords of the Day</h2>
+    <div class="kw-cloud">
+      {% for kw, cnt in top_keywords %}
+      <span class="kw-tag {% if cnt >= 3 %}top{% endif %}">
+        {{ kw }}<span class="kw-count">×{{ cnt }}</span>
+      </span>
+      {% endfor %}
+    </div>
+  </section>
+
+  <!-- ── Full Article Table ── -->
+  <section>
+    <h2>📊 All Articles ({{ stats.total_articles }})</h2>
+    <div class="digest-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Keywords</th>
+            <th>Published Online</th>
+            <th>Collected by Agent</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for a in digest_articles %}
+          {% set score_cls = "score-high" if a.relevance_score >= 70 else "score-mid" if a.relevance_score >= 50 else "score-low" %}
+          <tr>
+            <td style="text-align:center;color:var(--muted);">{{ loop.index }}</td>
+            <td class="td-title">
+              <a href="{{ a.url }}" target="_blank" rel="noopener">{{ a.title[:75] }}</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:{{ a.category | cat_color }}22;color:{{ a.category | cat_color }};">
+                {{ a.category | cat_icon }} {{ a.category | cat_label }}
+              </span>
+            </td>
+            <td>
+              {% for kw in a.keywords[:4] %}
+              <span class="kw-chip">{{ kw }}</span>
+              {% endfor %}
+            </td>
+            <td class="date-cell">{{ a.published_date }}</td>
+            <td class="date-cell">{{ a.collected_date }}</td>
+            <td class="score-cell {{ score_cls }}">{{ a.relevance_score }}</td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── Articles by Category (cards with summaries) ── -->
+  <section>
+    <h2>📰 Articles by Category</h2>
+    {% for cat, articles in categorised.items() %}
+    <div class="cat-section-header">
+      <span class="cat-icon">{{ cat | cat_icon }}</span>
+      <span class="cat-title">{{ cat | cat_label }}</span>
+      <span class="cat-badge">({{ articles | length }} articles)</span>
+    </div>
+    {% for a in articles[:10] %}
+    <div class="article-card">
+      <h4><a href="{{ a.url }}" target="_blank" rel="noopener">{{ a.title }}</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>{{ a.relevance_score }}</strong></span>
+        <span>📅 Published: {{ a.published_date }}</span>
+        <span>🤖 Collected: {{ a.collected_date }}</span>
+      </div>
+      {% if a.summary %}
+      <div class="article-summary">{{ a.summary }}</div>
+      {% endif %}
+      {% if a.keywords %}
+      <div class="article-kws">
+        {% for kw in a.keywords %}
+        <span class="article-kw-tag">{{ kw }}</span>
+        {% endfor %}
+      </div>
+      {% endif %}
+    </div>
+    {% endfor %}
+    {% endfor %}
+  </section>
+
+</div>
+
+<div class="footer">
+  QA Intelligence Agent &nbsp;|&nbsp; Daily Digest &nbsp;|&nbsp;
+  {{ date_label }} &nbsp;|&nbsp; {{ generated_at.strftime("%H:%M UTC") }}
+</div>
+
+</body>
+</html>
