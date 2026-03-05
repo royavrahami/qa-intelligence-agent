@@ -55,7 +55,8 @@ Focus on:
 - Arxiv topic searches for AI/testing papers
 - Conference proceedings or community hubs
 
-For each suggestion, return a JSON object:
+Return a JSON object with a single key "sources" whose value is an array of suggestion objects.
+Each suggestion object must have:
 {
   "name": "<Source name>",
   "url": "<Full URL of the RSS feed or main page>",
@@ -64,7 +65,10 @@ For each suggestion, return a JSON object:
   "reason": "<1 sentence explaining why this source is valuable for a QA Manager>"
 }
 
-Return a JSON array. No markdown, no preamble."""
+Example format:
+{"sources": [{"name": "...", "url": "...", "source_type": "rss", "category": "genai", "reason": "..."}]}
+
+No markdown, no preamble. Only the JSON object."""
 
 
 class SourceDiscoverer:
@@ -116,9 +120,14 @@ class SourceDiscoverer:
     def _discover_from_article_pages(self) -> int:
         """
         Scan recent article pages for <link rel='alternate' type='application/rss+xml'>.
+        Uses the configured min_relevance_score (not a hard-coded 70) so the
+        same threshold applies consistently across all pipeline stages.
         """
         since = datetime.now(timezone.utc) - timedelta(hours=24)
-        articles = self._article_repo.get_for_report(since=since, min_score=70.0)
+        articles = self._article_repo.get_for_report(
+            since=since,
+            min_score=settings.min_relevance_score,  # respect global threshold (default 40)
+        )
 
         discovered_domains: set[str] = set()
         new_count = 0
@@ -187,6 +196,10 @@ class SourceDiscoverer:
     def _discover_via_llm(self) -> int:
         """
         Ask the LLM to recommend new sources based on what we're already tracking.
+
+        Note: response_format=json_object forces a JSON *object* from the API,
+        so the prompt explicitly wraps the array under a "sources" key to make
+        the response deterministic and parseable.
         """
         existing_sources = self._source_repo.get_all_active()
         if not existing_sources:
@@ -208,12 +221,16 @@ class SourceDiscoverer:
                 max_tokens=1000,
                 temperature=0.5,
                 response_format={"type": "json_object"},
+                timeout=60,
             )
             raw = response.choices[0].message.content
             suggestions = self._parse_suggestions(raw)
 
         except openai.RateLimitError:
-            logger.warning("Rate limit hit during source discovery LLM call")
+            logger.warning("Rate limit hit during source discovery LLM call – will retry next run")
+            return 0
+        except openai.APITimeoutError:
+            logger.warning("OpenAI timeout during source discovery – will retry next run")
             return 0
         except Exception as exc:
             logger.error("LLM source discovery failed: %s", exc)
@@ -235,15 +252,48 @@ class SourceDiscoverer:
 
     @staticmethod
     def _parse_suggestions(raw_json: str) -> list[dict]:
-        """Parse and validate LLM JSON response for source suggestions."""
+        """
+        Parse and validate the LLM JSON response for source suggestions.
+
+        Handles all common wrapping patterns that GPT may use when
+        response_format=json_object forces an object (not a bare array):
+          - {"sources": [...]}
+          - {"suggestions": [...]}
+          - {"items": [...]}
+          - {"new_sources": [...]}
+          - {"recommended_sources": [...]}
+          - Any other single-value dict whose value is a list of dicts
+        """
         import json
         try:
             data = json.loads(raw_json)
+
+            # Direct array (shouldn't happen with json_object format, but be safe)
             if isinstance(data, list):
-                return data
-            for key in ("suggestions", "sources", "items"):
-                if key in data and isinstance(data[key], list):
-                    return data[key]
+                return [item for item in data if isinstance(item, dict)]
+
+            if isinstance(data, dict):
+                # 1. Try all known wrapper keys (ordered by likelihood)
+                for key in (
+                    "sources", "suggestions", "items", "results",
+                    "new_sources", "recommended_sources", "data", "output",
+                ):
+                    if key in data and isinstance(data[key], list):
+                        candidates = [item for item in data[key] if isinstance(item, dict)]
+                        if candidates:
+                            return candidates
+
+                # 2. Fall back: find the first list-of-dicts anywhere in the values
+                for value in data.values():
+                    if isinstance(value, list) and value:
+                        candidates = [item for item in value if isinstance(item, dict)]
+                        if candidates:
+                            logger.debug(
+                                "SourceDiscoverer: extracted suggestions from unexpected key "
+                                "(available keys: %s)", list(data.keys())
+                            )
+                            return candidates
+
         except Exception as exc:
             logger.warning("Failed to parse source discovery response: %s", exc)
         return []

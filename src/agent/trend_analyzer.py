@@ -14,6 +14,7 @@ from __future__ import annotations
 
 import json
 import logging
+import time
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 
@@ -31,7 +32,8 @@ _TREND_DETECTION_PROMPT = """You are a senior technology analyst tracking the Ge
 Analyse the following list of article titles and summaries collected in the last 7 days.
 Identify the TOP 5 most significant trends, shifts, or emerging topics you can see.
 
-For each trend return a JSON object:
+Return a JSON object with a single key "trends" whose value is an array of trend objects.
+Each trend object must have exactly these fields:
 {
   "name": "<Short trend name, max 60 chars>",
   "description": "<2-3 sentences describing the trend and why it matters>",
@@ -40,7 +42,10 @@ For each trend return a JSON object:
   "article_indices": [<list of 0-based indices from the input that support this trend>]
 }
 
-Return a JSON array of trend objects. No markdown, no preamble.
+Required output format:
+{"trends": [{"name": "...", "description": "...", "category": "...", "is_alert": false, "article_indices": [0, 2, 5]}, ...]}
+
+No markdown, no preamble. Only the JSON object.
 Focus on: AI agent frameworks, new testing tools, paradigm shifts in QA, GenAI developer tools, LLM model releases."""
 
 _MOMENTUM_ALERT_THRESHOLD = 5  # Trends with >= 5 supporting articles become alerts
@@ -90,6 +95,10 @@ class TrendAnalyzer:
             return []
 
         logger.info("TrendAnalyzer: analysing %d articles for trends", len(articles))
+
+        # Brief pause to avoid hitting rate limits immediately after the summariser
+        time.sleep(2)
+
         trend_data = self._detect_trends_with_llm(articles)
 
         if not trend_data:
@@ -127,6 +136,8 @@ class TrendAnalyzer:
                 max_tokens=1500,
                 temperature=0.4,
                 response_format={"type": "json_object"},
+                # Dedicated timeout to avoid blocking the full run cycle
+                timeout=60,
             )
             raw = response.choices[0].message.content
             data = json.loads(raw)
@@ -159,6 +170,15 @@ class TrendAnalyzer:
                     logger.debug("TrendAnalyzer: wrapping dict-of-trends into list (keys=%s)", list(data.keys()))
                     return dict_values
 
+            # Last resort: if the dict itself looks like a single trend object,
+            # wrap it in a list so at least one trend is not lost
+            expected_keys = {"name", "description", "category"}
+            if isinstance(data, dict) and expected_keys.issubset(data.keys()):
+                logger.debug(
+                    "TrendAnalyzer: GPT returned a single trend object instead of a list – wrapping it"
+                )
+                return [data]
+
             logger.warning(
                 "Unexpected trend response format: %s | keys: %s",
                 type(data),
@@ -167,7 +187,9 @@ class TrendAnalyzer:
             return []
 
         except openai.RateLimitError:
-            logger.warning("OpenAI rate limit hit during trend analysis")
+            logger.warning("OpenAI rate limit hit during trend analysis – will retry next run")
+        except openai.APITimeoutError:
+            logger.warning("OpenAI timeout during trend analysis – will retry next run")
         except Exception as exc:
             logger.error("Trend LLM call failed: %s", exc)
         return []
