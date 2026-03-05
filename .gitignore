@@ -1,43 +1,55 @@
-# Environment – never commit secrets
+# ── Secrets & environment – NEVER commit these ────────────────────────────────
 .env
+.env.local
+.env.*.local
+*.env
+secrets.json
+credentials.json
 
-# Database (local state)
+# ── Database (local runtime state) ────────────────────────────────────────────
 data/
 *.db
 *.sqlite
+*.db-shm
+*.db-wal
 
-# Generated reports (output files, not source)
+# ── Generated reports (runtime output) ────────────────────────────────────────
 reports/
-# But keep source templates
+# Keep templates that are part of the source
 !src/reports/
 !src/reports/**
 
-# Logs
+# ── Logs ──────────────────────────────────────────────────────────────────────
 logs/
 *.log
 
-# Python
+# ── Python ────────────────────────────────────────────────────────────────────
 __pycache__/
-*.pyc
+*.py[cod]
 *.pyo
 *.pyd
 .Python
 .venv/
 venv/
 env/
+ENV/
 *.egg-info/
 dist/
 build/
 .eggs/
 
-# Test / coverage artifacts
+# ── Test & coverage artifacts ─────────────────────────────────────────────────
 .pytest_cache/
 htmlcov/
 .coverage
+.coverage.*
 coverage.xml
+*.cover
 
-# IDE
+# ── IDE ───────────────────────────────────────────────────────────────────────
 .vscode/
 .idea/
 *.swp
 *.swo
+.DS_Store
+Thumbs.db
