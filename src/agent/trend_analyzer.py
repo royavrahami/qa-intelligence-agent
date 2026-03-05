@@ -135,11 +135,21 @@ class TrendAnalyzer:
             if isinstance(data, list):
                 return data
             if isinstance(data, dict):
-                for key in ("trends", "items", "results"):
+                # Try well-known wrapper keys first
+                for key in ("trends", "items", "results", "data", "output", "response"):
                     if key in data and isinstance(data[key], list):
                         return data[key]
+                # Fallback: return the first list value found in the dict
+                for value in data.values():
+                    if isinstance(value, list) and value:
+                        logger.debug("TrendAnalyzer: using first list value from dict (keys=%s)", list(data.keys()))
+                        return value
 
-            logger.warning("Unexpected trend response format: %s", type(data))
+            logger.warning(
+                "Unexpected trend response format: %s | keys: %s",
+                type(data),
+                list(data.keys()) if isinstance(data, dict) else "N/A",
+            )
             return []
 
         except openai.RateLimitError:

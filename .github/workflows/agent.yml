@@ -138,7 +138,8 @@ jobs:
 
           git config user.name  "QA Intelligence Agent"
           git config user.email "qa-agent@github-actions"
-          git add "$REPORT" "${REPORT%.html}.md" 2>/dev/null || true
+          # -f forces add of gitignored files (reports/ is in .gitignore)
+          git add -f "$REPORT" "${REPORT%.html}.md" 2>/dev/null || true
 
           if git diff --cached --quiet; then
             echo "Report already committed – skipping"
@@ -228,7 +229,7 @@ jobs:
 
           git config user.name  "QA Intelligence Agent"
           git config user.email "qa-agent@github-actions"
-          git add "$DIGEST" "${DIGEST%.html}.md" 2>/dev/null || true
+          git add -f "$DIGEST" "${DIGEST%.html}.md" 2>/dev/null || true
 
           if git diff --cached --quiet; then
             echo "Already committed – skipping"
