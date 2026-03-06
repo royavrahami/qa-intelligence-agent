@@ -144,8 +144,18 @@ class TrendRepository:
         return trend, True
 
     def link_article(self, trend: Trend, article: Article) -> None:
+        """Associate an article with a trend (idempotent – safe to call multiple times)."""
+        already_linked = self._session.execute(
+            select(func.count()).select_from(ArticleTrendTag).where(
+                ArticleTrendTag.article_id == article.id,
+                ArticleTrendTag.trend_id == trend.id,
+            )
+        ).scalar()
+        if already_linked:
+            return
         tag = ArticleTrendTag(article_id=article.id, trend_id=trend.id)
         self._session.add(tag)
+        self._session.flush()
         trend.article_count += 1
         trend.last_seen_at = datetime.now(timezone.utc)
 

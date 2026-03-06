@@ -208,8 +208,9 @@ class TrendAnalyzer:
         trend.description = trend_data.get("description", "")
         trend.last_seen_at = datetime.now(timezone.utc)
 
-        # Link supporting articles
-        article_indices = trend_data.get("article_indices", [])
+        # Deduplicate indices first: the LLM sometimes repeats the same index,
+        # which would cause a UNIQUE constraint violation on article_trend_tags.
+        article_indices = list(dict.fromkeys(trend_data.get("article_indices", [])))
         for idx in article_indices:
             if 0 <= idx < len(articles):
                 self._trend_repo.link_article(trend, articles[idx])
