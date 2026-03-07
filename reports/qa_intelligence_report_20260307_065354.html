@@ -1,0 +1,900 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QA Intelligence Report – 07 Mar 2026 06:53 UTC</title>
+  <style>
+    :root {
+      --primary:   #0f3460;
+      --accent:    #e94560;
+      --light:     #f5f7fa;
+      --card-bg:   #ffffff;
+      --border:    #e0e6ed;
+      --text:      #1a1a2e;
+      --muted:     #6b7280;
+      --success:   #10b981;
+      --warning:   #f59e0b;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--light);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    /* ── Header ── */
+    .header {
+      background: linear-gradient(135deg, var(--primary) 0%, #1a237e 100%);
+      color: white;
+      padding: 36px 40px;
+    }
+    .header h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.5px; }
+    .header p  { opacity: 0.75; margin-top: 6px; font-size: 0.9rem; }
+    .stats-row { display: flex; gap: 24px; margin-top: 20px; flex-wrap: wrap; }
+    .stat-card {
+      background: rgba(255,255,255,0.12);
+      border-radius: 10px;
+      padding: 12px 20px;
+      text-align: center;
+      min-width: 100px;
+    }
+    .stat-card .num { font-size: 1.8rem; font-weight: 800; }
+    .stat-card .lbl { font-size: 0.75rem; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* ── Layout ── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+    section { margin-bottom: 48px; }
+    h2 {
+      font-size: 1.4rem;
+      color: var(--primary);
+      border-bottom: 3px solid var(--accent);
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+      box-shadow: 0 1px 4px rgba(0,0,0,0.06);
+      transition: box-shadow 0.2s;
+    }
+    .card:hover { box-shadow: 0 4px 16px rgba(0,0,0,0.1); }
+    .card.alert-card { border-left: 5px solid var(--accent); background: #fff8f8; }
+
+    /* ── Article Card ── */
+    .article-title a {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    .article-title a:hover { text-decoration: underline; color: var(--accent); }
+    .article-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 6px 0 12px;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .badge-cat    { background: #dbeafe; color: #1d4ed8; }
+    .badge-score  { background: var(--accent); color: white; }
+    .badge-alert  { background: #fde68a; color: #92400e; }
+    .badge-trend  { background: #d1fae5; color: #065f46; }
+
+    .article-summary { color: var(--text); margin-bottom: 10px; font-size: 0.95rem; }
+
+    .insights { margin: 10px 0; }
+    .insight-item {
+      background: #eff6ff;
+      border-left: 3px solid var(--primary);
+      padding: 6px 12px;
+      margin: 4px 0;
+      border-radius: 0 6px 6px 0;
+      font-size: 0.9rem;
+    }
+
+    .qa-box {
+      background: #f0fdf4;
+      border: 1px solid #86efac;
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-top: 10px;
+      font-size: 0.9rem;
+    }
+    .qa-box strong { color: #166534; }
+
+    /* ── Trend Card ── */
+    .trend-card { display: flex; gap: 16px; align-items: flex-start; }
+    .trend-icon { font-size: 1.8rem; flex-shrink: 0; }
+    .trend-body { flex: 1; }
+    .trend-name { font-size: 1rem; font-weight: 700; color: var(--primary); }
+    .trend-desc { font-size: 0.9rem; color: #374151; margin-top: 4px; }
+    .trend-meta { font-size: 0.78rem; color: var(--muted); margin-top: 6px; }
+    .momentum-bar {
+      height: 6px;
+      background: var(--border);
+      border-radius: 3px;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+    .momentum-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--success), var(--accent));
+      border-radius: 3px;
+    }
+
+    /* ── Category Sections ── */
+    .category-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 32px 0 12px;
+    }
+    .category-icon { font-size: 1.5rem; }
+    .category-title { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
+    .category-count { font-size: 0.8rem; color: var(--muted); }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      margin-top: 40px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .header { padding: 24px 16px; }
+      .container { padding: 16px; }
+      .stats-row { gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Header ────────────────────────────────────────────────────────────── -->
+<div class="header">
+  <h1>🧪 QA Intelligence Report</h1>
+  <p>Generated: 07 Mar 2026 06:53 UTC &nbsp;|&nbsp; Run #1</p>
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="num">115</div>
+      <div class="lbl">Articles</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">0</div>
+      <div class="lbl">Trends</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">0</div>
+      <div class="lbl">Alerts</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">5</div>
+      <div class="lbl">Categories</div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ── Alerts Section ──────────────────────────────────────────────────── -->
+  
+
+  <!-- ── Top 10 Articles ─────────────────────────────────────────────────── -->
+  <section>
+    <h2>⭐ Top 10 Articles This Period</h2>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2603.04904v1" target="_blank" rel="noopener">Alignment Backfire: Language-Dependent Reversal of Safety Interventions Across 16 Languages in LLM Multi-Agent Systems</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">86 / 100</span>
+        <span class="badge badge-cat">🕵️ AI Agents</span>
+        
+        <span>05 Mar 2026 07:46 UTC</span>
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://simonwillison.net/guides/agentic-engineering-patterns/agentic-manual-testing/#atom-everything" target="_blank" rel="noopener">Agentic manual testing</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">84 / 100</span>
+        <span class="badge badge-cat">🕵️ AI Agents</span>
+        
+        <span>06 Mar 2026 05:43 UTC</span>
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2601.18827v1" target="_blank" rel="noopener">Automated structural testing of LLM-based agents: methods, framework, and case studies</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">84 / 100</span>
+        <span class="badge badge-cat">🧪 QA &amp; Testing</span>
+        
+        <span>25 Jan 2026 11:52 UTC</span>
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2510.01024v1" target="_blank" rel="noopener">GenIA-E2ETest: A Generative AI-Based Approach for End-to-End Test Automation</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">84 / 100</span>
+        <span class="badge badge-cat">🧪 QA &amp; Testing</span>
+        
+        <span>01 Oct 2025 15:30 UTC</span>
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2409.03838v1" target="_blank" rel="noopener">APITestGenie: Automated API Test Generation through Generative AI</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">84 / 100</span>
+        <span class="badge badge-cat">🧪 QA &amp; Testing</span>
+        
+        <span>05 Sep 2024 18:02 UTC</span>
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2603.01952v1" target="_blank" rel="noopener">LiveCultureBench: a Multi-Agent, Multi-Cultural Benchmark for Large Language Models in Dynamic Social Simulations</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">82 / 100</span>
+        <span class="badge badge-cat">🕵️ AI Agents</span>
+        
+        <span>02 Mar 2026 15:04 UTC</span>
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2603.01410v1" target="_blank" rel="noopener">GraphScout: Empowering Large Language Models with Intrinsic Exploration Ability for Agentic Graph Reasoning</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">82 / 100</span>
+        <span class="badge badge-cat">🕵️ AI Agents</span>
+        
+        <span>02 Mar 2026 03:25 UTC</span>
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2603.00724v1" target="_blank" rel="noopener">RLAR: An Agentic Reward System for Multi-task Reinforcement Learning on Large Language Models</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">82 / 100</span>
+        <span class="badge badge-cat">🕵️ AI Agents</span>
+        
+        <span>28 Feb 2026 16:14 UTC</span>
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2602.21533v1" target="_blank" rel="noopener">Reasoning-Driven Design of Single Atom Catalysts via a Multi-Agent Large Language Model Framework</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">82 / 100</span>
+        <span class="badge badge-cat">🕵️ AI Agents</span>
+        
+        <span>25 Feb 2026 03:43 UTC</span>
+        
+      </div>
+      
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2602.19073v1" target="_blank" rel="noopener">Evaluation and Benchmarking Suite for Financial Large Language Models and Agents</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">82 / 100</span>
+        <span class="badge badge-cat">🕵️ AI Agents</span>
+        
+        <span>22 Feb 2026 07:13 UTC</span>
+        
+      </div>
+      
+      
+      
+    </div>
+    
+  </section>
+
+  <!-- ── Articles by Category ────────────────────────────────────────────── -->
+  <section>
+    <h2>📂 All Articles by Category</h2>
+    
+    <div class="category-header">
+      <span class="category-icon">🕵️</span>
+      <span class="category-title">AI Agents</span>
+      <span class="category-count">(49 articles)</span>
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2603.04904v1" target="_blank" rel="noopener">Alignment Backfire: Language-Dependent Reversal of Safety Interventions Across 16 Languages in LLM Multi-Agent Systems</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">86</span>
+        <span>05 Mar 2026 07:46 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://simonwillison.net/guides/agentic-engineering-patterns/agentic-manual-testing/#atom-everything" target="_blank" rel="noopener">Agentic manual testing</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">84</span>
+        <span>06 Mar 2026 05:43 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2603.01952v1" target="_blank" rel="noopener">LiveCultureBench: a Multi-Agent, Multi-Cultural Benchmark for Large Language Models in Dynamic Social Simulations</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">82</span>
+        <span>02 Mar 2026 15:04 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2603.01410v1" target="_blank" rel="noopener">GraphScout: Empowering Large Language Models with Intrinsic Exploration Ability for Agentic Graph Reasoning</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">82</span>
+        <span>02 Mar 2026 03:25 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2603.00724v1" target="_blank" rel="noopener">RLAR: An Agentic Reward System for Multi-task Reinforcement Learning on Large Language Models</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">82</span>
+        <span>28 Feb 2026 16:14 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2602.21533v1" target="_blank" rel="noopener">Reasoning-Driven Design of Single Atom Catalysts via a Multi-Agent Large Language Model Framework</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">82</span>
+        <span>25 Feb 2026 03:43 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2602.19073v1" target="_blank" rel="noopener">Evaluation and Benchmarking Suite for Financial Large Language Models and Agents</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">82</span>
+        <span>22 Feb 2026 07:13 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2602.24068v1" target="_blank" rel="noopener">A Novel Hierarchical Multi-Agent System for Payments Using LLMs</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">82</span>
+        <span>27 Feb 2026 14:58 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="category-header">
+      <span class="category-icon">🧪</span>
+      <span class="category-title">QA &amp; Testing</span>
+      <span class="category-count">(18 articles)</span>
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2601.18827v1" target="_blank" rel="noopener">Automated structural testing of LLM-based agents: methods, framework, and case studies</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">84</span>
+        <span>25 Jan 2026 11:52 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2510.01024v1" target="_blank" rel="noopener">GenIA-E2ETest: A Generative AI-Based Approach for End-to-End Test Automation</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">84</span>
+        <span>01 Oct 2025 15:30 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2409.03838v1" target="_blank" rel="noopener">APITestGenie: Automated API Test Generation through Generative AI</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">84</span>
+        <span>05 Sep 2024 18:02 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2506.02090v1" target="_blank" rel="noopener">The Impact of Software Testing with Quantum Optimization Meets Machine Learning</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">71</span>
+        <span>02 Jun 2025 15:04 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2312.04860v1" target="_blank" rel="noopener">Are We Testing or Being Tested? Exploring the Practical Applications of Large Language Models in Software Testing</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">68</span>
+        <span>08 Dec 2023 06:30 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://github.com/Reddomgt/PythonSeleniumTestFrameWork" target="_blank" rel="noopener">Reddomgt/PythonSeleniumTestFrameWork</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">67</span>
+        <span>07 Mar 2026 06:47 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2510.22318v1" target="_blank" rel="noopener">Harnessing the Power of Large Language Models for Software Testing Education: A Focus on ISTQB Syllabus</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">66</span>
+        <span>25 Oct 2025 14:45 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://github.com/stansiris/playwright-pytest-screenplay-framework" target="_blank" rel="noopener">stansiris/playwright-pytest-screenplay-framework</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">62</span>
+        <span>07 Mar 2026 06:47 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="category-header">
+      <span class="category-icon">🛠️</span>
+      <span class="category-title">Developer Tools</span>
+      <span class="category-count">(18 articles)</span>
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://github.com/khoj-ai/khoj" target="_blank" rel="noopener">khoj-ai/khoj</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">76</span>
+        <span>07 Mar 2026 06:47 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://github.com/cryptokid980/homelab-2-prod-ai-golden-path" target="_blank" rel="noopener">cryptokid980/homelab-2-prod-ai-golden-path</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">75</span>
+        <span>07 Mar 2026 06:47 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://github.com/msaad00/agent-bom" target="_blank" rel="noopener">msaad00/agent-bom</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">68</span>
+        <span>07 Mar 2026 06:47 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://github.com/contextforge-org/contextforge-plugins-framework" target="_blank" rel="noopener">contextforge-org/contextforge-plugins-framework</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">61</span>
+        <span>07 Mar 2026 06:47 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://github.com/techdomegh/ai-news-scraper" target="_blank" rel="noopener">techdomegh/ai-news-scraper</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">61</span>
+        <span>07 Mar 2026 06:47 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://github.com/heguangyong/scene-capability-engine" target="_blank" rel="noopener">heguangyong/scene-capability-engine</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">60</span>
+        <span>07 Mar 2026 06:47 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://github.com/chroma-core/chroma" target="_blank" rel="noopener">chroma-core/chroma</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">58</span>
+        <span>07 Mar 2026 06:47 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://github.com/leeyj/aegis_avata" target="_blank" rel="noopener">leeyj/aegis_avata</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">50</span>
+        <span>07 Mar 2026 06:47 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="category-header">
+      <span class="category-icon">⚙️</span>
+      <span class="category-title">DevOps &amp; CI/CD</span>
+      <span class="category-count">(15 articles)</span>
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://thenewstack.io/skills-vs-mcp-agent-architecture/" target="_blank" rel="noopener">The case for running AI agents on Markdown files instead of MCP servers</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">75</span>
+        <span>06 Mar 2026 16:40 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://thenewstack.io/ai-agents-need-more/" target="_blank" rel="noopener">OutSystems CEO on how enterprises can successfully adopt vibe coding</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">73</span>
+        <span>06 Mar 2026 20:53 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://thenewstack.io/openai-anthropic-open-source/" target="_blank" rel="noopener">Anthropic and OpenAI are battling for the best open-source maintainers</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">73</span>
+        <span>06 Mar 2026 20:19 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://thenewstack.io/rust-enterprise-developers/" target="_blank" rel="noopener">Nearly half of all companies now use Rust in production, survey finds</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">73</span>
+        <span>06 Mar 2026 18:45 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://thenewstack.io/openai-launches-gpt-5-4/" target="_blank" rel="noopener">OpenAI launches GPT-5.4 Thinking and Pro</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">70</span>
+        <span>05 Mar 2026 18:00 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://thenewstack.io/unleash-feature-management-funding/" target="_blank" rel="noopener">Unleash raises $35M, launches Impact Metrics to govern feature rollouts at AI speed</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">67</span>
+        <span>04 Mar 2026 14:00 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://thenewstack.io/confluent-kafka-a2a-agents/" target="_blank" rel="noopener">Confluent adds A2A support, anomaly detection, and Queues for Kafka in major platform update</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">65</span>
+        <span>03 Mar 2026 18:21 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://thenewstack.io/aikido-self-securing-software/" target="_blank" rel="noopener">Aikido Security bets on AI to make software secure itself</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">63</span>
+        <span>04 Mar 2026 14:46 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    
+    <div class="category-header">
+      <span class="category-icon">🤖</span>
+      <span class="category-title">GenAI &amp; LLMs</span>
+      <span class="category-count">(15 articles)</span>
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2603.04951v1" target="_blank" rel="noopener">Retrieval-Augmented Generation with Covariate Time Series</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">66</span>
+        <span>05 Mar 2026 08:45 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2603.02206v2" target="_blank" rel="noopener">VoiceAgentRAG: Solving the RAG Latency Bottleneck in Real-Time Voice Agents Using Dual-Agent Architectures</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">66</span>
+        <span>02 Mar 2026 18:58 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2603.03919v1" target="_blank" rel="noopener">When Safety Becomes a Vulnerability: Exploiting LLM Alignment Homogeneity for Transferable Blocking in RAG</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">62</span>
+        <span>04 Mar 2026 10:27 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2603.03617v1" target="_blank" rel="noopener">RAGTrack: Language-aware RGBT Tracking with Retrieval-Augmented Generation</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">62</span>
+        <span>04 Mar 2026 01:02 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2603.04925v1" target="_blank" rel="noopener">Detecting RAG Advertisements Across Advertising Styles</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">60</span>
+        <span>05 Mar 2026 08:16 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2603.03541v1" target="_blank" rel="noopener">RAG-X: Systematic Diagnosis of Retrieval-Augmented Generation for Medical Question Answering</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">60</span>
+        <span>03 Mar 2026 21:55 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://towardsdatascience.com/how-to-create-production-ready-code-with-claude-code/" target="_blank" rel="noopener">How to Create Production-Ready Code with Claude Code</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">59</span>
+        <span>06 Mar 2026 12:00 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://towardsdatascience.com/zero-waste-agentic-rag-designing-caching-architectures-to-minimize-latency-and-llm-costs-at-scale/" target="_blank" rel="noopener">Zero-Waste Agentic RAG: Designing Caching Architectures to Minimize Latency and LLM Costs at Scale</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">58</span>
+        <span>01 Mar 2026 15:00 UTC</span>
+      </div>
+      
+      
+    </div>
+    
+    
+  </section>
+
+  <!-- ── Trend Landscape ─────────────────────────────────────────────────── -->
+  <section>
+    <h2>📈 Trend Landscape</h2>
+    
+  </section>
+
+</div>
+
+<div class="footer">
+  QA Intelligence Agent &nbsp;|&nbsp; Powered by OpenAI GPT &nbsp;|&nbsp;
+  Generated automatically &nbsp;|&nbsp; 07 Mar 2026 06:53 UTC
+</div>
+
+</body>
+</html>
