@@ -1,0 +1,85 @@
+# REQ-03: GitHub Actions cron – single daily QA intelligence report
+# Runs every day at 07:00 UTC. Replaces the internal APScheduler.
+#
+# Required secrets (Settings → Secrets and variables → Actions):
+#   OPENAI_API_KEY   – required
+#   SMTP_USER        – optional (enable email)
+#   SMTP_PASSWORD    – optional (Gmail App Password)
+#   NOTIFY_EMAIL     – optional
+#   SLACK_BOT_TOKEN  – optional
+#   GITHUB_TOKEN     – automatically provided by Actions
+
+name: QA Intelligence – Daily Report
+
+on:
+  schedule:
+    # 07:00 UTC every day
+    - cron: "0 7 * * *"
+  # Allow manual trigger from the Actions UI
+  workflow_dispatch:
+    inputs:
+      reason:
+        description: "Reason for manual run"
+        required: false
+        default: "Manual trigger"
+
+jobs:
+  generate-report:
+    name: Generate & Send QA Intelligence Report
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+          cache: pip
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Create required directories
+        run: mkdir -p data reports logs
+
+      - name: Run QA Intelligence Agent
+        env:
+          OPENAI_API_KEY:    ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_MODEL:      ${{ vars.OPENAI_MODEL || 'gpt-4o' }}
+          OPENAI_MAX_TOKENS: ${{ vars.OPENAI_MAX_TOKENS || '2000' }}
+          GITHUB_TOKEN:      ${{ secrets.GITHUB_TOKEN }}
+          DATABASE_URL:      sqlite:///./data/qa_agent.db
+          MIN_RELEVANCE_SCORE: ${{ vars.MIN_RELEVANCE_SCORE || '60' }}
+          MAX_ARTICLES_PER_REPORT: ${{ vars.MAX_ARTICLES_PER_REPORT || '30' }}
+          MIN_ARTICLES_PER_REPORT: ${{ vars.MIN_ARTICLES_PER_REPORT || '20' }}
+          REPORT_LANGUAGE:   ${{ vars.REPORT_LANGUAGE || 'English' }}
+          SMTP_HOST:         ${{ vars.SMTP_HOST || 'smtp.gmail.com' }}
+          SMTP_PORT:         ${{ vars.SMTP_PORT || '587' }}
+          SMTP_USER:         ${{ secrets.SMTP_USER }}
+          SMTP_PASSWORD:     ${{ secrets.SMTP_PASSWORD }}
+          NOTIFY_EMAIL:      ${{ secrets.NOTIFY_EMAIL }}
+          SLACK_BOT_TOKEN:   ${{ secrets.SLACK_BOT_TOKEN }}
+          SLACK_CHANNEL:     ${{ vars.SLACK_CHANNEL || '#qa-intelligence' }}
+          REPORTS_DIR:       ./reports
+          LOG_LEVEL:         INFO
+          LOG_DIR:           ./logs
+        run: python main.py run
+
+      - name: Upload report as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-intelligence-report-${{ github.run_number }}
+          path: reports/
+          retention-days: 30
+
+      - name: Upload logs as artifact
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: qa-agent-logs-${{ github.run_number }}
+          path: logs/
+          retention-days: 7

@@ -53,17 +53,18 @@ class ContentProcessor:
         self._min_score = min_score if min_score is not None else settings.min_relevance_score
         self._batch_size = batch_size
 
-    def process_pending(self) -> tuple[int, int]:
+    def process_pending(self) -> tuple[int, int, bool]:
         """
         Process a batch of unprocessed articles.
 
         Returns:
-            (total_scored, total_summarised)
+            (total_scored, total_summarised, quota_warning)
+            quota_warning is True when OpenAI rate-limit errors were hit (REQ-08).
         """
         articles = self._article_repo.get_unprocessed(limit=self._batch_size)
         if not articles:
             logger.info("ContentProcessor: no pending articles")
-            return 0, 0
+            return 0, 0, False
 
         logger.info("ContentProcessor: processing %d articles", len(articles))
 
@@ -115,9 +116,9 @@ class ContentProcessor:
                 # Still mark as processed to avoid infinite retry loops
                 article.is_processed = True
 
+        quota_warning = bool(self._summarizer and self._summarizer.quota_warning)
         logger.info(
-            "ContentProcessor: scored=%d, summarised=%d",
-            total_scored,
-            total_summarised,
+            "ContentProcessor: scored=%d, summarised=%d, quota_warning=%s",
+            total_scored, total_summarised, quota_warning,
         )
-        return total_scored, total_summarised
+        return total_scored, total_summarised, quota_warning

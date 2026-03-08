@@ -52,7 +52,34 @@ class Settings(BaseSettings):
 
     # ── Relevance ─────────────────────────────────────────────────────────────
     min_relevance_score: int = Field(
-        default=60, ge=0, le=100, description="Minimum relevance score (0-100)"
+        default=50, ge=0, le=100, description="Minimum relevance score for AI summarization (0-100)"
+    )
+
+    # ── Report content ─────────────────────────────────────────────────────────
+    max_articles_per_report: int = Field(
+        default=30, ge=5, le=100,
+        description="Maximum articles per report (REQ-02: target 20-30)",
+    )
+    min_articles_per_report: int = Field(
+        default=20, ge=1, le=100,
+        description="Minimum articles – log warning if fewer found (REQ-02)",
+    )
+    max_article_age_days: int = Field(
+        default=90, ge=7, le=365,
+        description="Maximum article age in days. Articles older than this are deprioritized/excluded.",
+    )
+    prioritize_recent_articles: bool = Field(
+        default=True,
+        description="If True, recent articles (< 30 days) get a score boost for ranking.",
+    )
+
+    # ── Language ───────────────────────────────────────────────────────────────
+    report_language: str = Field(
+        default="English",
+        description=(
+            "Output language for AI summaries, insights, and trend analysis. "
+            "Examples: 'English', 'Hebrew', 'Spanish'. (REQ-04)"
+        ),
     )
 
     # ── Reports ───────────────────────────────────────────────────────────────

@@ -21,22 +21,23 @@ from src.config.settings import settings
 
 logger = logging.getLogger(__name__)
 
-# System prompt that defines the agent's persona and output contract
-_SYSTEM_PROMPT = """You are an expert QA Engineering Advisor with deep knowledge of:
+def _build_system_prompt(language: str = "English") -> str:
+    """Build the summarizer system prompt with the configured output language (REQ-04)."""
+    return f"""You are an expert QA Engineering Advisor with deep knowledge of:
 - Generative AI, LLMs, and autonomous agents
 - Software testing, QA automation, and quality engineering
 - DevOps, CI/CD, and software delivery
 - Project management in high-tech environments
 
 Your job: analyse a piece of tech content and return a structured JSON object with exactly these three fields:
-{
-  "summary": "<3-5 sentence summary in English>",
+{{
+  "summary": "<3-5 sentence summary>",
   "key_insights": ["<insight 1>", "<insight 2>", "<insight 3>"],
   "qa_relevance": "<2-3 sentences explaining why this matters to a QA Manager / Tech Project Manager>"
-}
+}}
 
 Rules:
-- Write in clear, professional English.
+- Write ALL output text in {language}. This includes summary, key_insights, and qa_relevance.
 - Be concise and information-dense – no filler.
 - key_insights must be actionable, specific bullet points.
 - qa_relevance must link directly to testing, quality, team management, or project delivery.
@@ -60,18 +61,27 @@ class Summarizer:
     Generates AI-powered structured summaries via OpenAI.
 
     Args:
-        api_key: OpenAI API key (defaults to settings).
-        model:   OpenAI model name (defaults to settings).
+        api_key:   OpenAI API key (defaults to settings).
+        model:     OpenAI model name (defaults to settings).
+        language:  Output language for AI-generated text (REQ-04).
+
+    Public Attributes:
+        quota_warning (bool): Set True when a RateLimitError is encountered
+            during this session so callers can surface a report banner (REQ-08).
     """
 
     def __init__(
         self,
         api_key: Optional[str] = None,
         model: Optional[str] = None,
+        language: Optional[str] = None,
     ) -> None:
         self._client = OpenAI(api_key=api_key or settings.openai_api_key)
         self._model = model or settings.openai_model
         self._max_tokens = settings.openai_max_tokens
+        self._system_prompt = _build_system_prompt(language or settings.report_language)
+        # REQ-08: tracks whether any quota / rate-limit error was hit this session
+        self.quota_warning: bool = False
 
     def summarise(
         self,
@@ -86,7 +96,7 @@ class Summarizer:
 
         Returns:
             Dict with keys: summary, key_insights, qa_relevance
-            or None if the call fails.
+            or None if the call fails (agent continues gracefully).
         """
         truncated_content = content[:_MAX_CONTENT_CHARS] if content else "(no content)"
         user_prompt = _USER_PROMPT_TEMPLATE.format(
@@ -101,17 +111,19 @@ class Summarizer:
             response = self._client.chat.completions.create(
                 model=self._model,
                 messages=[
-                    {"role": "system", "content": _SYSTEM_PROMPT},
+                    {"role": "system", "content": self._system_prompt},
                     {"role": "user", "content": user_prompt},
                 ],
                 max_tokens=self._max_tokens,
-                temperature=0.3,  # Low temperature for factual, consistent output
+                temperature=0.3,
                 response_format={"type": "json_object"},
             )
             raw_json = response.choices[0].message.content
             return self._parse_response(raw_json)
 
         except openai.RateLimitError:
+            # REQ-08: set quota flag so the report can show the warning banner
+            self.quota_warning = True
             logger.warning("OpenAI rate limit hit – skipping article: %s", title[:50])
         except openai.APIConnectionError as exc:
             logger.error("OpenAI connection error: %s", exc)

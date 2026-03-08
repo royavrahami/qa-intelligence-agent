@@ -14,12 +14,15 @@ from __future__ import annotations
 
 import json
 import logging
+import re
 import time
 from datetime import datetime, timedelta, timezone
 from typing import Optional
 
 import openai
 from openai import OpenAI
+
+_SIMILARITY_THRESHOLD = 0.6  # Jaccard similarity threshold for trend deduplication
 
 from src.config.settings import settings
 from src.storage.models import Article, Trend
@@ -32,10 +35,16 @@ _TREND_DETECTION_PROMPT = """You are a senior technology analyst tracking the Ge
 Analyse the following list of article titles and summaries collected in the last 7 days.
 Identify the TOP 5 most significant trends, shifts, or emerging topics you can see.
 
+IMPORTANT RULES:
+- Each trend must be SEMANTICALLY DISTINCT from others - no overlapping topics
+- If multiple articles cover similar themes, merge them into ONE trend
+- Prefer specific, actionable trend names over vague generalizations
+- Avoid trend names like "AI Adoption", "Growing Interest" that could apply to anything
+
 Return a JSON object with a single key "trends" whose value is an array of trend objects.
 Each trend object must have exactly these fields:
 {
-  "name": "<Short trend name, max 60 chars>",
+  "name": "<Specific, distinct trend name, max 60 chars>",
   "description": "<2-3 sentences describing the trend and why it matters>",
   "category": "<one of: genai | agents | qa_testing | devops | tools | project_management>",
   "is_alert": <true if this trend requires IMMEDIATE attention from a QA Manager / tech leader>,
@@ -103,6 +112,9 @@ class TrendAnalyzer:
 
         if not trend_data:
             return []
+
+        # Deduplicate similar trends from LLM output
+        trend_data = self._deduplicate_trends(trend_data)
 
         created_trends: list[Trend] = []
         for td in trend_data:
@@ -244,3 +256,67 @@ class TrendAnalyzer:
             0.1,  # Avoid division by zero
         )
         return min(round((trend.article_count / days_active) * 10, 2), 100.0)
+
+    @staticmethod
+    def _normalize_text(text: str) -> set[str]:
+        """
+        Normalize text to a set of lowercase words for similarity comparison.
+        Removes common stop words and special characters.
+        """
+        stop_words = {
+            "the", "a", "an", "in", "on", "at", "to", "for", "of", "and", "or",
+            "is", "are", "was", "were", "be", "been", "being", "with", "as", "by",
+            "new", "latest", "recent", "emerging", "growing", "rise", "adoption",
+        }
+        text = text.lower()
+        words = set(re.findall(r"\b[a-z]{3,}\b", text))
+        return words - stop_words
+
+    @staticmethod
+    def _jaccard_similarity(set1: set, set2: set) -> float:
+        """Calculate Jaccard similarity between two sets of words."""
+        if not set1 or not set2:
+            return 0.0
+        intersection = len(set1 & set2)
+        union = len(set1 | set2)
+        return intersection / union if union else 0.0
+
+    def _deduplicate_trends(self, trend_data_list: list[dict]) -> list[dict]:
+        """
+        Remove semantically similar trends from the LLM output.
+        Keeps the first occurrence when trends are similar.
+        """
+        if not trend_data_list:
+            return []
+
+        unique_trends = []
+        seen_word_sets = []
+
+        for td in trend_data_list:
+            name = td.get("name", "").strip()
+            if not name:
+                continue
+
+            current_words = self._normalize_text(name)
+            is_duplicate = False
+
+            for seen_words in seen_word_sets:
+                if self._jaccard_similarity(current_words, seen_words) >= _SIMILARITY_THRESHOLD:
+                    logger.debug(
+                        "Dedup: skipping similar trend '%s' (similarity >= %.1f)",
+                        name, _SIMILARITY_THRESHOLD
+                    )
+                    is_duplicate = True
+                    break
+
+            if not is_duplicate:
+                unique_trends.append(td)
+                seen_word_sets.append(current_words)
+
+        if len(unique_trends) < len(trend_data_list):
+            logger.info(
+                "Trend deduplication: %d -> %d unique trends",
+                len(trend_data_list), len(unique_trends)
+            )
+
+        return unique_trends
