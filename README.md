@@ -1,4 +1,4 @@
-# QA Intelligence Agent
+# Quality Manager Intelligence Agent
 
 An autonomous agent that continuously monitors the GenAI, AI Agents, software testing, and developer tools landscape — then delivers structured, actionable intelligence reports tailored for **QA Managers** and **Tech Project Managers** in the high-tech industry.
 
