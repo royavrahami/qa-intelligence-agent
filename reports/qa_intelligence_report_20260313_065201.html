@@ -1,0 +1,1630 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Quality Managers in AI World – Intelligence Report – 13 Mar 2026 06:52 UTC</title>
+  <style>
+    :root {
+      --primary:   #0f3460;
+      --accent:    #e94560;
+      --light:     #f5f7fa;
+      --card-bg:   #ffffff;
+      --border:    #e0e6ed;
+      --text:      #1a1a2e;
+      --muted:     #6b7280;
+      --success:   #10b981;
+      --warning:   #f59e0b;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      font-family: 'Segoe UI', system-ui, -apple-system, sans-serif;
+      background: var(--light);
+      color: var(--text);
+      line-height: 1.6;
+    }
+    /* ── Header ── */
+    .header {
+      background: linear-gradient(135deg, var(--primary) 0%, #1a237e 100%);
+      color: white;
+      padding: 36px 40px;
+    }
+    .header h1 { font-size: 2rem; font-weight: 700; letter-spacing: -0.5px; }
+    .header p  { opacity: 0.75; margin-top: 6px; font-size: 0.9rem; }
+    .stats-row { display: flex; gap: 24px; margin-top: 20px; flex-wrap: wrap; }
+    .stat-card {
+      background: rgba(255,255,255,0.12);
+      border-radius: 10px;
+      padding: 12px 20px;
+      text-align: center;
+      min-width: 100px;
+    }
+    .stat-card .num { font-size: 1.8rem; font-weight: 800; }
+    .stat-card .lbl { font-size: 0.75rem; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.5px; }
+
+    /* ── Layout ── */
+    .container { max-width: 1100px; margin: 0 auto; padding: 32px 24px; }
+    section { margin-bottom: 48px; }
+    h2 {
+      font-size: 1.4rem;
+      color: var(--primary);
+      border-bottom: 3px solid var(--accent);
+      padding-bottom: 10px;
+      margin-bottom: 20px;
+    }
+
+    /* ── Cards ── */
+    .card {
+      background: var(--card-bg);
+      border: 1px solid var(--border);
+      border-radius: 12px;
+      padding: 20px 24px;
+      margin-bottom: 16px;
+      box-shadow: 0 2px 8px rgba(0,0,0,0.06);
+      transition: all 0.2s ease;
+    }
+    .card:hover { box-shadow: 0 6px 20px rgba(0,0,0,0.12); transform: translateY(-2px); }
+    .card.alert-card { border-left: 5px solid var(--accent); background: #fff8f8; }
+
+    /* ── Rating Box ── */
+    .rating-box {
+      background: linear-gradient(135deg, #f8fafc, #f1f5f9);
+      border-radius: 12px;
+      padding: 14px 18px;
+      text-align: center;
+      min-width: 110px;
+      border: 2px solid var(--border);
+    }
+    .rating-score {
+      font-size: 2rem;
+      font-weight: 800;
+      line-height: 1;
+    }
+    .rating-stars {
+      margin-top: 6px;
+      font-size: 1.2rem;
+      letter-spacing: 2px;
+    }
+    .rating-stars .filled { color: #fbbf24; }
+    .rating-stars .empty { color: #e5e7eb; }
+    .rating-label {
+      font-size: 0.65rem;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+      color: var(--muted);
+      margin-top: 6px;
+    }
+
+    /* ── Article Card ── */
+    .article-title a {
+      font-size: 1.05rem;
+      font-weight: 600;
+      color: var(--primary);
+      text-decoration: none;
+    }
+    .article-title a:hover { text-decoration: underline; color: var(--accent); }
+    .article-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin: 6px 0 12px;
+      font-size: 0.8rem;
+      color: var(--muted);
+    }
+    .badge {
+      display: inline-block;
+      padding: 2px 10px;
+      border-radius: 999px;
+      font-size: 0.75rem;
+      font-weight: 600;
+    }
+    .badge-cat    { background: #dbeafe; color: #1d4ed8; }
+    .badge-score  { background: var(--accent); color: white; }
+    .badge-alert  { background: #fde68a; color: #92400e; }
+    .badge-trend  { background: #d1fae5; color: #065f46; }
+
+    .article-summary { color: var(--text); margin-bottom: 10px; font-size: 0.95rem; }
+
+    .insights { margin: 10px 0; }
+    .insight-item {
+      background: #eff6ff;
+      border-left: 3px solid var(--primary);
+      padding: 6px 12px;
+      margin: 4px 0;
+      border-radius: 0 6px 6px 0;
+      font-size: 0.9rem;
+    }
+
+    .qa-box {
+      background: #f0fdf4;
+      border: 1px solid #86efac;
+      border-radius: 8px;
+      padding: 10px 14px;
+      margin-top: 10px;
+      font-size: 0.9rem;
+    }
+    .qa-box strong { color: #166534; }
+
+    /* ── Trend Card ── */
+    .trend-card { display: flex; gap: 16px; align-items: flex-start; }
+    .trend-icon { font-size: 1.8rem; flex-shrink: 0; }
+    .trend-body { flex: 1; }
+    .trend-name { font-size: 1rem; font-weight: 700; color: var(--primary); }
+    .trend-desc { font-size: 0.9rem; color: #374151; margin-top: 4px; }
+    .trend-meta { font-size: 0.78rem; color: var(--muted); margin-top: 6px; }
+    .momentum-bar {
+      height: 6px;
+      background: var(--border);
+      border-radius: 3px;
+      margin-top: 8px;
+      overflow: hidden;
+    }
+    .momentum-fill {
+      height: 100%;
+      background: linear-gradient(90deg, var(--success), var(--accent));
+      border-radius: 3px;
+    }
+
+    /* ── Category Sections ── */
+    .category-header {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      margin: 32px 0 12px;
+    }
+    .category-icon { font-size: 1.5rem; }
+    .category-title { font-size: 1.1rem; font-weight: 700; color: var(--primary); }
+    .category-count { font-size: 0.8rem; color: var(--muted); }
+
+    /* ── Footer ── */
+    .footer {
+      text-align: center;
+      padding: 24px;
+      font-size: 0.8rem;
+      color: var(--muted);
+      border-top: 1px solid var(--border);
+      margin-top: 40px;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 640px) {
+      .header { padding: 24px 16px; }
+      .container { padding: 16px; }
+      .stats-row { gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── REQ-08: Quota Warning Banner ────────────────────────────────────── -->
+
+
+<!-- ── Header ────────────────────────────────────────────────────────────── -->
+<div class="header">
+  <h1>🎯 Quality Managers in AI World</h1>
+  <p style="font-size:1.1rem;opacity:0.9;margin-top:4px;">Intelligence Report</p>
+  <p>13 Mar 2026 06:52 UTC &nbsp;|&nbsp; Run #1</p>
+  <div class="stats-row">
+    <div class="stat-card">
+      <div class="num">30</div>
+      <div class="lbl">Articles</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">5</div>
+      <div class="lbl">Trends</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">2</div>
+      <div class="lbl">Insights</div>
+    </div>
+    <div class="stat-card">
+      <div class="num">4</div>
+      <div class="lbl">Categories</div>
+    </div>
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ── Alerts Section ──────────────────────────────────────────────────── -->
+  
+  <section>
+    <h2>🚨 Alerts – Immediate Attention Required</h2>
+    
+    <div class="card alert-card">
+      <div class="trend-card">
+        <div class="trend-icon">🕵️</div>
+        <div class="trend-body">
+          <div class="trend-name">Multi-Agent Systems for Enhanced LLM Performance <span class="badge badge-alert">ALERT</span></div>
+          <div class="trend-desc">There is a growing trend in leveraging multi-agent systems to enhance the performance, alignment, and capabilities of large language models (LLMs). This includes applications in sustainable e-commerce, foreign key detection, and multi-turn games. The integration of multi-agent systems with LLMs is crucial for developing more robust and versatile AI solutions.</div>
+          <div class="trend-meta">
+            Category: AI Agents &nbsp;|&nbsp;
+            Articles: 8 &nbsp;|&nbsp;
+            Momentum: 100.0
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card alert-card">
+      <div class="trend-card">
+        <div class="trend-icon">⚙️</div>
+        <div class="trend-body">
+          <div class="trend-name">Governance and Security in AI Agent Deployment <span class="badge badge-alert">ALERT</span></div>
+          <div class="trend-desc">As AI agents become more prevalent in enterprise environments, there is a heightened focus on governance and security. Platforms like Galileo&#39;s Agent Control and SurePath AI&#39;s MCP Policy Controls are being developed to ensure safe and compliant deployment of AI agents. This trend highlights the need for robust frameworks to manage AI risks effectively.</div>
+          <div class="trend-meta">
+            Category: DevOps &amp; CI/CD &nbsp;|&nbsp;
+            Articles: 5 &nbsp;|&nbsp;
+            Momentum: 100.0
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </section>
+  
+
+  <!-- ── Top 10 Articles ─────────────────────────────────────────────────── -->
+  <section>
+    <h2>⭐ Top 10 Articles This Period</h2>
+    
+    <div class="card" style="display:flex;gap:20px;">
+      <div style="flex:1;">
+        <div class="article-title">
+          <a href="https://arxiv.org/abs/2603.11828v1" target="_blank" rel="noopener">Large language models for optical network O&amp;M: Agent-embedded workflow for automation</a>
+        </div>
+        <div class="article-meta">
+          <span class="badge badge-cat">🕵️ AI Agents</span>
+          
+          <span>12 Mar 2026 11:48 UTC</span>
+          
+        </div>
+        
+        <div class="article-summary" style="margin-top:12px;padding:14px 18px;background:#f8fafc;border-left:4px solid var(--primary);border-radius:0 8px 8px 0;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:6px;font-weight:600;">Summary</div>
+          The paper explores the integration of large language models (LLMs) into optical network operation and maintenance (O&amp;M) workflows to enhance intelligence and efficiency. It proposes a multi-agent collaborative architecture that combines LLM capabilities with existing O&amp;M tools, focusing on tasks like optical channel management, performance optimization, and fault management. The work emphasizes the importance of agent-based design and provides a conceptual framework for embedding LLM-based agents into O&amp;M processes, paving the way for future autonomous systems.
+        </div>
+        
+        
+        <div class="insights" style="margin-top:12px;padding:14px 18px;background:#eff6ff;border-left:4px solid #3b82f6;border-radius:0 8px 8px 0;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;color:#1d4ed8;margin-bottom:8px;font-weight:600;">Key Insights</div>
+          
+          <div class="insight-item" style="background:transparent;border:none;padding:4px 0;">▸ Integrate LLMs into existing O&amp;M workflows to enhance task execution and efficiency.</div>
+          
+          <div class="insight-item" style="background:transparent;border:none;padding:4px 0;">▸ Leverage agent-based design to improve task executability in optical network management.</div>
+          
+          <div class="insight-item" style="background:transparent;border:none;padding:4px 0;">▸ Utilize LLM-related technologies such as prompt engineering and tool invocation for targeted O&amp;M tasks.</div>
+          
+        </div>
+        
+        
+        <div class="qa-box" style="margin-top:12px;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;color:#166534;margin-bottom:6px;font-weight:600;">💼 Why This Matters for Quality Managers</div>
+          For a QA Manager or Tech Project Manager, this paper highlights the potential of LLMs to automate and optimize network management tasks, which can lead to more efficient testing and quality assurance processes. Understanding how to integrate LLMs into O&amp;M workflows can improve the reliability and performance of network systems, ultimately enhancing project delivery and team management by reducing manual intervention and error rates.
+        </div>
+        
+      </div>
+      <div class="rating-box" style="border-color:#059669;">
+        <div class="rating-score" style="color:#059669;">89</div>
+        <div class="rating-stars">
+          
+          
+          <span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="empty">★</span>
+        </div>
+        <div class="rating-label">Relevance</div>
+      </div>
+    </div>
+    
+    <div class="card" style="display:flex;gap:20px;">
+      <div style="flex:1;">
+        <div class="article-title">
+          <a href="https://arxiv.org/abs/2603.10646v1" target="_blank" rel="noopener">ESG Reporting Lifecycle Management with Large Language Models and AI Agents</a>
+        </div>
+        <div class="article-meta">
+          <span class="badge badge-cat">🕵️ AI Agents</span>
+          
+          <span>11 Mar 2026 11:05 UTC</span>
+          
+        </div>
+        
+        <div class="article-summary" style="margin-top:12px;padding:14px 18px;background:#f8fafc;border-left:4px solid var(--primary);border-radius:0 8px 8px 0;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:6px;font-weight:600;">Summary</div>
+          The paper discusses the challenges of generating ESG reports due to unstructured data, inconsistent terminology, and complex requirements. It proposes an agentic ESG lifecycle framework that integrates AI agents to automate and enhance the stages of ESG reporting, including identification, measurement, reporting, engagement, and improvement. The framework aims to transform ESG reporting into a dynamic and adaptive system by embedding AI agents to extract, verify, and update ESG information. The paper also outlines technical requirements and quality attributes for tasks like report validation and generation, and suggests architectural approaches for implementing these tasks.
+        </div>
+        
+        
+        <div class="insights" style="margin-top:12px;padding:14px 18px;background:#eff6ff;border-left:4px solid #3b82f6;border-radius:0 8px 8px 0;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;color:#1d4ed8;margin-bottom:8px;font-weight:600;">Key Insights</div>
+          
+          <div class="insight-item" style="background:transparent;border:none;padding:4px 0;">▸ Implement AI agents to automate ESG report generation and ensure alignment with standards.</div>
+          
+          <div class="insight-item" style="background:transparent;border:none;padding:4px 0;">▸ Utilize a multi-agent framework to enhance adaptability and continuous feedback in ESG reporting.</div>
+          
+          <div class="insight-item" style="background:transparent;border:none;padding:4px 0;">▸ Define clear technical requirements and quality attributes to support tasks such as report validation and knowledge-base maintenance.</div>
+          
+        </div>
+        
+        
+        <div class="qa-box" style="margin-top:12px;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;color:#166534;margin-bottom:6px;font-weight:600;">💼 Why This Matters for Quality Managers</div>
+          For a QA Manager or Tech Project Manager, this paper highlights the importance of integrating AI and LLMs to automate complex reporting tasks, ensuring consistency and accuracy in ESG reporting. Understanding the technical requirements and quality attributes necessary for these tasks can aid in developing robust testing strategies and quality assurance processes. Additionally, the proposed architectural approaches can inform project planning and resource allocation for implementing AI-driven reporting systems.
+        </div>
+        
+      </div>
+      <div class="rating-box" style="border-color:#059669;">
+        <div class="rating-score" style="color:#059669;">86</div>
+        <div class="rating-stars">
+          
+          
+          <span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="empty">★</span>
+        </div>
+        <div class="rating-label">Relevance</div>
+      </div>
+    </div>
+    
+    <div class="card" style="display:flex;gap:20px;">
+      <div style="flex:1;">
+        <div class="article-title">
+          <a href="https://arxiv.org/abs/2603.11126v1" target="_blank" rel="noopener">Enhancing Value Alignment of LLMs with Multi-agent system and Combinatorial Fusion</a>
+        </div>
+        <div class="article-meta">
+          <span class="badge badge-cat">🕵️ AI Agents</span>
+          
+          <span>11 Mar 2026 14:57 UTC</span>
+          
+        </div>
+        
+        <div class="article-summary" style="margin-top:12px;padding:14px 18px;background:#f8fafc;border-left:4px solid var(--primary);border-radius:0 8px 8px 0;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:6px;font-weight:600;">Summary</div>
+          The paper discusses the challenge of aligning large language models (LLMs) with human values for trustworthy deployment. It critiques existing methods like Reinforcement Learning from Human Feedback (RLHF) for their limited ability to capture ethical pluralism. The authors propose a Value Alignment System using Combinatorial Fusion Analysis (VAS-CFA), which employs multiple moral agents, each representing different normative perspectives, and combines their outputs using rank- and score-based aggregation. Empirical results show that this multi-agent approach outperforms traditional single-agent models in aligning LLMs with human values.
+        </div>
+        
+        
+        <div class="insights" style="margin-top:12px;padding:14px 18px;background:#eff6ff;border-left:4px solid #3b82f6;border-radius:0 8px 8px 0;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;color:#1d4ed8;margin-bottom:8px;font-weight:600;">Key Insights</div>
+          
+          <div class="insight-item" style="background:transparent;border:none;padding:4px 0;">▸ VAS-CFA leverages multiple moral agents to capture diverse ethical perspectives, enhancing value alignment in LLMs.</div>
+          
+          <div class="insight-item" style="background:transparent;border:none;padding:4px 0;">▸ Combinatorial Fusion Analysis (CFA) is used to aggregate outputs from various agents, improving the robustness of the alignment process.</div>
+          
+          <div class="insight-item" style="background:transparent;border:none;padding:4px 0;">▸ Empirical evaluations indicate that multi-agent systems outperform single-agent baselines in aligning LLMs with human values.</div>
+          
+        </div>
+        
+        
+        <div class="qa-box" style="margin-top:12px;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;color:#166534;margin-bottom:6px;font-weight:600;">💼 Why This Matters for Quality Managers</div>
+          For a QA Manager or Tech Project Manager, understanding the VAS-CFA framework is crucial for ensuring that AI systems are aligned with human values, which directly impacts the quality and safety of AI deployments. This approach can inform testing strategies and quality assurance processes by highlighting the importance of diverse evaluative perspectives. Additionally, it underscores the need for robust multi-agent systems in delivering reliable and ethically sound AI solutions.
+        </div>
+        
+      </div>
+      <div class="rating-box" style="border-color:#059669;">
+        <div class="rating-score" style="color:#059669;">86</div>
+        <div class="rating-stars">
+          
+          
+          <span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="empty">★</span>
+        </div>
+        <div class="rating-label">Relevance</div>
+      </div>
+    </div>
+    
+    <div class="card" style="display:flex;gap:20px;">
+      <div style="flex:1;">
+        <div class="article-title">
+          <a href="https://arxiv.org/abs/2603.11025v1" target="_blank" rel="noopener">LLMGreenRec: LLM-Based Multi-Agent Recommender System for Sustainable E-Commerce</a>
+        </div>
+        <div class="article-meta">
+          <span class="badge badge-cat">🕵️ AI Agents</span>
+          
+          <span>11 Mar 2026 17:49 UTC</span>
+          
+        </div>
+        
+        <div class="article-summary" style="margin-top:12px;padding:14px 18px;background:#f8fafc;border-left:4px solid var(--primary);border-radius:0 8px 8px 0;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:6px;font-weight:600;">Summary</div>
+          LLMGreenRec is a multi-agent recommender system designed to enhance sustainable e-commerce by leveraging Large Language Models (LLMs). Unlike traditional systems focused on short-term conversions, LLMGreenRec uses specialized agents to interpret user interactions and refine prompts to prioritize eco-friendly product recommendations. This approach not only aligns with users&#39; green intentions but also reduces digital carbon footprints. Experiments on benchmark datasets confirm its efficacy in promoting sustainable consumption.
+        </div>
+        
+        
+        <div class="insights" style="margin-top:12px;padding:14px 18px;background:#eff6ff;border-left:4px solid #3b82f6;border-radius:0 8px 8px 0;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;color:#1d4ed8;margin-bottom:8px;font-weight:600;">Key Insights</div>
+          
+          <div class="insight-item" style="background:transparent;border:none;padding:4px 0;">▸ LLMGreenRec uses LLMs to better understand user intent for eco-friendly products, closing the gap between intention and action.</div>
+          
+          <div class="insight-item" style="background:transparent;border:none;padding:4px 0;">▸ The system reduces digital carbon footprints by minimizing unnecessary interactions through intent-driven recommendations.</div>
+          
+          <div class="insight-item" style="background:transparent;border:none;padding:4px 0;">▸ Extensive testing on benchmark datasets validates the system&#39;s effectiveness in recommending sustainable products.</div>
+          
+        </div>
+        
+        
+        <div class="qa-box" style="margin-top:12px;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;color:#166534;margin-bottom:6px;font-weight:600;">💼 Why This Matters for Quality Managers</div>
+          For QA Managers and Tech Project Managers, LLMGreenRec highlights the importance of integrating sustainability into software systems. Testing should focus on validating the accuracy of intent detection and the efficiency of the recommendation process. Ensuring the system&#39;s ability to reduce unnecessary interactions is crucial for both user satisfaction and minimizing environmental impact.
+        </div>
+        
+      </div>
+      <div class="rating-box" style="border-color:#059669;">
+        <div class="rating-score" style="color:#059669;">85</div>
+        <div class="rating-stars">
+          
+          
+          <span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="empty">★</span>
+        </div>
+        <div class="rating-label">Relevance</div>
+      </div>
+    </div>
+    
+    <div class="card" style="display:flex;gap:20px;">
+      <div style="flex:1;">
+        <div class="article-title">
+          <a href="https://arxiv.org/abs/2603.10098v1" target="_blank" rel="noopener">Code-Space Response Oracles: Generating Interpretable Multi-Agent Policies with Large Language Models</a>
+        </div>
+        <div class="article-meta">
+          <span class="badge badge-cat">🕵️ AI Agents</span>
+          
+          <span>10 Mar 2026 17:37 UTC</span>
+          
+        </div>
+        
+        <div class="article-summary" style="margin-top:12px;padding:14px 18px;background:#f8fafc;border-left:4px solid var(--primary);border-radius:0 8px 8px 0;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:6px;font-weight:600;">Summary</div>
+          The paper introduces Code-Space Response Oracles (CSRO), a framework that utilizes Large Language Models (LLMs) to generate interpretable multi-agent policies in reinforcement learning. By reframing policy generation as a code generation task, CSRO replaces traditional black-box neural network policies with human-readable code, enhancing interpretability and trust. The approach leverages LLMs for zero-shot prompting, iterative refinement, and introduces AlphaEvolve, a distributed evolutionary system, to produce diverse and explainable policies.
+        </div>
+        
+        
+        <div class="insights" style="margin-top:12px;padding:14px 18px;background:#eff6ff;border-left:4px solid #3b82f6;border-radius:0 8px 8px 0;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;color:#1d4ed8;margin-bottom:8px;font-weight:600;">Key Insights</div>
+          
+          <div class="insight-item" style="background:transparent;border:none;padding:4px 0;">▸ CSRO replaces traditional deep reinforcement learning oracles with LLMs to generate human-readable policies, improving interpretability.</div>
+          
+          <div class="insight-item" style="background:transparent;border:none;padding:4px 0;">▸ The framework utilizes LLMs for zero-shot prompting and iterative refinement, allowing for the discovery of complex strategies.</div>
+          
+          <div class="insight-item" style="background:transparent;border:none;padding:4px 0;">▸ AlphaEvolve is introduced as a distributed LLM-based evolutionary system to enhance policy diversity and performance.</div>
+          
+        </div>
+        
+        
+        <div class="qa-box" style="margin-top:12px;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;color:#166534;margin-bottom:6px;font-weight:600;">💼 Why This Matters for Quality Managers</div>
+          For a QA Manager or Tech Project Manager, CSRO&#39;s approach to generating interpretable policies is crucial for ensuring transparency and trust in AI systems. By producing human-readable code, it facilitates easier debugging and validation processes. This shift towards interpretable AI can significantly enhance the quality assurance and testing phases, ensuring that multi-agent systems behave as expected and are easier to manage and maintain.
+        </div>
+        
+      </div>
+      <div class="rating-box" style="border-color:#059669;">
+        <div class="rating-score" style="color:#059669;">82</div>
+        <div class="rating-stars">
+          
+          
+          <span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="empty">★</span>
+        </div>
+        <div class="rating-label">Relevance</div>
+      </div>
+    </div>
+    
+    <div class="card" style="display:flex;gap:20px;">
+      <div style="flex:1;">
+        <div class="article-title">
+          <a href="https://arxiv.org/abs/2603.09290v1" target="_blank" rel="noopener">ToolRosetta: Bridging Open-Source Repositories and Large Language Model Agents through Automated Tool Standardization</a>
+        </div>
+        <div class="article-meta">
+          <span class="badge badge-cat">🕵️ AI Agents</span>
+          
+          <span>10 Mar 2026 07:19 UTC</span>
+          
+        </div>
+        
+        <div class="article-summary" style="margin-top:12px;padding:14px 18px;background:#f8fafc;border-left:4px solid var(--primary);border-radius:0 8px 8px 0;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:6px;font-weight:600;">Summary</div>
+          ToolRosetta is a framework designed to automate the standardization of open-source code repositories into tools compatible with Model Context Protocol (MCP), enabling their invocation by large language models (LLMs). This system autonomously plans toolchains, identifies relevant codebases, and converts them into executable services, reducing the need for manual intervention. ToolRosetta also includes a security inspection layer to address risks associated with executing arbitrary code, and it has demonstrated improved task completion performance across various scientific domains.
+        </div>
+        
+        
+        <div class="insights" style="margin-top:12px;padding:14px 18px;background:#eff6ff;border-left:4px solid #3b82f6;border-radius:0 8px 8px 0;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;color:#1d4ed8;margin-bottom:8px;font-weight:600;">Key Insights</div>
+          
+          <div class="insight-item" style="background:transparent;border:none;padding:4px 0;">▸ ToolRosetta automates the translation of open-source repositories into standardized tools, reducing manual curation efforts.</div>
+          
+          <div class="insight-item" style="background:transparent;border:none;padding:4px 0;">▸ The framework includes a security inspection layer to mitigate risks from executing arbitrary code.</div>
+          
+          <div class="insight-item" style="background:transparent;border:none;padding:4px 0;">▸ ToolRosetta improves task completion performance by leveraging specialized open-source tools more effectively than existing systems.</div>
+          
+        </div>
+        
+        
+        <div class="qa-box" style="margin-top:12px;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;color:#166534;margin-bottom:6px;font-weight:600;">💼 Why This Matters for Quality Managers</div>
+          For a QA Manager or Tech Project Manager, ToolRosetta&#39;s ability to automate tool standardization and integration can significantly enhance the efficiency of testing and deployment processes. By reducing manual intervention, it allows teams to focus on quality assurance and risk management, while the security layer ensures safer execution of code, aligning with best practices in software delivery and project management.
+        </div>
+        
+      </div>
+      <div class="rating-box" style="border-color:#059669;">
+        <div class="rating-score" style="color:#059669;">82</div>
+        <div class="rating-stars">
+          
+          
+          <span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="empty">★</span>
+        </div>
+        <div class="rating-label">Relevance</div>
+      </div>
+    </div>
+    
+    <div class="card" style="display:flex;gap:20px;">
+      <div style="flex:1;">
+        <div class="article-title">
+          <a href="https://arxiv.org/abs/2603.07728v1" target="_blank" rel="noopener">A Novel Multi-Agent Architecture to Reduce Hallucinations of Large Language Models in Multi-Step Structural Modeling</a>
+        </div>
+        <div class="article-meta">
+          <span class="badge badge-cat">🕵️ AI Agents</span>
+          
+          <span>08 Mar 2026 16:57 UTC</span>
+          
+        </div>
+        
+        <div class="article-summary" style="margin-top:12px;padding:14px 18px;background:#f8fafc;border-left:4px solid var(--primary);border-radius:0 8px 8px 0;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:6px;font-weight:600;">Summary</div>
+          The paper introduces a novel multi-agent architecture designed to reduce hallucinations in large language models (LLMs) during multi-step structural modeling tasks. This architecture leverages intelligent agents to automate the process of constructing and analyzing structural models using OpenSeesPy. The system involves several specialized agents that work in tandem to extract parameters, plan modeling steps, and generate executable scripts. The architecture was tested on a benchmark of structural problems, achieving high accuracy and improved computational efficiency.
+        </div>
+        
+        
+        <div class="insights" style="margin-top:12px;padding:14px 18px;background:#eff6ff;border-left:4px solid #3b82f6;border-radius:0 8px 8px 0;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;color:#1d4ed8;margin-bottom:8px;font-weight:600;">Key Insights</div>
+          
+          <div class="insight-item" style="background:transparent;border:none;padding:4px 0;">▸ Implementing a multi-agent architecture can significantly reduce error rates in LLM-driven tasks by distributing responsibilities among specialized agents.</div>
+          
+          <div class="insight-item" style="background:transparent;border:none;padding:4px 0;">▸ Parallel processing by node and element agents enhances the efficiency of structural model assembly, reducing the time required for complex computations.</div>
+          
+          <div class="insight-item" style="background:transparent;border:none;padding:4px 0;">▸ The architecture&#39;s ability to achieve high accuracy and scalability suggests potential for broader applications in other domains requiring multi-step operations.</div>
+          
+        </div>
+        
+        
+        <div class="qa-box" style="margin-top:12px;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;color:#166534;margin-bottom:6px;font-weight:600;">💼 Why This Matters for Quality Managers</div>
+          For a QA Manager or Tech Project Manager, this architecture highlights the importance of modular design and parallel processing in reducing errors and improving efficiency. Understanding how multi-agent systems can enhance LLM performance is crucial for ensuring quality in AI-driven software solutions. This approach can inform strategies for testing and validating complex systems, ensuring that automated processes meet accuracy and reliability standards.
+        </div>
+        
+      </div>
+      <div class="rating-box" style="border-color:#059669;">
+        <div class="rating-score" style="color:#059669;">82</div>
+        <div class="rating-stars">
+          
+          
+          <span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="empty">★</span>
+        </div>
+        <div class="rating-label">Relevance</div>
+      </div>
+    </div>
+    
+    <div class="card" style="display:flex;gap:20px;">
+      <div style="flex:1;">
+        <div class="article-title">
+          <a href="https://arxiv.org/abs/2603.07972v1" target="_blank" rel="noopener">Adaptive Collaboration with Humans: Metacognitive Policy Optimization for Multi-Agent LLMs with Continual Learning</a>
+        </div>
+        <div class="article-meta">
+          <span class="badge badge-cat">🕵️ AI Agents</span>
+          
+          <span>09 Mar 2026 05:18 UTC</span>
+          
+        </div>
+        
+        <div class="article-summary" style="margin-top:12px;padding:14px 18px;background:#f8fafc;border-left:4px solid var(--primary);border-radius:0 8px 8px 0;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:6px;font-weight:600;">Summary</div>
+          The paper discusses a novel approach to enhancing multi-agent systems (MAS) by integrating human collaboration through the Human-In-the-Loop Multi-Agent Collaboration (HILA) framework. This framework enables agents to learn when to act autonomously and when to seek human input, using a metacognitive policy. The Dual-Loop Policy Optimization method is introduced to separate immediate decision-making from long-term learning, improving the agents&#39; capabilities over time. Experiments demonstrate that HILA outperforms existing MAS in complex problem-solving tasks.
+        </div>
+        
+        
+        <div class="insights" style="margin-top:12px;padding:14px 18px;background:#eff6ff;border-left:4px solid #3b82f6;border-radius:0 8px 8px 0;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;color:#1d4ed8;margin-bottom:8px;font-weight:600;">Key Insights</div>
+          
+          <div class="insight-item" style="background:transparent;border:none;padding:4px 0;">▸ Implementing a metacognitive policy allows agents to decide when to operate independently and when to involve human experts, enhancing problem-solving capabilities.</div>
+          
+          <div class="insight-item" style="background:transparent;border:none;padding:4px 0;">▸ Dual-Loop Policy Optimization separates short-term decision-making from long-term learning, ensuring continual improvement of agent performance.</div>
+          
+          <div class="insight-item" style="background:transparent;border:none;padding:4px 0;">▸ Human feedback is transformed into high-quality supervised signals, strengthening the reasoning abilities of agents in novel scenarios.</div>
+          
+        </div>
+        
+        
+        <div class="qa-box" style="margin-top:12px;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;color:#166534;margin-bottom:6px;font-weight:600;">💼 Why This Matters for Quality Managers</div>
+          For QA Managers and Tech Project Managers, this approach highlights the importance of integrating human oversight in autonomous systems to enhance reliability and adaptability. The continual learning aspect ensures that systems can evolve and improve over time, which is crucial for maintaining high-quality software delivery. Understanding these dynamics can aid in better planning and execution of testing strategies for complex AI-driven systems.
+        </div>
+        
+      </div>
+      <div class="rating-box" style="border-color:#059669;">
+        <div class="rating-score" style="color:#059669;">82</div>
+        <div class="rating-stars">
+          
+          
+          <span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="empty">★</span>
+        </div>
+        <div class="rating-label">Relevance</div>
+      </div>
+    </div>
+    
+    <div class="card" style="display:flex;gap:20px;">
+      <div style="flex:1;">
+        <div class="article-title">
+          <a href="https://arxiv.org/abs/2603.01952v1" target="_blank" rel="noopener">LiveCultureBench: a Multi-Agent, Multi-Cultural Benchmark for Large Language Models in Dynamic Social Simulations</a>
+        </div>
+        <div class="article-meta">
+          <span class="badge badge-cat">🕵️ AI Agents</span>
+          
+          <span>02 Mar 2026 15:04 UTC</span>
+          
+        </div>
+        
+        <div class="article-summary" style="margin-top:12px;padding:14px 18px;background:#f8fafc;border-left:4px solid var(--primary);border-radius:0 8px 8px 0;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:6px;font-weight:600;">Summary</div>
+          The paper introduces LiveCultureBench, a benchmark designed to evaluate large language models (LLMs) as autonomous agents within a simulated town environment. This benchmark emphasizes not only task completion but also the cultural appropriateness of actions taken by these agents. LiveCultureBench uses a location graph populated with synthetic residents of diverse cultural backgrounds, where LLM agents are assessed on their ability to complete tasks while adhering to socio-cultural norms. The study explores the cross-cultural robustness of LLMs, their balance between task effectiveness and norm sensitivity, and the reliability of LLMs as evaluators in automated benchmarking.
+        </div>
+        
+        
+        <div class="insights" style="margin-top:12px;padding:14px 18px;background:#eff6ff;border-left:4px solid #3b82f6;border-radius:0 8px 8px 0;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;color:#1d4ed8;margin-bottom:8px;font-weight:600;">Key Insights</div>
+          
+          <div class="insight-item" style="background:transparent;border:none;padding:4px 0;">▸ LiveCultureBench provides a framework to test LLMs for cultural appropriateness alongside task success, offering a more holistic evaluation.</div>
+          
+          <div class="insight-item" style="background:transparent;border:none;padding:4px 0;">▸ The benchmark uses a dynamic simulation with diverse cultural profiles, allowing for the assessment of LLMs&#39; cross-cultural robustness.</div>
+          
+          <div class="insight-item" style="background:transparent;border:none;padding:4px 0;">▸ The study highlights the importance of balancing task effectiveness with cultural norm sensitivity, which is crucial for deploying LLMs in real-world scenarios.</div>
+          
+        </div>
+        
+        
+        <div class="qa-box" style="margin-top:12px;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;color:#166534;margin-bottom:6px;font-weight:600;">💼 Why This Matters for Quality Managers</div>
+          For a QA Manager or Tech Project Manager, understanding the cultural appropriateness and robustness of LLMs is crucial for ensuring that AI systems behave ethically and effectively in diverse environments. This benchmark can guide the development of test cases that evaluate not just functional correctness but also cultural sensitivity, enhancing the overall quality and reliability of AI deployments. Additionally, it underscores the need for human oversight in automated evaluations, which is a key consideration in managing AI-driven projects.
+        </div>
+        
+      </div>
+      <div class="rating-box" style="border-color:#059669;">
+        <div class="rating-score" style="color:#059669;">82</div>
+        <div class="rating-stars">
+          
+          
+          <span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="empty">★</span>
+        </div>
+        <div class="rating-label">Relevance</div>
+      </div>
+    </div>
+    
+    <div class="card" style="display:flex;gap:20px;">
+      <div style="flex:1;">
+        <div class="article-title">
+          <a href="https://arxiv.org/abs/2603.01410v1" target="_blank" rel="noopener">GraphScout: Empowering Large Language Models with Intrinsic Exploration Ability for Agentic Graph Reasoning</a>
+        </div>
+        <div class="article-meta">
+          <span class="badge badge-cat">🕵️ AI Agents</span>
+          
+          <span>02 Mar 2026 03:25 UTC</span>
+          
+        </div>
+        
+        <div class="article-summary" style="margin-top:12px;padding:14px 18px;background:#f8fafc;border-left:4px solid var(--primary);border-radius:0 8px 8px 0;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;color:var(--muted);margin-bottom:6px;font-weight:600;">Summary</div>
+          GraphScout is a novel framework designed to enhance large language models (LLMs) with the ability to autonomously explore and reason with knowledge graphs. Unlike traditional methods that rely on predefined tools and manual guidance, GraphScout provides flexible exploration tools, allowing models to generate structured training data for post-training. This approach significantly improves reasoning capabilities and cross-domain performance, as demonstrated by experiments showing superior results compared to existing methods.
+        </div>
+        
+        
+        <div class="insights" style="margin-top:12px;padding:14px 18px;background:#eff6ff;border-left:4px solid #3b82f6;border-radius:0 8px 8px 0;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;color:#1d4ed8;margin-bottom:8px;font-weight:600;">Key Insights</div>
+          
+          <div class="insight-item" style="background:transparent;border:none;padding:4px 0;">▸ GraphScout allows LLMs to autonomously interact with knowledge graphs, reducing dependency on manual annotations.</div>
+          
+          <div class="insight-item" style="background:transparent;border:none;padding:4px 0;">▸ The framework enhances the reasoning capabilities of LLMs, achieving a 16.7% performance improvement over baseline methods.</div>
+          
+          <div class="insight-item" style="background:transparent;border:none;padding:4px 0;">▸ GraphScout demonstrates strong cross-domain transfer capabilities, indicating its versatility and robustness.</div>
+          
+        </div>
+        
+        
+        <div class="qa-box" style="margin-top:12px;">
+          <div style="font-size:0.7rem;text-transform:uppercase;letter-spacing:0.5px;color:#166534;margin-bottom:6px;font-weight:600;">💼 Why This Matters for Quality Managers</div>
+          For QA Managers and Tech Project Managers, GraphScout&#39;s ability to autonomously generate structured training data can streamline the testing and validation processes by reducing the need for manual data curation. Its enhanced reasoning capabilities can lead to more accurate and reliable AI models, improving the quality of software products. Additionally, the framework&#39;s cross-domain adaptability can facilitate efficient project delivery across various applications.
+        </div>
+        
+      </div>
+      <div class="rating-box" style="border-color:#059669;">
+        <div class="rating-score" style="color:#059669;">82</div>
+        <div class="rating-stars">
+          
+          
+          <span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="filled">★</span><span class="empty">★</span>
+        </div>
+        <div class="rating-label">Relevance</div>
+      </div>
+    </div>
+    
+  </section>
+
+  <!-- ── REQ-06: Thematic Sections with Central Idea ─────────────────────── -->
+  
+  <section>
+    <h2>🗂️ Thematic Analysis</h2>
+    
+    <div style="margin-bottom:28px;">
+      <h3 style="font-size:1.1rem;color:var(--primary);margin-bottom:8px;">Multi-Agent Systems and LLMs</h3>
+      <div style="background:#eff6ff;border-left:4px solid var(--primary);border-radius:0 8px 8px 0;
+                  padding:12px 16px;margin-bottom:12px;font-size:0.93rem;color:#374151;line-height:1.6;
+                  font-style:italic;">
+        This section explores the integration of multi-agent systems with large language models (LLMs) to enhance their capabilities. Topics include value alignment, sustainable e-commerce, structural modeling, and reinforcement learning, highlighting the versatility and potential of multi-agent architectures in various applications.
+      </div>
+      
+      <div class="card" style="margin-bottom:8px;padding:14px 18px;display:flex;gap:16px;align-items:flex-start;">
+        <div style="flex:1;">
+          <div class="article-title" style="font-size:0.95rem;">
+            <a href="https://arxiv.org/abs/2603.11126v1" target="_blank" rel="noopener">Enhancing Value Alignment of LLMs with Multi-agent system and Combinatorial Fusion</a>
+          </div>
+          <div class="article-meta">
+            <span class="badge badge-cat">🕵️ AI Agents</span>
+          </div>
+          <div class="article-summary" style="font-size:0.88rem;margin-top:8px;">The paper discusses the challenge of aligning large language models (LLMs) with human values for trustworthy deployment. It critiques existing methods like Reinforcement Learning from Human Feedback (RLHF) for their limited ability to capture ethical pluralism. The authors propose a Value Alignment System using Combinatorial Fusion Analysis (VAS-CFA), which employs multiple moral agents, each representing different normative perspectives, and combines their outputs using rank- and score-based aggregation. Empirical results show that this multi-agent approach outperforms traditional single-agent models in aligning LLMs with human values.</div>
+        </div>
+        <div style="text-align:center;min-width:70px;">
+          <div style="font-size:1.4rem;font-weight:800;color:#059669;">86</div>
+          <div style="font-size:0.9rem;color:#fbbf24;letter-spacing:1px;">★★★★☆</div>
+        </div>
+      </div>
+      
+      <div class="card" style="margin-bottom:8px;padding:14px 18px;display:flex;gap:16px;align-items:flex-start;">
+        <div style="flex:1;">
+          <div class="article-title" style="font-size:0.95rem;">
+            <a href="https://arxiv.org/abs/2603.11025v1" target="_blank" rel="noopener">LLMGreenRec: LLM-Based Multi-Agent Recommender System for Sustainable E-Commerce</a>
+          </div>
+          <div class="article-meta">
+            <span class="badge badge-cat">🕵️ AI Agents</span>
+          </div>
+          <div class="article-summary" style="font-size:0.88rem;margin-top:8px;">LLMGreenRec is a multi-agent recommender system designed to enhance sustainable e-commerce by leveraging Large Language Models (LLMs). Unlike traditional systems focused on short-term conversions, LLMGreenRec uses specialized agents to interpret user interactions and refine prompts to prioritize eco-friendly product recommendations. This approach not only aligns with users&#39; green intentions but also reduces digital carbon footprints. Experiments on benchmark datasets confirm its efficacy in promoting sustainable consumption.</div>
+        </div>
+        <div style="text-align:center;min-width:70px;">
+          <div style="font-size:1.4rem;font-weight:800;color:#059669;">85</div>
+          <div style="font-size:0.9rem;color:#fbbf24;letter-spacing:1px;">★★★★☆</div>
+        </div>
+      </div>
+      
+      <div class="card" style="margin-bottom:8px;padding:14px 18px;display:flex;gap:16px;align-items:flex-start;">
+        <div style="flex:1;">
+          <div class="article-title" style="font-size:0.95rem;">
+            <a href="https://arxiv.org/abs/2603.10098v1" target="_blank" rel="noopener">Code-Space Response Oracles: Generating Interpretable Multi-Agent Policies with Large Language Models</a>
+          </div>
+          <div class="article-meta">
+            <span class="badge badge-cat">🕵️ AI Agents</span>
+          </div>
+          <div class="article-summary" style="font-size:0.88rem;margin-top:8px;">The paper introduces Code-Space Response Oracles (CSRO), a framework that utilizes Large Language Models (LLMs) to generate interpretable multi-agent policies in reinforcement learning. By reframing policy generation as a code generation task, CSRO replaces traditional black-box neural network policies with human-readable code, enhancing interpretability and trust. The approach leverages LLMs for zero-shot prompting, iterative refinement, and introduces AlphaEvolve, a distributed evolutionary system, to produce diverse and explainable policies.</div>
+        </div>
+        <div style="text-align:center;min-width:70px;">
+          <div style="font-size:1.4rem;font-weight:800;color:#059669;">82</div>
+          <div style="font-size:0.9rem;color:#fbbf24;letter-spacing:1px;">★★★★☆</div>
+        </div>
+      </div>
+      
+      <div class="card" style="margin-bottom:8px;padding:14px 18px;display:flex;gap:16px;align-items:flex-start;">
+        <div style="flex:1;">
+          <div class="article-title" style="font-size:0.95rem;">
+            <a href="https://arxiv.org/abs/2603.07728v1" target="_blank" rel="noopener">A Novel Multi-Agent Architecture to Reduce Hallucinations of Large Language Models in Multi-Step Structural Modeling</a>
+          </div>
+          <div class="article-meta">
+            <span class="badge badge-cat">🕵️ AI Agents</span>
+          </div>
+          <div class="article-summary" style="font-size:0.88rem;margin-top:8px;">The paper introduces a novel multi-agent architecture designed to reduce hallucinations in large language models (LLMs) during multi-step structural modeling tasks. This architecture leverages intelligent agents to automate the process of constructing and analyzing structural models using OpenSeesPy. The system involves several specialized agents that work in tandem to extract parameters, plan modeling steps, and generate executable scripts. The architecture was tested on a benchmark of structural problems, achieving high accuracy and improved computational efficiency.</div>
+        </div>
+        <div style="text-align:center;min-width:70px;">
+          <div style="font-size:1.4rem;font-weight:800;color:#059669;">82</div>
+          <div style="font-size:0.9rem;color:#fbbf24;letter-spacing:1px;">★★★★☆</div>
+        </div>
+      </div>
+      
+      <div class="card" style="margin-bottom:8px;padding:14px 18px;display:flex;gap:16px;align-items:flex-start;">
+        <div style="flex:1;">
+          <div class="article-title" style="font-size:0.95rem;">
+            <a href="https://arxiv.org/abs/2603.07972v1" target="_blank" rel="noopener">Adaptive Collaboration with Humans: Metacognitive Policy Optimization for Multi-Agent LLMs with Continual Learning</a>
+          </div>
+          <div class="article-meta">
+            <span class="badge badge-cat">🕵️ AI Agents</span>
+          </div>
+          <div class="article-summary" style="font-size:0.88rem;margin-top:8px;">The paper discusses a novel approach to enhancing multi-agent systems (MAS) by integrating human collaboration through the Human-In-the-Loop Multi-Agent Collaboration (HILA) framework. This framework enables agents to learn when to act autonomously and when to seek human input, using a metacognitive policy. The Dual-Loop Policy Optimization method is introduced to separate immediate decision-making from long-term learning, improving the agents&#39; capabilities over time. Experiments demonstrate that HILA outperforms existing MAS in complex problem-solving tasks.</div>
+        </div>
+        <div style="text-align:center;min-width:70px;">
+          <div style="font-size:1.4rem;font-weight:800;color:#059669;">82</div>
+          <div style="font-size:0.9rem;color:#fbbf24;letter-spacing:1px;">★★★★☆</div>
+        </div>
+      </div>
+      
+    </div>
+    
+    <div style="margin-bottom:28px;">
+      <h3 style="font-size:1.1rem;color:var(--primary);margin-bottom:8px;">AI Agents in Operations and Management</h3>
+      <div style="background:#eff6ff;border-left:4px solid var(--primary);border-radius:0 8px 8px 0;
+                  padding:12px 16px;margin-bottom:12px;font-size:0.93rem;color:#374151;line-height:1.6;
+                  font-style:italic;">
+        Articles in this section focus on the application of AI agents in operational and management contexts. They discuss the use of agents for optical network management, ESG reporting, and manual testing, emphasizing the role of AI agents in automating and optimizing complex workflows.
+      </div>
+      
+      <div class="card" style="margin-bottom:8px;padding:14px 18px;display:flex;gap:16px;align-items:flex-start;">
+        <div style="flex:1;">
+          <div class="article-title" style="font-size:0.95rem;">
+            <a href="https://arxiv.org/abs/2603.11828v1" target="_blank" rel="noopener">Large language models for optical network O&amp;M: Agent-embedded workflow for automation</a>
+          </div>
+          <div class="article-meta">
+            <span class="badge badge-cat">🕵️ AI Agents</span>
+          </div>
+          <div class="article-summary" style="font-size:0.88rem;margin-top:8px;">The paper explores the integration of large language models (LLMs) into optical network operation and maintenance (O&amp;M) workflows to enhance intelligence and efficiency. It proposes a multi-agent collaborative architecture that combines LLM capabilities with existing O&amp;M tools, focusing on tasks like optical channel management, performance optimization, and fault management. The work emphasizes the importance of agent-based design and provides a conceptual framework for embedding LLM-based agents into O&amp;M processes, paving the way for future autonomous systems.</div>
+        </div>
+        <div style="text-align:center;min-width:70px;">
+          <div style="font-size:1.4rem;font-weight:800;color:#059669;">89</div>
+          <div style="font-size:0.9rem;color:#fbbf24;letter-spacing:1px;">★★★★☆</div>
+        </div>
+      </div>
+      
+      <div class="card" style="margin-bottom:8px;padding:14px 18px;display:flex;gap:16px;align-items:flex-start;">
+        <div style="flex:1;">
+          <div class="article-title" style="font-size:0.95rem;">
+            <a href="https://arxiv.org/abs/2603.10646v1" target="_blank" rel="noopener">ESG Reporting Lifecycle Management with Large Language Models and AI Agents</a>
+          </div>
+          <div class="article-meta">
+            <span class="badge badge-cat">🕵️ AI Agents</span>
+          </div>
+          <div class="article-summary" style="font-size:0.88rem;margin-top:8px;">The paper discusses the challenges of generating ESG reports due to unstructured data, inconsistent terminology, and complex requirements. It proposes an agentic ESG lifecycle framework that integrates AI agents to automate and enhance the stages of ESG reporting, including identification, measurement, reporting, engagement, and improvement. The framework aims to transform ESG reporting into a dynamic and adaptive system by embedding AI agents to extract, verify, and update ESG information. The paper also outlines technical requirements and quality attributes for tasks like report validation and generation, and suggests architectural approaches for implementing these tasks.</div>
+        </div>
+        <div style="text-align:center;min-width:70px;">
+          <div style="font-size:1.4rem;font-weight:800;color:#059669;">86</div>
+          <div style="font-size:0.9rem;color:#fbbf24;letter-spacing:1px;">★★★★☆</div>
+        </div>
+      </div>
+      
+      <div class="card" style="margin-bottom:8px;padding:14px 18px;display:flex;gap:16px;align-items:flex-start;">
+        <div style="flex:1;">
+          <div class="article-title" style="font-size:0.95rem;">
+            <a href="https://simonwillison.net/guides/agentic-engineering-patterns/agentic-manual-testing/#atom-everything" target="_blank" rel="noopener">Agentic manual testing</a>
+          </div>
+          <div class="article-meta">
+            <span class="badge badge-cat">🕵️ AI Agents</span>
+          </div>
+          <div class="article-summary" style="font-size:0.88rem;margin-top:8px;">Agentic manual testing involves using coding agents that can execute and verify the code they generate. While automated tests are valuable, they are not foolproof, and manual testing remains crucial to ensure code functions as intended. Coding agents can perform manual testing by executing code snippets directly or using tools like &#39;curl&#39; for APIs and browser automation tools like Playwright for web UIs. This approach helps identify issues that automated tests might miss, ensuring comprehensive quality assurance.</div>
+        </div>
+        <div style="text-align:center;min-width:70px;">
+          <div style="font-size:1.4rem;font-weight:800;color:#059669;">80</div>
+          <div style="font-size:0.9rem;color:#fbbf24;letter-spacing:1px;">★★★★☆</div>
+        </div>
+      </div>
+      
+      <div class="card" style="margin-bottom:8px;padding:14px 18px;display:flex;gap:16px;align-items:flex-start;">
+        <div style="flex:1;">
+          <div class="article-title" style="font-size:0.95rem;">
+            <a href="https://simonwillison.net/guides/agentic-engineering-patterns/interactive-explanations/#atom-everything" target="_blank" rel="noopener">Interactive explanations</a>
+          </div>
+          <div class="article-meta">
+            <span class="badge badge-cat">🕵️ AI Agents</span>
+          </div>
+          <div class="article-summary" style="font-size:0.88rem;margin-top:8px;">The blog post discusses the concept of &#39;cognitive debt&#39; that arises when developers lose track of how code written by AI agents works, likening it to technical debt. To mitigate this, the author suggests creating &#39;interactive explanations&#39; to better understand complex code. The post illustrates this with a project involving the creation of word clouds using Rust, where the author used various methods like linear walkthroughs and animated explanations to grasp the underlying code logic. This approach helps demystify complex algorithms and enhances comprehension.</div>
+        </div>
+        <div style="text-align:center;min-width:70px;">
+          <div style="font-size:1.4rem;font-weight:800;color:#059669;">80</div>
+          <div style="font-size:0.9rem;color:#fbbf24;letter-spacing:1px;">★★★★☆</div>
+        </div>
+      </div>
+      
+      <div class="card" style="margin-bottom:8px;padding:14px 18px;display:flex;gap:16px;align-items:flex-start;">
+        <div style="flex:1;">
+          <div class="article-title" style="font-size:0.95rem;">
+            <a href="https://simonwillison.net/2026/Feb/27/ai-agent-coding-in-excessive-detail/#atom-everything" target="_blank" rel="noopener">An AI agent coding skeptic tries AI agent coding, in excessive detail</a>
+          </div>
+          <div class="article-meta">
+            <span class="badge badge-cat">🕵️ AI Agents</span>
+          </div>
+          <div class="article-summary" style="font-size:0.88rem;margin-top:8px;">The blog post discusses Max Woolf&#39;s experiences with AI coding agents, highlighting a progression from simple projects to ambitious endeavors like porting scikit-learn to Rust. Woolf shares his frustration in conveying the significant improvements in AI models, noting their ability to handle complex tasks that would typically require extensive manual effort. The author also mentions being inspired to create a Rust word cloud CLI tool using AI assistance.</div>
+        </div>
+        <div style="text-align:center;min-width:70px;">
+          <div style="font-size:1.4rem;font-weight:800;color:#059669;">80</div>
+          <div style="font-size:0.9rem;color:#fbbf24;letter-spacing:1px;">★★★★☆</div>
+        </div>
+      </div>
+      
+    </div>
+    
+    <div style="margin-bottom:28px;">
+      <h3 style="font-size:1.1rem;color:var(--primary);margin-bottom:8px;">AI Tools and Development</h3>
+      <div style="background:#eff6ff;border-left:4px solid var(--primary);border-radius:0 8px 8px 0;
+                  padding:12px 16px;margin-bottom:12px;font-size:0.93rem;color:#374151;line-height:1.6;
+                  font-style:italic;">
+        This section covers various tools and repositories that support the development and deployment of AI agents. It includes discussions on open-source projects and standardization efforts that facilitate the integration of AI agents into existing systems.
+      </div>
+      
+      <div class="card" style="margin-bottom:8px;padding:14px 18px;display:flex;gap:16px;align-items:flex-start;">
+        <div style="flex:1;">
+          <div class="article-title" style="font-size:0.95rem;">
+            <a href="https://arxiv.org/abs/2603.09290v1" target="_blank" rel="noopener">ToolRosetta: Bridging Open-Source Repositories and Large Language Model Agents through Automated Tool Standardization</a>
+          </div>
+          <div class="article-meta">
+            <span class="badge badge-cat">🕵️ AI Agents</span>
+          </div>
+          <div class="article-summary" style="font-size:0.88rem;margin-top:8px;">ToolRosetta is a framework designed to automate the standardization of open-source code repositories into tools compatible with Model Context Protocol (MCP), enabling their invocation by large language models (LLMs). This system autonomously plans toolchains, identifies relevant codebases, and converts them into executable services, reducing the need for manual intervention. ToolRosetta also includes a security inspection layer to address risks associated with executing arbitrary code, and it has demonstrated improved task completion performance across various scientific domains.</div>
+        </div>
+        <div style="text-align:center;min-width:70px;">
+          <div style="font-size:1.4rem;font-weight:800;color:#059669;">82</div>
+          <div style="font-size:0.9rem;color:#fbbf24;letter-spacing:1px;">★★★★☆</div>
+        </div>
+      </div>
+      
+      <div class="card" style="margin-bottom:8px;padding:14px 18px;display:flex;gap:16px;align-items:flex-start;">
+        <div style="flex:1;">
+          <div class="article-title" style="font-size:0.95rem;">
+            <a href="https://github.com/khoj-ai/khoj" target="_blank" rel="noopener">khoj-ai/khoj</a>
+          </div>
+          <div class="article-meta">
+            <span class="badge badge-cat">🛠️ Developer Tools</span>
+          </div>
+          <div class="article-summary" style="font-size:0.88rem;margin-top:8px;">Khoj is a self-hostable AI tool designed to act as a personal &#39;second brain.&#39; It allows users to get answers from the web or their own documents, build custom agents, and schedule automations. The tool supports integration with various local and online LLMs, including GPT, Claude, Gemini, and others. It is available for free and is written in Python.</div>
+        </div>
+        <div style="text-align:center;min-width:70px;">
+          <div style="font-size:1.4rem;font-weight:800;color:#d97706;">76</div>
+          <div style="font-size:0.9rem;color:#fbbf24;letter-spacing:1px;">★★★★☆</div>
+        </div>
+      </div>
+      
+      <div class="card" style="margin-bottom:8px;padding:14px 18px;display:flex;gap:16px;align-items:flex-start;">
+        <div style="flex:1;">
+          <div class="article-title" style="font-size:0.95rem;">
+            <a href="https://github.com/salems-3Dpov/ai-agent-pipeline" target="_blank" rel="noopener">salems-3Dpov/ai-agent-pipeline</a>
+          </div>
+          <div class="article-meta">
+            <span class="badge badge-cat">🛠️ Developer Tools</span>
+          </div>
+          <div class="article-summary" style="font-size:0.88rem;margin-top:8px;">The &#39;ai-agent-pipeline&#39; GitHub repository provides a framework for routing queries to different endpoints such as documents, weather, or chat. It leverages tools like LangGraph, ChromaDB, and LangSmith to create modular and observable workflows. The project is built using Python and integrates technologies such as AWS, Docker, and FastAPI to support CI/CD and orchestration of AI agents.</div>
+        </div>
+        <div style="text-align:center;min-width:70px;">
+          <div style="font-size:1.4rem;font-weight:800;color:#d97706;">76</div>
+          <div style="font-size:0.9rem;color:#fbbf24;letter-spacing:1px;">★★★★☆</div>
+        </div>
+      </div>
+      
+      <div class="card" style="margin-bottom:8px;padding:14px 18px;display:flex;gap:16px;align-items:flex-start;">
+        <div style="flex:1;">
+          <div class="article-title" style="font-size:0.95rem;">
+            <a href="https://github.com/proffesor-for-testing/agentic-qe" target="_blank" rel="noopener">proffesor-for-testing/agentic-qe</a>
+          </div>
+          <div class="article-meta">
+            <span class="badge badge-cat">🛠️ Developer Tools</span>
+          </div>
+          <div class="article-summary" style="font-size:0.88rem;margin-top:8px;">Agentic QE Fleet is an open-source, AI-powered QA/QE platform available on GitHub. It is designed to work with coding agents, particularly Claude Code, to enhance testing activities throughout the software development lifecycle (SDLC). The platform is based on the Agentic QE Framework by Dragan Spiridonov and is free for use, modification, and contribution.</div>
+        </div>
+        <div style="text-align:center;min-width:70px;">
+          <div style="font-size:1.4rem;font-weight:800;color:#d97706;">72</div>
+          <div style="font-size:0.9rem;color:#fbbf24;letter-spacing:1px;">★★★★☆</div>
+        </div>
+      </div>
+      
+      <div class="card" style="margin-bottom:8px;padding:14px 18px;display:flex;gap:16px;align-items:flex-start;">
+        <div style="flex:1;">
+          <div class="article-title" style="font-size:0.95rem;">
+            <a href="https://simonwillison.net/guides/agentic-engineering-patterns/gif-optimization/#atom-everything" target="_blank" rel="noopener">GIF optimization tool using WebAssembly and Gifsicle</a>
+          </div>
+          <div class="article-meta">
+            <span class="badge badge-cat">🕵️ AI Agents</span>
+          </div>
+          <div class="article-summary" style="font-size:0.88rem;margin-top:8px;">The blog post discusses the creation of a GIF optimization tool using WebAssembly (WASM) and Gifsicle, a command-line tool for compressing GIFs. The author wanted a web interface to access Gifsicle&#39;s capabilities, allowing users to drag and drop GIFs into a browser to see various optimized versions. This tool was developed by compiling Gifsicle to WASM, enabling it to run in a web browser, and providing users with options to adjust settings and download optimized GIFs.</div>
+        </div>
+        <div style="text-align:center;min-width:70px;">
+          <div style="font-size:1.4rem;font-weight:800;color:#d97706;">77</div>
+          <div style="font-size:0.9rem;color:#fbbf24;letter-spacing:1px;">★★★★☆</div>
+        </div>
+      </div>
+      
+    </div>
+    
+    <div style="margin-bottom:28px;">
+      <h3 style="font-size:1.1rem;color:var(--primary);margin-bottom:8px;">AI in DevOps and Governance</h3>
+      <div style="background:#eff6ff;border-left:4px solid var(--primary);border-radius:0 8px 8px 0;
+                  padding:12px 16px;margin-bottom:12px;font-size:0.93rem;color:#374151;line-height:1.6;
+                  font-style:italic;">
+        Focusing on the intersection of AI and DevOps, this section addresses the challenges and advancements in AI-driven operations. It highlights the importance of governance, policy controls, and the impact of AI on software development practices, emphasizing the need for robust management of AI systems.
+      </div>
+      
+      <div class="card" style="margin-bottom:8px;padding:14px 18px;display:flex;gap:16px;align-items:flex-start;">
+        <div style="flex:1;">
+          <div class="article-title" style="font-size:0.95rem;">
+            <a href="https://thenewstack.io/surepath-ai-mcp-policy-controls/" target="_blank" rel="noopener">SurePath AI advances MCP policy controls to tighten the cable on AI’s USB-C</a>
+          </div>
+          <div class="article-meta">
+            <span class="badge badge-cat">⚙️ DevOps &amp; CI/CD</span>
+          </div>
+          <div class="article-summary" style="font-size:0.88rem;margin-top:8px;">SurePath AI has launched MCP Policy Controls to enhance security and governance for AI interactions within production software systems. This service aims to mitigate risks associated with Model Context Protocol (MCP) servers, which have been identified as potential vectors for supply chain attacks and data breaches. The platform provides real-time safeguards that manage which MCP servers and tools can be used, addressing concerns about unauthorized AI activities and data leakage.</div>
+        </div>
+        <div style="text-align:center;min-width:70px;">
+          <div style="font-size:1.4rem;font-weight:800;color:#d97706;">75</div>
+          <div style="font-size:0.9rem;color:#fbbf24;letter-spacing:1px;">★★★★☆</div>
+        </div>
+      </div>
+      
+      <div class="card" style="margin-bottom:8px;padding:14px 18px;display:flex;gap:16px;align-items:flex-start;">
+        <div style="flex:1;">
+          <div class="article-title" style="font-size:0.95rem;">
+            <a href="https://thenewstack.io/risk-mitigation-agentic-ai/" target="_blank" rel="noopener">Before you let AI agents loose, you’d better know what they’re capable of</a>
+          </div>
+          <div class="article-meta">
+            <span class="badge badge-cat">⚙️ DevOps &amp; CI/CD</span>
+          </div>
+          <div class="article-summary" style="font-size:0.88rem;margin-top:8px;">The article discusses the potential risks and opportunities associated with agentic AI systems in enterprises, emphasizing the shift from execution to strategic oversight. Key risks include loss of human oversight, security vulnerabilities, and unpredictable actions. The lack of established best practices for managing these systems necessitates a focus on risk mitigation through testing and system observability. Kin Lane suggests that enterprises adopt a systems-thinking approach, using testing and mocking to prepare for the integration of agentic AI.</div>
+        </div>
+        <div style="text-align:center;min-width:70px;">
+          <div style="font-size:1.4rem;font-weight:800;color:#d97706;">73</div>
+          <div style="font-size:0.9rem;color:#fbbf24;letter-spacing:1px;">★★★★☆</div>
+        </div>
+      </div>
+      
+      <div class="card" style="margin-bottom:8px;padding:14px 18px;display:flex;gap:16px;align-items:flex-start;">
+        <div style="flex:1;">
+          <div class="article-title" style="font-size:0.95rem;">
+            <a href="https://thenewstack.io/five-pillars-ai-governance/" target="_blank" rel="noopener">Why AI-driven operations are pushing governance beyond a compliance issue and into an operational priority</a>
+          </div>
+          <div class="article-meta">
+            <span class="badge badge-cat">⚙️ DevOps &amp; CI/CD</span>
+          </div>
+          <div class="article-summary" style="font-size:0.88rem;margin-top:8px;">AI-driven operations are becoming a priority for organizations, with rapid adoption of generative AI and AI agents. This shift necessitates robust governance frameworks to manage risks and ensure operational efficiency. Effective AI governance is built on five pillars, including people-first governance and well-defined guardrails, to maintain human oversight and mitigate risks associated with AI agents&#39; autonomous actions.</div>
+        </div>
+        <div style="text-align:center;min-width:70px;">
+          <div style="font-size:1.4rem;font-weight:800;color:#d97706;">73</div>
+          <div style="font-size:0.9rem;color:#fbbf24;letter-spacing:1px;">★★★★☆</div>
+        </div>
+      </div>
+      
+      <div class="card" style="margin-bottom:8px;padding:14px 18px;display:flex;gap:16px;align-items:flex-start;">
+        <div style="flex:1;">
+          <div class="article-title" style="font-size:0.95rem;">
+            <a href="https://thenewstack.io/runpod-ai-infrastructure-reality/" target="_blank" rel="noopener">Runpod report: Qwen has overtaken Meta’s Llama as the most-deployed self-hosted LLM</a>
+          </div>
+          <div class="article-meta">
+            <span class="badge badge-cat">⚙️ DevOps &amp; CI/CD</span>
+          </div>
+          <div class="article-summary" style="font-size:0.88rem;margin-top:8px;">Runpod&#39;s recent report highlights that Qwen, developed by Alibaba Cloud, has surpassed Meta&#39;s Llama as the most-deployed self-hosted LLM. This insight is derived from anonymized serverless deployment logs, providing a behavioral rather than anecdotal perspective on AI model usage. Despite Meta&#39;s strong brand presence, Qwen&#39;s adoption is driven by its performance across multiple modalities and cost-effectiveness, contradicting public narratives about Llama&#39;s dominance.</div>
+        </div>
+        <div style="text-align:center;min-width:70px;">
+          <div style="font-size:1.4rem;font-weight:800;color:#d97706;">73</div>
+          <div style="font-size:0.9rem;color:#fbbf24;letter-spacing:1px;">★★★★☆</div>
+        </div>
+      </div>
+      
+      <div class="card" style="margin-bottom:8px;padding:14px 18px;display:flex;gap:16px;align-items:flex-start;">
+        <div style="flex:1;">
+          <div class="article-title" style="font-size:0.95rem;">
+            <a href="https://thenewstack.io/galileo-agent-control-open-source/" target="_blank" rel="noopener">Galileo releases Agent Control, a centralized guardrails platform for enterprise AI agents</a>
+          </div>
+          <div class="article-meta">
+            <span class="badge badge-cat">⚙️ DevOps &amp; CI/CD</span>
+          </div>
+          <div class="article-summary" style="font-size:0.88rem;margin-top:8px;">Galileo has launched Agent Control, an open-source platform designed to provide centralized governance for AI agents in enterprises. This platform allows organizations to enforce behavioral policies across all AI agent deployments, ensuring safe and consistent operations. With partners like AWS and CrewAI, Agent Control aims to address the growing demand for scalable AI agent management, as predicted by IDC to increase significantly by 2027.</div>
+        </div>
+        <div style="text-align:center;min-width:70px;">
+          <div style="font-size:1.4rem;font-weight:800;color:#d97706;">71</div>
+          <div style="font-size:0.9rem;color:#fbbf24;letter-spacing:1px;">★★★★☆</div>
+        </div>
+      </div>
+      
+    </div>
+    
+    <div style="margin-bottom:28px;">
+      <h3 style="font-size:1.1rem;color:var(--primary);margin-bottom:8px;">Innovative AI Applications</h3>
+      <div style="background:#eff6ff;border-left:4px solid var(--primary);border-radius:0 8px 8px 0;
+                  padding:12px 16px;margin-bottom:12px;font-size:0.93rem;color:#374151;line-height:1.6;
+                  font-style:italic;">
+        This section explores unique and innovative applications of AI, such as question-aware text chunking and interactive explanations. These articles demonstrate the creative ways AI can be leveraged to solve specific problems and enhance user experiences.
+      </div>
+      
+      <div class="card" style="margin-bottom:8px;padding:14px 18px;display:flex;gap:16px;align-items:flex-start;">
+        <div style="flex:1;">
+          <div class="article-title" style="font-size:0.95rem;">
+            <a href="https://arxiv.org/abs/2603.11650v1" target="_blank" rel="noopener">QChunker: Learning Question-Aware Text Chunking for Domain RAG via Multi-Agent Debate</a>
+          </div>
+          <div class="article-meta">
+            <span class="badge badge-cat">🤖 GenAI &amp; LLMs</span>
+          </div>
+          <div class="article-summary" style="font-size:0.88rem;margin-top:8px;">The paper introduces QChunker, a novel approach to improve retrieval-augmented generation (RAG) by focusing on question-aware text chunking. QChunker restructures the RAG process into understanding-retrieval-augmentation, using a multi-agent debate framework to enhance text chunk coherence and integrity. The framework includes components for question generation, text segmentation, integrity review, and knowledge completion. A new evaluation metric, ChunkScore, is proposed to assess text chunk quality directly, improving efficiency over traditional methods. Experimental results show QChunker&#39;s effectiveness in creating coherent and information-rich text chunks across various domains.</div>
+        </div>
+        <div style="text-align:center;min-width:70px;">
+          <div style="font-size:1.4rem;font-weight:800;color:#d97706;">75</div>
+          <div style="font-size:0.9rem;color:#fbbf24;letter-spacing:1px;">★★★★☆</div>
+        </div>
+      </div>
+      
+      <div class="card" style="margin-bottom:8px;padding:14px 18px;display:flex;gap:16px;align-items:flex-start;">
+        <div style="flex:1;">
+          <div class="article-title" style="font-size:0.95rem;">
+            <a href="https://simonwillison.net/guides/agentic-engineering-patterns/interactive-explanations/#atom-everything" target="_blank" rel="noopener">Interactive explanations</a>
+          </div>
+          <div class="article-meta">
+            <span class="badge badge-cat">🕵️ AI Agents</span>
+          </div>
+          <div class="article-summary" style="font-size:0.88rem;margin-top:8px;">The blog post discusses the concept of &#39;cognitive debt&#39; that arises when developers lose track of how code written by AI agents works, likening it to technical debt. To mitigate this, the author suggests creating &#39;interactive explanations&#39; to better understand complex code. The post illustrates this with a project involving the creation of word clouds using Rust, where the author used various methods like linear walkthroughs and animated explanations to grasp the underlying code logic. This approach helps demystify complex algorithms and enhances comprehension.</div>
+        </div>
+        <div style="text-align:center;min-width:70px;">
+          <div style="font-size:1.4rem;font-weight:800;color:#059669;">80</div>
+          <div style="font-size:0.9rem;color:#fbbf24;letter-spacing:1px;">★★★★☆</div>
+        </div>
+      </div>
+      
+    </div>
+    
+  </section>
+  
+
+  <!-- ── Articles by Category ────────────────────────────────────────────── -->
+  <section>
+    <h2>📂 All Articles by Category</h2>
+    
+    <div class="category-header">
+      <span class="category-icon">🕵️</span>
+      <span class="category-title">AI Agents</span>
+      <span class="category-count">(17 articles)</span>
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2603.11828v1" target="_blank" rel="noopener">Large language models for optical network O&amp;M: Agent-embedded workflow for automation</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">89</span>
+        <span>12 Mar 2026 11:48 UTC</span>
+      </div>
+      <div class="article-summary">The paper explores the integration of large language models (LLMs) into optical network operation and maintenance (O&amp;M) workflows to enhance intelligence and efficiency. It proposes a multi-agent collaborative architecture that combines LLM capabilities with existing O&amp;M tools, focusing on tasks like optical channel management, performance optimization, and fault management. The work emphasizes the importance of agent-based design and provides a conceptual framework for embedding LLM-based agents into O&amp;M processes, paving the way for future autonomous systems.</div>
+      
+      <div class="qa-box">
+        <strong>💼 Why This Matters:</strong> For a QA Manager or Tech Project Manager, this paper highlights the potential of LLMs to automate and optimize network management tasks, which can lead to more efficient testing and quality assurance processes. Understanding how to integrate LLMs into O&amp;M workflows can improve the reliability and performance of network systems, ultimately enhancing project delivery and team management by reducing manual intervention and error rates.
+      </div>
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2603.10646v1" target="_blank" rel="noopener">ESG Reporting Lifecycle Management with Large Language Models and AI Agents</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">86</span>
+        <span>11 Mar 2026 11:05 UTC</span>
+      </div>
+      <div class="article-summary">The paper discusses the challenges of generating ESG reports due to unstructured data, inconsistent terminology, and complex requirements. It proposes an agentic ESG lifecycle framework that integrates AI agents to automate and enhance the stages of ESG reporting, including identification, measurement, reporting, engagement, and improvement. The framework aims to transform ESG reporting into a dynamic and adaptive system by embedding AI agents to extract, verify, and update ESG information. The paper also outlines technical requirements and quality attributes for tasks like report validation and generation, and suggests architectural approaches for implementing these tasks.</div>
+      
+      <div class="qa-box">
+        <strong>💼 Why This Matters:</strong> For a QA Manager or Tech Project Manager, this paper highlights the importance of integrating AI and LLMs to automate complex reporting tasks, ensuring consistency and accuracy in ESG reporting. Understanding the technical requirements and quality attributes necessary for these tasks can aid in developing robust testing strategies and quality assurance processes. Additionally, the proposed architectural approaches can inform project planning and resource allocation for implementing AI-driven reporting systems.
+      </div>
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2603.11126v1" target="_blank" rel="noopener">Enhancing Value Alignment of LLMs with Multi-agent system and Combinatorial Fusion</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">86</span>
+        <span>11 Mar 2026 14:57 UTC</span>
+      </div>
+      <div class="article-summary">The paper discusses the challenge of aligning large language models (LLMs) with human values for trustworthy deployment. It critiques existing methods like Reinforcement Learning from Human Feedback (RLHF) for their limited ability to capture ethical pluralism. The authors propose a Value Alignment System using Combinatorial Fusion Analysis (VAS-CFA), which employs multiple moral agents, each representing different normative perspectives, and combines their outputs using rank- and score-based aggregation. Empirical results show that this multi-agent approach outperforms traditional single-agent models in aligning LLMs with human values.</div>
+      
+      <div class="qa-box">
+        <strong>💼 Why This Matters:</strong> For a QA Manager or Tech Project Manager, understanding the VAS-CFA framework is crucial for ensuring that AI systems are aligned with human values, which directly impacts the quality and safety of AI deployments. This approach can inform testing strategies and quality assurance processes by highlighting the importance of diverse evaluative perspectives. Additionally, it underscores the need for robust multi-agent systems in delivering reliable and ethically sound AI solutions.
+      </div>
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2603.11025v1" target="_blank" rel="noopener">LLMGreenRec: LLM-Based Multi-Agent Recommender System for Sustainable E-Commerce</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">85</span>
+        <span>11 Mar 2026 17:49 UTC</span>
+      </div>
+      <div class="article-summary">LLMGreenRec is a multi-agent recommender system designed to enhance sustainable e-commerce by leveraging Large Language Models (LLMs). Unlike traditional systems focused on short-term conversions, LLMGreenRec uses specialized agents to interpret user interactions and refine prompts to prioritize eco-friendly product recommendations. This approach not only aligns with users&#39; green intentions but also reduces digital carbon footprints. Experiments on benchmark datasets confirm its efficacy in promoting sustainable consumption.</div>
+      
+      <div class="qa-box">
+        <strong>💼 Why This Matters:</strong> For QA Managers and Tech Project Managers, LLMGreenRec highlights the importance of integrating sustainability into software systems. Testing should focus on validating the accuracy of intent detection and the efficiency of the recommendation process. Ensuring the system&#39;s ability to reduce unnecessary interactions is crucial for both user satisfaction and minimizing environmental impact.
+      </div>
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2603.10098v1" target="_blank" rel="noopener">Code-Space Response Oracles: Generating Interpretable Multi-Agent Policies with Large Language Models</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">82</span>
+        <span>10 Mar 2026 17:37 UTC</span>
+      </div>
+      <div class="article-summary">The paper introduces Code-Space Response Oracles (CSRO), a framework that utilizes Large Language Models (LLMs) to generate interpretable multi-agent policies in reinforcement learning. By reframing policy generation as a code generation task, CSRO replaces traditional black-box neural network policies with human-readable code, enhancing interpretability and trust. The approach leverages LLMs for zero-shot prompting, iterative refinement, and introduces AlphaEvolve, a distributed evolutionary system, to produce diverse and explainable policies.</div>
+      
+      <div class="qa-box">
+        <strong>💼 Why This Matters:</strong> For a QA Manager or Tech Project Manager, CSRO&#39;s approach to generating interpretable policies is crucial for ensuring transparency and trust in AI systems. By producing human-readable code, it facilitates easier debugging and validation processes. This shift towards interpretable AI can significantly enhance the quality assurance and testing phases, ensuring that multi-agent systems behave as expected and are easier to manage and maintain.
+      </div>
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2603.09290v1" target="_blank" rel="noopener">ToolRosetta: Bridging Open-Source Repositories and Large Language Model Agents through Automated Tool Standardization</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">82</span>
+        <span>10 Mar 2026 07:19 UTC</span>
+      </div>
+      <div class="article-summary">ToolRosetta is a framework designed to automate the standardization of open-source code repositories into tools compatible with Model Context Protocol (MCP), enabling their invocation by large language models (LLMs). This system autonomously plans toolchains, identifies relevant codebases, and converts them into executable services, reducing the need for manual intervention. ToolRosetta also includes a security inspection layer to address risks associated with executing arbitrary code, and it has demonstrated improved task completion performance across various scientific domains.</div>
+      
+      <div class="qa-box">
+        <strong>💼 Why This Matters:</strong> For a QA Manager or Tech Project Manager, ToolRosetta&#39;s ability to automate tool standardization and integration can significantly enhance the efficiency of testing and deployment processes. By reducing manual intervention, it allows teams to focus on quality assurance and risk management, while the security layer ensures safer execution of code, aligning with best practices in software delivery and project management.
+      </div>
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2603.07728v1" target="_blank" rel="noopener">A Novel Multi-Agent Architecture to Reduce Hallucinations of Large Language Models in Multi-Step Structural Modeling</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">82</span>
+        <span>08 Mar 2026 16:57 UTC</span>
+      </div>
+      <div class="article-summary">The paper introduces a novel multi-agent architecture designed to reduce hallucinations in large language models (LLMs) during multi-step structural modeling tasks. This architecture leverages intelligent agents to automate the process of constructing and analyzing structural models using OpenSeesPy. The system involves several specialized agents that work in tandem to extract parameters, plan modeling steps, and generate executable scripts. The architecture was tested on a benchmark of structural problems, achieving high accuracy and improved computational efficiency.</div>
+      
+      <div class="qa-box">
+        <strong>💼 Why This Matters:</strong> For a QA Manager or Tech Project Manager, this architecture highlights the importance of modular design and parallel processing in reducing errors and improving efficiency. Understanding how multi-agent systems can enhance LLM performance is crucial for ensuring quality in AI-driven software solutions. This approach can inform strategies for testing and validating complex systems, ensuring that automated processes meet accuracy and reliability standards.
+      </div>
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2603.07972v1" target="_blank" rel="noopener">Adaptive Collaboration with Humans: Metacognitive Policy Optimization for Multi-Agent LLMs with Continual Learning</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">82</span>
+        <span>09 Mar 2026 05:18 UTC</span>
+      </div>
+      <div class="article-summary">The paper discusses a novel approach to enhancing multi-agent systems (MAS) by integrating human collaboration through the Human-In-the-Loop Multi-Agent Collaboration (HILA) framework. This framework enables agents to learn when to act autonomously and when to seek human input, using a metacognitive policy. The Dual-Loop Policy Optimization method is introduced to separate immediate decision-making from long-term learning, improving the agents&#39; capabilities over time. Experiments demonstrate that HILA outperforms existing MAS in complex problem-solving tasks.</div>
+      
+      <div class="qa-box">
+        <strong>💼 Why This Matters:</strong> For QA Managers and Tech Project Managers, this approach highlights the importance of integrating human oversight in autonomous systems to enhance reliability and adaptability. The continual learning aspect ensures that systems can evolve and improve over time, which is crucial for maintaining high-quality software delivery. Understanding these dynamics can aid in better planning and execution of testing strategies for complex AI-driven systems.
+      </div>
+      
+    </div>
+    
+    
+    <div class="category-header">
+      <span class="category-icon">🛠️</span>
+      <span class="category-title">Developer Tools</span>
+      <span class="category-count">(3 articles)</span>
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://github.com/khoj-ai/khoj" target="_blank" rel="noopener">khoj-ai/khoj</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">76</span>
+        <span>13 Mar 2026 06:43 UTC</span>
+      </div>
+      <div class="article-summary">Khoj is a self-hostable AI tool designed to act as a personal &#39;second brain.&#39; It allows users to get answers from the web or their own documents, build custom agents, and schedule automations. The tool supports integration with various local and online LLMs, including GPT, Claude, Gemini, and others. It is available for free and is written in Python.</div>
+      
+      <div class="qa-box">
+        <strong>💼 Why This Matters:</strong> Khoj&#39;s ability to integrate with multiple LLMs and create custom agents can enhance automated testing frameworks by simulating diverse user interactions. Its self-hosting feature is particularly relevant for QA managers concerned with data privacy and compliance. Additionally, the tool&#39;s automation capabilities can streamline repetitive QA tasks, improving efficiency in project delivery.
+      </div>
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://github.com/salems-3Dpov/ai-agent-pipeline" target="_blank" rel="noopener">salems-3Dpov/ai-agent-pipeline</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">76</span>
+        <span>13 Mar 2026 06:43 UTC</span>
+      </div>
+      <div class="article-summary">The &#39;ai-agent-pipeline&#39; GitHub repository provides a framework for routing queries to different endpoints such as documents, weather, or chat. It leverages tools like LangGraph, ChromaDB, and LangSmith to create modular and observable workflows. The project is built using Python and integrates technologies such as AWS, Docker, and FastAPI to support CI/CD and orchestration of AI agents.</div>
+      
+      <div class="qa-box">
+        <strong>💼 Why This Matters:</strong> This repository is relevant to QA Managers and Tech Project Managers as it highlights the importance of modular and observable workflows in AI projects, which can improve testing and quality assurance processes. The integration of CI/CD and orchestration tools like Docker and FastAPI can enhance the efficiency of software delivery and deployment pipelines. Understanding these technologies is crucial for managing the quality and timely delivery of AI-driven projects.
+      </div>
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://github.com/proffesor-for-testing/agentic-qe" target="_blank" rel="noopener">proffesor-for-testing/agentic-qe</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">72</span>
+        <span>13 Mar 2026 06:43 UTC</span>
+      </div>
+      <div class="article-summary">Agentic QE Fleet is an open-source, AI-powered QA/QE platform available on GitHub. It is designed to work with coding agents, particularly Claude Code, to enhance testing activities throughout the software development lifecycle (SDLC). The platform is based on the Agentic QE Framework by Dragan Spiridonov and is free for use, modification, and contribution.</div>
+      
+      <div class="qa-box">
+        <strong>💼 Why This Matters:</strong> For a QA Manager or Tech Project Manager, Agentic QE Fleet represents a valuable tool for enhancing testing efficiency and coverage through AI. Its integration with coding agents can streamline workflows and improve quality outcomes. The open-source nature also allows for customization and adaptation to specific project requirements, supporting continuous improvement in QA processes.
+      </div>
+      
+    </div>
+    
+    
+    <div class="category-header">
+      <span class="category-icon">⚙️</span>
+      <span class="category-title">DevOps &amp; CI/CD</span>
+      <span class="category-count">(9 articles)</span>
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://thenewstack.io/surepath-ai-mcp-policy-controls/" target="_blank" rel="noopener">SurePath AI advances MCP policy controls to tighten the cable on AI’s USB-C</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">75</span>
+        <span>12 Mar 2026 19:54 UTC</span>
+      </div>
+      <div class="article-summary">SurePath AI has launched MCP Policy Controls to enhance security and governance for AI interactions within production software systems. This service aims to mitigate risks associated with Model Context Protocol (MCP) servers, which have been identified as potential vectors for supply chain attacks and data breaches. The platform provides real-time safeguards that manage which MCP servers and tools can be used, addressing concerns about unauthorized AI activities and data leakage.</div>
+      
+      <div class="qa-box">
+        <strong>💼 Why This Matters:</strong> For a QA Manager or Tech Project Manager, understanding the security implications of MCP usage is crucial for maintaining software integrity and data security. Implementing robust policy controls can prevent unauthorized AI interactions, ensuring that software systems remain secure and compliant. This is particularly important for managing the quality and reliability of AI-driven applications in production environments.
+      </div>
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://thenewstack.io/risk-mitigation-agentic-ai/" target="_blank" rel="noopener">Before you let AI agents loose, you’d better know what they’re capable of</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">73</span>
+        <span>12 Mar 2026 20:22 UTC</span>
+      </div>
+      <div class="article-summary">The article discusses the potential risks and opportunities associated with agentic AI systems in enterprises, emphasizing the shift from execution to strategic oversight. Key risks include loss of human oversight, security vulnerabilities, and unpredictable actions. The lack of established best practices for managing these systems necessitates a focus on risk mitigation through testing and system observability. Kin Lane suggests that enterprises adopt a systems-thinking approach, using testing and mocking to prepare for the integration of agentic AI.</div>
+      
+      <div class="qa-box">
+        <strong>💼 Why This Matters:</strong> Understanding the risks and behaviors of agentic AI is crucial for QA Managers and Tech Project Managers to ensure system reliability and security. By focusing on comprehensive testing and observability, teams can mitigate potential issues and maintain control over AI-driven processes, ultimately safeguarding project delivery and quality assurance.
+      </div>
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://thenewstack.io/five-pillars-ai-governance/" target="_blank" rel="noopener">Why AI-driven operations are pushing governance beyond a compliance issue and into an operational priority</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">73</span>
+        <span>12 Mar 2026 16:21 UTC</span>
+      </div>
+      <div class="article-summary">AI-driven operations are becoming a priority for organizations, with rapid adoption of generative AI and AI agents. This shift necessitates robust governance frameworks to manage risks and ensure operational efficiency. Effective AI governance is built on five pillars, including people-first governance and well-defined guardrails, to maintain human oversight and mitigate risks associated with AI agents&#39; autonomous actions.</div>
+      
+      <div class="qa-box">
+        <strong>💼 Why This Matters:</strong> For QA Managers and Tech Project Managers, understanding AI governance is crucial to maintaining software quality and operational integrity. The rapid deployment of AI agents requires rigorous testing and oversight to prevent unintended consequences. Implementing robust governance frameworks ensures that AI systems align with quality standards and project goals, reducing risks and enhancing team management.
+      </div>
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://thenewstack.io/runpod-ai-infrastructure-reality/" target="_blank" rel="noopener">Runpod report: Qwen has overtaken Meta’s Llama as the most-deployed self-hosted LLM</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">73</span>
+        <span>12 Mar 2026 13:00 UTC</span>
+      </div>
+      <div class="article-summary">Runpod&#39;s recent report highlights that Qwen, developed by Alibaba Cloud, has surpassed Meta&#39;s Llama as the most-deployed self-hosted LLM. This insight is derived from anonymized serverless deployment logs, providing a behavioral rather than anecdotal perspective on AI model usage. Despite Meta&#39;s strong brand presence, Qwen&#39;s adoption is driven by its performance across multiple modalities and cost-effectiveness, contradicting public narratives about Llama&#39;s dominance.</div>
+      
+      <div class="qa-box">
+        <strong>💼 Why This Matters:</strong> Understanding which AI models are most deployed can guide QA Managers in prioritizing testing efforts for compatibility and performance. The insights into developer preferences for cost-effectiveness and latency can inform testing strategies and resource allocation. Additionally, knowing the actual deployment trends helps project managers align delivery timelines with market realities, ensuring relevant and timely product releases.
+      </div>
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://thenewstack.io/galileo-agent-control-open-source/" target="_blank" rel="noopener">Galileo releases Agent Control, a centralized guardrails platform for enterprise AI agents</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">71</span>
+        <span>11 Mar 2026 19:48 UTC</span>
+      </div>
+      <div class="article-summary">Galileo has launched Agent Control, an open-source platform designed to provide centralized governance for AI agents in enterprises. This platform allows organizations to enforce behavioral policies across all AI agent deployments, ensuring safe and consistent operations. With partners like AWS and CrewAI, Agent Control aims to address the growing demand for scalable AI agent management, as predicted by IDC to increase significantly by 2027.</div>
+      
+      <div class="qa-box">
+        <strong>💼 Why This Matters:</strong> For QA Managers and Tech Project Managers, Agent Control&#39;s centralized governance can streamline the testing and deployment of AI agents by ensuring consistent policy enforcement and reducing the risk of unsafe behaviors. This platform&#39;s ability to update policies in real-time without downtime is crucial for maintaining continuous delivery and operational efficiency. Moreover, its open-source nature allows for flexibility and adaptability in evolving AI ecosystems, which is vital for maintaining high-quality standards in dynamic environments.
+      </div>
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://thenewstack.io/vs-code-ai-copilot/" target="_blank" rel="noopener">Microsoft’s VS Code team moved to weekly releases after 10 years of monthly — and credits AI for making it possible</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">71</span>
+        <span>11 Mar 2026 17:38 UTC</span>
+      </div>
+      <div class="article-summary">Microsoft&#39;s VS Code team has transitioned from monthly to weekly releases, crediting AI tools like GitHub Copilot for this shift. Product Managers (PMs) can now define, prototype, and evaluate features using AI, significantly altering their workflow. This change has sparked debate on whether PMs or engineers should primarily use these tools. The team uses AI-driven processes for summarizing updates, managing feedback, and automating documentation, which has streamlined their release process.</div>
+      
+      <div class="qa-box">
+        <strong>💼 Why This Matters:</strong> For a QA Manager or Tech Project Manager, the shift to AI-driven weekly releases highlights the importance of integrating AI tools in testing and quality assurance processes. This approach can reduce the time to market and improve the agility of software delivery. Understanding AI&#39;s role in automating documentation and feedback management can also enhance quality control and project management efficiency.
+      </div>
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://thenewstack.io/nvidia-launches-nemotron-3-super-a-120b-open-model-for-large-scale-ai-systems/" target="_blank" rel="noopener">Nvidia launches Nemotron 3 Super, a 120B open model for large-scale AI systems</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">70</span>
+        <span>11 Mar 2026 18:30 UTC</span>
+      </div>
+      <div class="article-summary">Nvidia has launched the Nemotron 3 Super, a 120-billion-parameter AI model designed for large-scale AI systems, featuring a 1-million-token context window for enhanced speed and efficiency. This model is available on multiple platforms including Google Cloud, Oracle Cloud, and soon Amazon Bedrock and Microsoft Azure. It utilizes a hybrid latent mixture-of-experts and Mamaba-Transformer architecture, allowing it to efficiently manage long-context tasks with minimal memory overhead. Nvidia is also releasing extensive pre- and post-training datasets and environments for reinforcement learning.</div>
+      
+      <div class="qa-box">
+        <strong>💼 Why This Matters:</strong> For QA Managers and Tech Project Managers, the release of Nemotron 3 Super is significant as it offers a scalable solution for testing AI systems with complex requirements. The availability of extensive datasets and training environments enhances the ability to perform comprehensive testing and validation. Additionally, the model&#39;s integration with major cloud platforms simplifies deployment and continuous integration processes, crucial for maintaining high-quality software delivery.
+      </div>
+      
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://thenewstack.io/jetbrains-names-the-debt-ai-agents-leave-behind/" target="_blank" rel="noopener">JetBrains names the debt AI agents leave behind</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">70</span>
+        <span>11 Mar 2026 16:57 UTC</span>
+      </div>
+      <div class="article-summary">JetBrains has identified a new form of technical debt called &#39;Shadow Tech Debt,&#39; which arises from low-quality code generated by AI agents lacking structural understanding of the projects they modify. This issue is exacerbated by the fragmented nature of current coding agents, which operate in isolation and do not consider architectural decisions or legacy knowledge. JetBrains has introduced Junie CLI, a standalone coding agent with &#39;codebase intelligence,&#39; to address this problem by integrating seamlessly into existing development workflows and CI/CD pipelines.</div>
+      
+      <div class="qa-box">
+        <strong>💼 Why This Matters:</strong> Understanding the impact of AI-generated code on technical debt is crucial for QA Managers and Tech Project Managers as it directly affects code quality and maintainability. The introduction of tools like Junie CLI can help manage this debt by ensuring that AI agents work within the context of existing architectures, reducing the risk of fragmented and low-quality code entering production. This is vital for maintaining high standards in software delivery and ensuring the long-term health of codebases.
+      </div>
+      
+    </div>
+    
+    
+    <div class="category-header">
+      <span class="category-icon">🤖</span>
+      <span class="category-title">GenAI &amp; LLMs</span>
+      <span class="category-count">(1 articles)</span>
+    </div>
+    
+    <div class="card">
+      <div class="article-title">
+        <a href="https://arxiv.org/abs/2603.11650v1" target="_blank" rel="noopener">QChunker: Learning Question-Aware Text Chunking for Domain RAG via Multi-Agent Debate</a>
+      </div>
+      <div class="article-meta">
+        <span class="badge badge-score">75</span>
+        <span>12 Mar 2026 08:21 UTC</span>
+      </div>
+      <div class="article-summary">The paper introduces QChunker, a novel approach to improve retrieval-augmented generation (RAG) by focusing on question-aware text chunking. QChunker restructures the RAG process into understanding-retrieval-augmentation, using a multi-agent debate framework to enhance text chunk coherence and integrity. The framework includes components for question generation, text segmentation, integrity review, and knowledge completion. A new evaluation metric, ChunkScore, is proposed to assess text chunk quality directly, improving efficiency over traditional methods. Experimental results show QChunker&#39;s effectiveness in creating coherent and information-rich text chunks across various domains.</div>
+      
+      <div class="qa-box">
+        <strong>💼 Why This Matters:</strong> For QA Managers and Tech Project Managers, QChunker&#39;s approach to improving text chunk quality in RAG systems can lead to more reliable and accurate AI outputs, which is crucial for maintaining high software quality standards. The introduction of ChunkScore as a direct evaluation metric can streamline testing processes and improve the efficiency of quality assessments. This innovation can enhance project delivery by reducing bottlenecks associated with inefficient evaluation methods, ensuring timely and effective deployment of AI-driven features.
+      </div>
+      
+    </div>
+    
+    
+  </section>
+
+  <!-- ── Trend Landscape ─────────────────────────────────────────────────── -->
+  <section>
+    <h2>📈 Trend Landscape</h2>
+    
+    <div class="card alert-card">
+      <div class="trend-card">
+        <div class="trend-icon">🕵️</div>
+        <div class="trend-body">
+          <div class="trend-name">
+            Multi-Agent Systems for Enhanced LLM Performance
+            <span class="badge badge-alert">ALERT</span>
+            <span class="badge badge-trend">AI Agents</span>
+          </div>
+          <div class="trend-desc">There is a growing trend in leveraging multi-agent systems to enhance the performance, alignment, and capabilities of large language models (LLMs). This includes applications in sustainable e-commerce, foreign key detection, and multi-turn games. The integration of multi-agent systems with LLMs is crucial for developing more robust and versatile AI solutions.</div>
+          <div class="trend-meta">
+            Articles: 8 &nbsp;|&nbsp;
+            Last seen: 13 Mar 2026 06:51 UTC &nbsp;|&nbsp;
+            Momentum: 100.0
+          </div>
+          <div class="momentum-bar">
+            <div class="momentum-fill" style="width: 100.0%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card ">
+      <div class="trend-card">
+        <div class="trend-icon">🧪</div>
+        <div class="trend-body">
+          <div class="trend-name">
+            Generative AI in Test Automation
+            
+            <span class="badge badge-trend">QA &amp; Testing</span>
+          </div>
+          <div class="trend-desc">Generative AI is increasingly being used to automate test scripts, particularly for end-to-end and API testing. Tools like GenIA-E2ETest and APITestGenie demonstrate the potential of LLMs to streamline the testing process, reducing manual effort and improving efficiency. This trend signifies a shift towards more intelligent and automated quality assurance practices.</div>
+          <div class="trend-meta">
+            Articles: 4 &nbsp;|&nbsp;
+            Last seen: 13 Mar 2026 06:51 UTC &nbsp;|&nbsp;
+            Momentum: 100.0
+          </div>
+          <div class="momentum-bar">
+            <div class="momentum-fill" style="width: 100.0%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card alert-card">
+      <div class="trend-card">
+        <div class="trend-icon">⚙️</div>
+        <div class="trend-body">
+          <div class="trend-name">
+            Governance and Security in AI Agent Deployment
+            <span class="badge badge-alert">ALERT</span>
+            <span class="badge badge-trend">DevOps &amp; CI/CD</span>
+          </div>
+          <div class="trend-desc">As AI agents become more prevalent in enterprise environments, there is a heightened focus on governance and security. Platforms like Galileo&#39;s Agent Control and SurePath AI&#39;s MCP Policy Controls are being developed to ensure safe and compliant deployment of AI agents. This trend highlights the need for robust frameworks to manage AI risks effectively.</div>
+          <div class="trend-meta">
+            Articles: 5 &nbsp;|&nbsp;
+            Last seen: 13 Mar 2026 06:51 UTC &nbsp;|&nbsp;
+            Momentum: 100.0
+          </div>
+          <div class="momentum-bar">
+            <div class="momentum-fill" style="width: 100.0%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card ">
+      <div class="trend-card">
+        <div class="trend-icon">🛠️</div>
+        <div class="trend-body">
+          <div class="trend-name">
+            Standardization of AI Tools and Frameworks
+            
+            <span class="badge badge-trend">Developer Tools</span>
+          </div>
+          <div class="trend-desc">Efforts are being made to standardize AI tools and frameworks to enhance interoperability and usability. ToolRosetta exemplifies this trend by automating the standardization of open-source repositories for compatibility with LLM agents. Standardization is essential for creating cohesive AI ecosystems and improving tool integration.</div>
+          <div class="trend-meta">
+            Articles: 4 &nbsp;|&nbsp;
+            Last seen: 13 Mar 2026 06:51 UTC &nbsp;|&nbsp;
+            Momentum: 100.0
+          </div>
+          <div class="momentum-bar">
+            <div class="momentum-fill" style="width: 100.0%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+    <div class="card ">
+      <div class="trend-card">
+        <div class="trend-icon">⚙️</div>
+        <div class="trend-body">
+          <div class="trend-name">
+            AI-Driven Operational Shifts in Software Development
+            
+            <span class="badge badge-trend">DevOps &amp; CI/CD</span>
+          </div>
+          <div class="trend-desc">AI tools are driving significant operational changes in software development, such as Microsoft&#39;s shift to weekly VS Code releases and the introduction of AI-powered developer task automation. These changes are indicative of AI&#39;s role in accelerating development cycles and reducing developer workload.</div>
+          <div class="trend-meta">
+            Articles: 3 &nbsp;|&nbsp;
+            Last seen: 13 Mar 2026 06:51 UTC &nbsp;|&nbsp;
+            Momentum: 100.0
+          </div>
+          <div class="momentum-bar">
+            <div class="momentum-fill" style="width: 100.0%"></div>
+          </div>
+        </div>
+      </div>
+    </div>
+    
+  </section>
+
+</div>
+
+<div class="footer">
+  Quality Managers in AI World &nbsp;|&nbsp; Intelligence Agent &nbsp;|&nbsp; 13 Mar 2026 06:52 UTC
+</div>
+
+</body>
+</html>
