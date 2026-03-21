@@ -1,0 +1,4373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Daily Digest – 21 Mar 2026</title>
+  <style>
+    :root {
+      --primary: #0f3460; --accent: #e94560; --light: #f5f7fa;
+      --card: #ffffff; --border: #e0e6ed; --text: #1a1a2e; --muted: #6b7280;
+    }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    body { font-family: 'Segoe UI', system-ui, sans-serif; background: var(--light); color: var(--text); }
+
+    /* ── Header ── */
+    .header { background: linear-gradient(135deg, var(--primary) 0%, #1a237e 100%); color: white; padding: 32px 40px; }
+    .header h1 { font-size: 1.9rem; font-weight: 800; letter-spacing: -0.5px; }
+    .header p  { opacity: 0.72; margin-top: 5px; font-size: 0.9rem; }
+    .stats-row { display: flex; gap: 18px; margin-top: 22px; flex-wrap: wrap; }
+    .stat { background: rgba(255,255,255,0.13); border-radius: 10px; padding: 12px 20px; text-align: center; min-width: 90px; }
+    .stat .num { font-size: 1.9rem; font-weight: 800; line-height: 1; }
+    .stat .lbl { font-size: 0.7rem; opacity: 0.8; text-transform: uppercase; letter-spacing: 0.5px; margin-top: 2px; }
+
+    /* ── Category pills ── */
+    .cat-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 16px; }
+    .cat-pill {
+      background: rgba(255,255,255,0.18); border-radius: 999px;
+      padding: 4px 12px; font-size: 0.78rem; font-weight: 600;
+    }
+
+    /* ── Layout ── */
+    .container { max-width: 1200px; margin: 0 auto; padding: 32px 20px; }
+    section { margin-bottom: 48px; }
+    h2 { font-size: 1.35rem; color: var(--primary); border-bottom: 3px solid var(--accent);
+         padding-bottom: 10px; margin-bottom: 20px; }
+
+    /* ── Alert cards ── */
+    .alert-card { background: #fff8f8; border-left: 5px solid var(--accent);
+                  border-radius: 8px; padding: 14px 18px; margin-bottom: 10px; }
+    .alert-name { font-weight: 700; color: var(--accent); font-size: 1rem; }
+    .alert-meta { font-size: 0.78rem; color: var(--muted); margin-top: 4px; }
+
+    /* ── Keyword cloud ── */
+    .kw-cloud { background: var(--card); border: 1px solid var(--border); border-radius: 12px;
+                padding: 20px 24px; line-height: 2.2; }
+    .kw-tag {
+      display: inline-block; background: #ede9fe; color: #5b21b6;
+      border-radius: 999px; padding: 3px 12px; margin: 3px;
+      font-size: 0.82rem; font-weight: 600; cursor: default;
+    }
+    .kw-tag.top { background: #ddd6fe; font-size: 0.95rem; }
+    .kw-count { font-size: 0.7rem; color: #7c3aed; margin-left: 3px; }
+
+    /* ── Main table ── */
+    .digest-table-wrap { overflow-x: auto; border-radius: 12px;
+                         box-shadow: 0 1px 6px rgba(0,0,0,0.08); }
+    table { width: 100%; border-collapse: collapse; background: var(--card); }
+    thead th {
+      background: var(--primary); color: white; padding: 11px 14px;
+      text-align: left; font-size: 0.82rem; font-weight: 600;
+      white-space: nowrap; position: sticky; top: 0;
+    }
+    thead th:first-child { border-radius: 12px 0 0 0; }
+    thead th:last-child  { border-radius: 0 12px 0 0; }
+    tbody td { padding: 10px 14px; border-bottom: 1px solid #f3f4f6; vertical-align: top; font-size: 0.88rem; }
+    tbody tr:last-child td { border-bottom: none; }
+    tbody tr:hover td { background: #fafbff; }
+
+    .td-title a { color: var(--primary); font-weight: 600; text-decoration: none; }
+    .td-title a:hover { color: var(--accent); text-decoration: underline; }
+    .td-title small { display: block; color: var(--muted); font-size: 0.77rem; margin-top: 3px; }
+
+    .badge-cat {
+      display: inline-block; border-radius: 999px;
+      padding: 2px 9px; font-size: 0.75rem; font-weight: 600;
+      white-space: nowrap;
+    }
+    .kw-inline { font-size: 0.78rem; color: #4b5563; }
+    .kw-chip {
+      display: inline-block; background: #f3f4f6; border-radius: 4px;
+      padding: 1px 6px; margin: 1px; font-size: 0.75rem;
+    }
+    .score-cell { text-align: center; font-weight: 700; }
+    .date-cell { font-size: 0.78rem; color: var(--muted); white-space: nowrap; }
+
+    /* Score colour helpers */
+    .score-high  { color: #059669; }
+    .score-mid   { color: #d97706; }
+    .score-low   { color: #9ca3af; }
+
+    /* ── Category cards section ── */
+    .cat-section-header {
+      display: flex; align-items: center; gap: 10px;
+      margin: 36px 0 14px;
+    }
+    .cat-icon { font-size: 1.6rem; }
+    .cat-title { font-size: 1.05rem; font-weight: 700; color: var(--primary); }
+    .cat-badge { font-size: 0.78rem; color: var(--muted); }
+
+    .article-card {
+      background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+      padding: 16px 20px; margin-bottom: 12px;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.05);
+    }
+    .article-card:hover { box-shadow: 0 3px 12px rgba(0,0,0,0.09); }
+    .article-card h4 a { color: var(--primary); text-decoration: none; font-size: 1rem; }
+    .article-card h4 a:hover { color: var(--accent); text-decoration: underline; }
+    .article-meta { display: flex; flex-wrap: wrap; gap: 8px; margin: 6px 0 10px; font-size: 0.78rem; color: var(--muted); }
+    .article-summary { font-size: 0.9rem; color: #374151; margin-bottom: 8px; }
+    .article-kws { display: flex; flex-wrap: wrap; gap: 4px; }
+    .article-kw-tag {
+      background: #ede9fe; color: #5b21b6; border-radius: 4px;
+      padding: 2px 8px; font-size: 0.75rem; font-weight: 600;
+    }
+
+    /* ── Footer ── */
+    .footer { text-align: center; padding: 24px; font-size: 0.75rem;
+              color: var(--muted); border-top: 1px solid var(--border); margin-top: 40px; }
+
+    @media (max-width: 700px) {
+      .header { padding: 20px; }
+      .container { padding: 16px; }
+      .stats-row { gap: 10px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- ── Header ── -->
+<div class="header">
+  <h1>📋 Daily Digest – 21 Mar 2026</h1>
+  <p>End-of-day intelligence summary &nbsp;|&nbsp; Generated 22:29 UTC</p>
+
+  <div class="stats-row">
+    <div class="stat">
+      <div class="num">108</div>
+      <div class="lbl">Articles</div>
+    </div>
+    <div class="stat">
+      <div class="num">54</div>
+      <div class="lbl">Avg Score</div>
+    </div>
+    <div class="stat">
+      <div class="num">6</div>
+      <div class="lbl">Alerts</div>
+    </div>
+    <div class="stat">
+      <div class="num">5</div>
+      <div class="lbl">Categories</div>
+    </div>
+    <div class="stat">
+      <div class="num">77</div>
+      <div class="lbl">Summarised</div>
+    </div>
+  </div>
+
+  <!-- Category breakdown pills -->
+  <div class="cat-pills">
+    
+    <span class="cat-pill">🛠️ Developer Tools: 43</span>
+    
+    <span class="cat-pill">⚙️ DevOps &amp; CI/CD: 25</span>
+    
+    <span class="cat-pill">🤖 GenAI &amp; LLMs: 22</span>
+    
+    <span class="cat-pill">🕵️ AI Agents: 14</span>
+    
+    <span class="cat-pill">🧪 QA &amp; Testing: 4</span>
+    
+  </div>
+</div>
+
+<div class="container">
+
+  <!-- ── Alert Trends ── -->
+  
+  <section>
+    <h2>🚨 Alert Trends</h2>
+    
+    <div class="alert-card">
+      <div class="alert-name">🕵️ Multi-Agent Systems Enhancing LLM Capabilities</div>
+      <div class="alert-meta">
+        AI Agents &nbsp;|&nbsp;
+        Momentum: 100.0 &nbsp;|&nbsp;
+        Articles: 12
+      </div>
+      <p style="margin-top:6px;font-size:0.9em;color:#374151;">Recent articles highlight the development of multi-agent systems to enhance the capabilities of large language models (LLMs). These systems are being used to improve areas such as hallucination reduction, value alignment, and multi-task reinforcement learning, showcasing their potential to make LLMs more reliable and aligned with human values.</p>
+    </div>
+    
+    <div class="alert-card">
+      <div class="alert-name">🕵️ Agentic Engineering and AI Agent Frameworks</div>
+      <div class="alert-meta">
+        AI Agents &nbsp;|&nbsp;
+        Momentum: 100.0 &nbsp;|&nbsp;
+        Articles: 6
+      </div>
+      <p style="margin-top:6px;font-size:0.9em;color:#374151;">There is a growing focus on agentic engineering, with discussions around frameworks that integrate AI agents into various workflows. This includes enhancing optical network operations, ESG reporting, and standardizing open-source tools for AI agents, indicating a trend towards more structured and efficient AI agent deployment.</p>
+    </div>
+    
+    <div class="alert-card">
+      <div class="alert-name">⚙️ AI-Driven DevOps Enhancements</div>
+      <div class="alert-meta">
+        DevOps &amp; CI/CD &nbsp;|&nbsp;
+        Momentum: 100.0 &nbsp;|&nbsp;
+        Articles: 5
+      </div>
+      <p style="margin-top:6px;font-size:0.9em;color:#374151;">AI is playing a significant role in transforming DevOps practices, with innovations like the Model Context Protocol (MCP) and centralized governance platforms like Agent Control. These advancements aim to enhance security, governance, and the overall efficiency of AI systems in production environments.</p>
+    </div>
+    
+    <div class="alert-card">
+      <div class="alert-name">🕵️ Multi-Agent Architectures for LLMs</div>
+      <div class="alert-meta">
+        AI Agents &nbsp;|&nbsp;
+        Momentum: 100.0 &nbsp;|&nbsp;
+        Articles: 6
+      </div>
+      <p style="margin-top:6px;font-size:0.9em;color:#374151;">The development of multi-agent architectures is emerging as a key strategy to enhance the capabilities of large language models (LLMs). These architectures aim to improve reasoning, reduce hallucinations, and align models with human values through frameworks like SAGE, MEMO, and RLAR. This trend is significant as it addresses critical limitations of LLMs, enabling more reliable and human-aligned AI systems.</p>
+    </div>
+    
+    <div class="alert-card">
+      <div class="alert-name">🧪 Generative AI for Automated Testing</div>
+      <div class="alert-meta">
+        QA &amp; Testing &nbsp;|&nbsp;
+        Momentum: 100.0 &nbsp;|&nbsp;
+        Articles: 4
+      </div>
+      <p style="margin-top:6px;font-size:0.9em;color:#374151;">Generative AI is being leveraged to automate various testing processes, including end-to-end test automation and API test generation. Tools like GenIA-E2ETest and APITestGenie demonstrate the potential of AI to streamline testing workflows, reducing manual effort and improving software quality. This trend is important for QA managers seeking to enhance efficiency and accuracy in testing.</p>
+    </div>
+    
+    <div class="alert-card">
+      <div class="alert-name">🕵️ AI-Driven Code Quality Improvement</div>
+      <div class="alert-meta">
+        AI Agents &nbsp;|&nbsp;
+        Momentum: 100.0 &nbsp;|&nbsp;
+        Articles: 4
+      </div>
+      <p style="margin-top:6px;font-size:0.9em;color:#374151;">AI tools, particularly coding agents, are being explored for their potential to improve code quality and development processes. Discussions around AI-assisted development emphasize the shift towards more efficient and error-free coding environments. This trend is crucial for tech leaders aiming to leverage AI for enhanced software development practices.</p>
+    </div>
+    
+  </section>
+  
+
+  <!-- ── Keyword Cloud ── -->
+  <section>
+    <h2>🔤 Keywords of the Day</h2>
+    <div class="kw-cloud">
+      
+      <span class="kw-tag top">
+        Implement<span class="kw-count">×12</span>
+      </span>
+      
+      <span class="kw-tag top">
+        LLM<span class="kw-count">×10</span>
+      </span>
+      
+      <span class="kw-tag top">
+        GitHub<span class="kw-count">×9</span>
+      </span>
+      
+      <span class="kw-tag top">
+        Python<span class="kw-count">×9</span>
+      </span>
+      
+      <span class="kw-tag top">
+        LLMs<span class="kw-count">×8</span>
+      </span>
+      
+      <span class="kw-tag top">
+        Utilize<span class="kw-count">×8</span>
+      </span>
+      
+      <span class="kw-tag top">
+        RAG<span class="kw-count">×7</span>
+      </span>
+      
+      <span class="kw-tag top">
+        OpenAI<span class="kw-count">×5</span>
+      </span>
+      
+      <span class="kw-tag top">
+        TypeScript<span class="kw-count">×5</span>
+      </span>
+      
+      <span class="kw-tag top">
+        Kubernetes<span class="kw-count">×5</span>
+      </span>
+      
+      <span class="kw-tag top">
+        Integration<span class="kw-count">×4</span>
+      </span>
+      
+      <span class="kw-tag top">
+        Playwright<span class="kw-count">×4</span>
+      </span>
+      
+      <span class="kw-tag top">
+        Utilizes<span class="kw-count">×3</span>
+      </span>
+      
+      <span class="kw-tag top">
+        Integrates<span class="kw-count">×3</span>
+      </span>
+      
+      <span class="kw-tag top">
+        Implementing<span class="kw-count">×3</span>
+      </span>
+      
+      <span class="kw-tag top">
+        QA<span class="kw-count">×3</span>
+      </span>
+      
+      <span class="kw-tag top">
+        Leverage<span class="kw-count">×3</span>
+      </span>
+      
+      <span class="kw-tag top">
+        APIs<span class="kw-count">×3</span>
+      </span>
+      
+      <span class="kw-tag top">
+        GPU<span class="kw-count">×3</span>
+      </span>
+      
+      <span class="kw-tag top">
+        Data Science<span class="kw-count">×3</span>
+      </span>
+      
+    </div>
+  </section>
+
+  <!-- ── Full Article Table ── -->
+  <section>
+    <h2>📊 All Articles (108)</h2>
+    <div class="digest-table-wrap">
+      <table>
+        <thead>
+          <tr>
+            <th>#</th>
+            <th>Title</th>
+            <th>Category</th>
+            <th>Keywords</th>
+            <th>Published Online</th>
+            <th>Collected by Agent</th>
+            <th>Score</th>
+          </tr>
+        </thead>
+        <tbody>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">1</td>
+            <td class="td-title">
+              <a href="https://arxiv.org/abs/2603.18859v1" target="_blank" rel="noopener">RewardFlow: Topology-Aware Reward Propagation on State Graphs for Agentic R</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#3b82f622;color:#3b82f6;">
+                🕵️ AI Agents
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">RewardFlow</span>
+              
+            </td>
+            <td class="date-cell">19 Mar 2026  13:07 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-high">82.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">2</td>
+            <td class="td-title">
+              <a href="https://arxiv.org/abs/2603.15643v1" target="_blank" rel="noopener">GSI Agent: Domain Knowledge Enhancement for Large Language Models in Green </a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#3b82f622;color:#3b82f6;">
+                🕵️ AI Agents
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Supervised</span>
+              
+              <span class="kw-chip">GSI</span>
+              
+              <span class="kw-chip">LLM</span>
+              
+              <span class="kw-chip">Retrieval</span>
+              
+            </td>
+            <td class="date-cell">03 Mar 2026  21:37 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-high">82.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">3</td>
+            <td class="td-title">
+              <a href="https://github.com/deepthapa3431/Automation-Framework-Selenium" target="_blank" rel="noopener">deepthapa3431/Automation-Framework-Selenium</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#10b98122;color:#10b981;">
+                🧪 QA &amp; Testing
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Utilizes</span>
+              
+              <span class="kw-chip">Page</span>
+              
+              <span class="kw-chip">Object</span>
+              
+              <span class="kw-chip">Model</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-high">81.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">4</td>
+            <td class="td-title">
+              <a href="https://arxiv.org/abs/2603.17239v1" target="_blank" rel="noopener">LAAF: Logic-layer Automated Attack Framework A Systematic Red-Teaming Metho</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#3b82f622;color:#3b82f6;">
+                🕵️ AI Agents
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">LAAF</span>
+              
+              <span class="kw-chip">LPCI</span>
+              
+              <span class="kw-chip">Persistent</span>
+              
+              <span class="kw-chip">Stage</span>
+              
+            </td>
+            <td class="date-cell">18 Mar 2026  00:51 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-high">80.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">5</td>
+            <td class="td-title">
+              <a href="https://arxiv.org/abs/2603.16264v1" target="_blank" rel="noopener">Adaptive Theory of Mind for LLM-based Multi-Agent Coordination</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#3b82f622;color:#3b82f6;">
+                🕵️ AI Agents
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Misaligned</span>
+              
+              <span class="kw-chip">ToM</span>
+              
+              <span class="kw-chip">Empirical</span>
+              
+            </td>
+            <td class="date-cell">17 Mar 2026  08:52 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:11 UTC</td>
+            <td class="score-cell score-high">79.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">6</td>
+            <td class="td-title">
+              <a href="https://arxiv.org/abs/2603.15371v1" target="_blank" rel="noopener">Brain-Inspired Graph Multi-Agent Systems for LLM Reasoning</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#3b82f622;color:#3b82f6;">
+                🕵️ AI Agents
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Implementing</span>
+              
+              <span class="kw-chip">Task</span>
+              
+              <span class="kw-chip">LLMs</span>
+              
+              <span class="kw-chip">Multi</span>
+              
+            </td>
+            <td class="date-cell">16 Mar 2026  14:48 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:11 UTC</td>
+            <td class="score-cell score-high">79.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">7</td>
+            <td class="td-title">
+              <a href="https://arxiv.org/abs/2603.12933v1" target="_blank" rel="noopener">Efficient and Interpretable Multi-Agent LLM Routing via Ant Colony Optimiza</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#3b82f622;color:#3b82f6;">
+                🕵️ AI Agents
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">AMRO</span>
+              
+            </td>
+            <td class="date-cell">13 Mar 2026  12:26 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:11 UTC</td>
+            <td class="score-cell score-high">79.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">8</td>
+            <td class="td-title">
+              <a href="https://arxiv.org/abs/2603.17694v1" target="_blank" rel="noopener">MALLES: A Multi-agent LLMs-based Economic Sandbox with Consumer Preference </a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#3b82f622;color:#3b82f6;">
+                🕵️ AI Agents
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">MALLES</span>
+              
+              <span class="kw-chip">LLMs</span>
+              
+            </td>
+            <td class="date-cell">18 Mar 2026  13:11 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:11 UTC</td>
+            <td class="score-cell score-high">78.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">9</td>
+            <td class="td-title">
+              <a href="https://thenewstack.io/claude-dispatch-versus-openclaw/" target="_blank" rel="noopener">Anthropic’s response to the AI tool that caused lines around the block in S</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#f59e0b22;color:#f59e0b;">
+                ⚙️ DevOps &amp; CI/CD
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">OpenClaw</span>
+              
+              <span class="kw-chip">Anthropic</span>
+              
+              <span class="kw-chip">Claude</span>
+              
+              <span class="kw-chip">Dispatch</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  17:00 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-high">76.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">10</td>
+            <td class="td-title">
+              <a href="https://github.com/hybridpicker/nex-code" target="_blank" rel="noopener">hybridpicker/nex-code</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">CLI</span>
+              
+              <span class="kw-chip">JavaScript</span>
+              
+              <span class="kw-chip">Node</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-high">76.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">11</td>
+            <td class="td-title">
+              <a href="https://github.com/augmentedmike/miniclaw-os" target="_blank" rel="noopener">augmentedmike/miniclaw-os</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Apple</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-high">76.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">12</td>
+            <td class="td-title">
+              <a href="https://thenewstack.io/cursor-beats-opus-metas-agent-rogue-and-trump-america-ai-act/" target="_blank" rel="noopener">Cursor beats Opus at 10x less, Meta’s agent goes rogue, and the 300-page Tr</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#f59e0b22;color:#f59e0b;">
+                ⚙️ DevOps &amp; CI/CD
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Cursor</span>
+              
+              <span class="kw-chip">Composer</span>
+              
+              <span class="kw-chip">Opus</span>
+              
+              <span class="kw-chip">Nvidia</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  12:52 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-high">75.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">13</td>
+            <td class="td-title">
+              <a href="https://github.com/webpeel/webpeel" target="_blank" rel="noopener">webpeel/webpeel</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">HTTP</span>
+              
+              <span class="kw-chip">Incorporation</span>
+              
+              <span class="kw-chip">MCP</span>
+              
+              <span class="kw-chip">TypeScript</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-high">74.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">14</td>
+            <td class="td-title">
+              <a href="https://github.com/ortus-boxlang/bx-ai" target="_blank" rel="noopener">ortus-boxlang/bx-ai</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">BoxLang</span>
+              
+              <span class="kw-chip">Java</span>
+              
+              <span class="kw-chip">JVM</span>
+              
+              <span class="kw-chip">Incorporating</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-high">73.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">15</td>
+            <td class="td-title">
+              <a href="https://arxiv.org/abs/2603.15712v1" target="_blank" rel="noopener">LLM-Driven Discovery of High-Entropy Catalysts via Retrieval-Augmented Gene</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#8b5cf622;color:#8b5cf6;">
+                🤖 GenAI &amp; LLMs
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">LLMs</span>
+              
+              <span class="kw-chip">Natural</span>
+              
+            </td>
+            <td class="date-cell">16 Mar 2026  14:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:11 UTC</td>
+            <td class="score-cell score-high">73.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">16</td>
+            <td class="td-title">
+              <a href="https://arxiv.org/abs/2603.15255v2" target="_blank" rel="noopener">SAGE: Multi-Agent Self-Evolution for LLM Reasoning</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#3b82f622;color:#3b82f6;">
+                🕵️ AI Agents
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">SAGE</span>
+              
+              <span class="kw-chip">Challenger</span>
+              
+              <span class="kw-chip">Planner</span>
+              
+              <span class="kw-chip">Solver</span>
+              
+            </td>
+            <td class="date-cell">16 Mar 2026  13:24 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:11 UTC</td>
+            <td class="score-cell score-high">73.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">17</td>
+            <td class="td-title">
+              <a href="https://github.com/sukethrp/agentos" target="_blank" rel="noopener">sukethrp/agentos</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">AgentOS</span>
+              
+              <span class="kw-chip">OpenAI</span>
+              
+              <span class="kw-chip">FastAPI</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-high">72.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">18</td>
+            <td class="td-title">
+              <a href="https://github.com/proffesor-for-testing/agentic-qe" target="_blank" rel="noopener">proffesor-for-testing/agentic-qe</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Agentic</span>
+              
+              <span class="kw-chip">Fleet</span>
+              
+              <span class="kw-chip">QA</span>
+              
+              <span class="kw-chip">Integration</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-high">72.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">19</td>
+            <td class="td-title">
+              <a href="https://arxiv.org/abs/2603.13189v1" target="_blank" rel="noopener">LLM Constitutional Multi-Agent Governance</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#3b82f622;color:#3b82f6;">
+                🕵️ AI Agents
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">CMAG</span>
+              
+              <span class="kw-chip">ECS</span>
+              
+              <span class="kw-chip">Hard</span>
+              
+            </td>
+            <td class="date-cell">13 Mar 2026  17:21 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:11 UTC</td>
+            <td class="score-cell score-high">72.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">20</td>
+            <td class="td-title">
+              <a href="https://thenewstack.io/china-leads-open-ai-models/" target="_blank" rel="noopener">China is winning the open source AI race — but a US company still controls </a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#f59e0b22;color:#f59e0b;">
+                ⚙️ DevOps &amp; CI/CD
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">China</span>
+              
+              <span class="kw-chip">Hugging</span>
+              
+              <span class="kw-chip">Face</span>
+              
+              <span class="kw-chip">GitHub</span>
+              
+            </td>
+            <td class="date-cell">20 Mar 2026  17:46 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-high">70.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">21</td>
+            <td class="td-title">
+              <a href="https://thenewstack.io/spacelift-ai-infrastructure-code/" target="_blank" rel="noopener">AI can write your infrastructure code. There’s a reason most teams won’t le</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#f59e0b22;color:#f59e0b;">
+                ⚙️ DevOps &amp; CI/CD
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">IaC</span>
+              
+            </td>
+            <td class="date-cell">20 Mar 2026  20:18 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">69.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">22</td>
+            <td class="td-title">
+              <a href="https://github.com/apankov1/quality-engineering" target="_blank" rel="noopener">apankov1/quality-engineering</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Incorporate</span>
+              
+              <span class="kw-chip">Utilize</span>
+              
+              <span class="kw-chip">Leverage</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">69.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">23</td>
+            <td class="td-title">
+              <a href="https://arxiv.org/abs/2603.14054v1" target="_blank" rel="noopener">LegacyTranslate: LLM-based Multi-Agent Method for Legacy Code Translation</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#3b82f622;color:#3b82f6;">
+                🕵️ AI Agents
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Implement</span>
+              
+              <span class="kw-chip">API</span>
+              
+              <span class="kw-chip">Grounding</span>
+              
+              <span class="kw-chip">Agent</span>
+              
+            </td>
+            <td class="date-cell">14 Mar 2026  17:51 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:11 UTC</td>
+            <td class="score-cell score-mid">69.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">24</td>
+            <td class="td-title">
+              <a href="https://thenewstack.io/cursors-composer-2-beats-opus/" target="_blank" rel="noopener">Cursor’s Composer 2 beats Opus 4.6 on coding benchmarks at a fraction of th</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#f59e0b22;color:#f59e0b;">
+                ⚙️ DevOps &amp; CI/CD
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Composer</span>
+              
+              <span class="kw-chip">Cursor</span>
+              
+            </td>
+            <td class="date-cell">19 Mar 2026  15:39 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">68.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">25</td>
+            <td class="td-title">
+              <a href="https://thenewstack.io/gpt-54-nano-mini/" target="_blank" rel="noopener">OpenAI’s GPT-5.4 mini and nano are built for the subagent era</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#f59e0b22;color:#f59e0b;">
+                ⚙️ DevOps &amp; CI/CD
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">GPT</span>
+              
+            </td>
+            <td class="date-cell">17 Mar 2026  18:57 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">68.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">26</td>
+            <td class="td-title">
+              <a href="https://thenewstack.io/webmcp-chrome-ai-agents/" target="_blank" rel="noopener">WebMCP turns any Chrome web page into an MCP server for AI agents</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#f59e0b22;color:#f59e0b;">
+                ⚙️ DevOps &amp; CI/CD
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">WebMCP</span>
+              
+              <span class="kw-chip">HTML</span>
+              
+              <span class="kw-chip">JavaScript</span>
+              
+              <span class="kw-chip">APIs</span>
+              
+            </td>
+            <td class="date-cell">17 Mar 2026  18:50 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">68.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">27</td>
+            <td class="td-title">
+              <a href="https://arxiv.org/abs/2603.12559v1" target="_blank" rel="noopener">Large Language Models as Delivery Rider: Generating Instant Food Delivery R</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#3b82f622;color:#3b82f6;">
+                🕵️ AI Agents
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">LLM</span>
+              
+              <span class="kw-chip">Chain</span>
+              
+              <span class="kw-chip">Thought</span>
+              
+            </td>
+            <td class="date-cell">13 Mar 2026  01:41 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">68.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">28</td>
+            <td class="td-title">
+              <a href="https://arxiv.org/abs/2603.18043v1" target="_blank" rel="noopener">The Provenance Paradox in Multi-Agent LLM Routing: Delegation Contracts and</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#3b82f622;color:#3b82f6;">
+                🕵️ AI Agents
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Implement</span>
+              
+              <span class="kw-chip">Adopt</span>
+              
+              <span class="kw-chip">Utilize</span>
+              
+            </td>
+            <td class="date-cell">15 Mar 2026  17:36 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:11 UTC</td>
+            <td class="score-cell score-mid">68.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">29</td>
+            <td class="td-title">
+              <a href="https://thenewstack.io/introduction-to-backend-development/" target="_blank" rel="noopener">Backend Development in 2026: What’s Changed, What Matters, and What to Lear</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#f59e0b22;color:#f59e0b;">
+                ⚙️ DevOps &amp; CI/CD
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Backend</span>
+              
+              <span class="kw-chip">Understanding</span>
+              
+            </td>
+            <td class="date-cell">19 Mar 2026  18:37 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">67.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">30</td>
+            <td class="td-title">
+              <a href="https://arxiv.org/abs/2603.13605v1" target="_blank" rel="noopener">Orla: A Library for Serving LLM-Based Multi-Agent Systems</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#3b82f622;color:#3b82f6;">
+                🕵️ AI Agents
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Orla</span>
+              
+              <span class="kw-chip">LLM</span>
+              
+              <span class="kw-chip">Memory</span>
+              
+            </td>
+            <td class="date-cell">13 Mar 2026  21:25 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:11 UTC</td>
+            <td class="score-cell score-mid">67.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">31</td>
+            <td class="td-title">
+              <a href="https://thenewstack.io/jellyfish-ai-engineering-trends/" target="_blank" rel="noopener">Jellyfish AI development study: The real sting has yet to land</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#f59e0b22;color:#f59e0b;">
+                ⚙️ DevOps &amp; CI/CD
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Development</span>
+              
+              <span class="kw-chip">Fully</span>
+              
+            </td>
+            <td class="date-cell">19 Mar 2026  18:01 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">66.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">32</td>
+            <td class="td-title">
+              <a href="https://thenewstack.io/chainguard-repository-ai-agents/" target="_blank" rel="noopener">Chainguard has a fix for the open source packages your AI agents keep grabb</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#f59e0b22;color:#f59e0b;">
+                ⚙️ DevOps &amp; CI/CD
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Attackers</span>
+              
+              <span class="kw-chip">Chainguard</span>
+              
+              <span class="kw-chip">Repository</span>
+              
+            </td>
+            <td class="date-cell">18 Mar 2026  16:24 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">66.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">33</td>
+            <td class="td-title">
+              <a href="https://thenewstack.io/capital-one-developer-enablement/" target="_blank" rel="noopener">Capital One deprecated an AI tool it once championed. Its DevEx chief says </a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#f59e0b22;color:#f59e0b;">
+                ⚙️ DevOps &amp; CI/CD
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Focus</span>
+              
+              <span class="kw-chip">Centralize</span>
+              
+              <span class="kw-chip">Adopt</span>
+              
+            </td>
+            <td class="date-cell">18 Mar 2026  15:02 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">66.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">34</td>
+            <td class="td-title">
+              <a href="https://github.com/keploy/keploy" target="_blank" rel="noopener">keploy/keploy</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#10b98122;color:#10b981;">
+                🧪 QA &amp; Testing
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Keploy</span>
+              
+              <span class="kw-chip">APIs</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">65.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">35</td>
+            <td class="td-title">
+              <a href="https://github.com/mloda-ai/mloda-registry" target="_blank" rel="noopener">mloda-ai/mloda-registry</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">MLOps</span>
+              
+              <span class="kw-chip">MLOPS</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">65.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">36</td>
+            <td class="td-title">
+              <a href="https://arxiv.org/abs/2603.15183v1" target="_blank" rel="noopener">Token Coherence: Adapting MESI Cache Protocols to Minimize Synchronization </a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#3b82f622;color:#3b82f6;">
+                🕵️ AI Agents
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Adapt</span>
+              
+              <span class="kw-chip">MESI</span>
+              
+              <span class="kw-chip">LLM</span>
+              
+              <span class="kw-chip">Implement</span>
+              
+            </td>
+            <td class="date-cell">16 Mar 2026  12:20 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:11 UTC</td>
+            <td class="score-cell score-mid">65.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">37</td>
+            <td class="td-title">
+              <a href="https://thenewstack.io/kubernetes-open-source-ai/" target="_blank" rel="noopener">The AI revolution will be open-sourced</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#f59e0b22;color:#f59e0b;">
+                ⚙️ DevOps &amp; CI/CD
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Dynamic</span>
+              
+              <span class="kw-chip">Resource</span>
+              
+              <span class="kw-chip">Allocation</span>
+              
+              <span class="kw-chip">DRA</span>
+              
+            </td>
+            <td class="date-cell">18 Mar 2026  17:00 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">64.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">38</td>
+            <td class="td-title">
+              <a href="https://github.com/Gogeta767/flaky-test-prediction-ml" target="_blank" rel="noopener">Gogeta767/flaky-test-prediction-ml</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Implement</span>
+              
+              <span class="kw-chip">Integrate</span>
+              
+              <span class="kw-chip">CI/CD</span>
+              
+              <span class="kw-chip">Utilize</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">64.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">39</td>
+            <td class="td-title">
+              <a href="https://github.com/sigvardt/linkedin-buddy" target="_blank" rel="noopener">sigvardt/linkedin-buddy</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Integrates</span>
+              
+              <span class="kw-chip">Playwright</span>
+              
+              <span class="kw-chip">LinkedIn</span>
+              
+              <span class="kw-chip">Utilizes</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">63.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">40</td>
+            <td class="td-title">
+              <a href="https://arxiv.org/abs/2603.16817v1" target="_blank" rel="noopener">Is Conformal Factuality for RAG-based LLMs Robust? Novel Metrics and System</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#8b5cf622;color:#8b5cf6;">
+                🤖 GenAI &amp; LLMs
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Conformal</span>
+              
+              <span class="kw-chip">Lightweight</span>
+              
+              <span class="kw-chip">LLM</span>
+              
+            </td>
+            <td class="date-cell">17 Mar 2026  17:20 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:11 UTC</td>
+            <td class="score-cell score-mid">63.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">41</td>
+            <td class="td-title">
+              <a href="https://thenewstack.io/kubernetes-glorified-ai-host/" target="_blank" rel="noopener">Why the ‘glorified host’ for AI is exactly the Kubernetes we need</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#f59e0b22;color:#f59e0b;">
+                ⚙️ DevOps &amp; CI/CD
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Kubernetes</span>
+              
+              <span class="kw-chip">Platform</span>
+              
+              <span class="kw-chip">GPU</span>
+              
+            </td>
+            <td class="date-cell">20 Mar 2026  16:00 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">61.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">42</td>
+            <td class="td-title">
+              <a href="https://thenewstack.io/openai-astral-acquisition/" target="_blank" rel="noopener">OpenAI acquires Astral to bring open source Python developer tools to Codex</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#f59e0b22;color:#f59e0b;">
+                ⚙️ DevOps &amp; CI/CD
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">OpenAI</span>
+              
+              <span class="kw-chip">Astral</span>
+              
+              <span class="kw-chip">Python</span>
+              
+              <span class="kw-chip">Integration</span>
+              
+            </td>
+            <td class="date-cell">20 Mar 2026  14:33 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">60.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">43</td>
+            <td class="td-title">
+              <a href="https://github.com/paulasilvatech/specky" target="_blank" rel="noopener">paulasilvatech/specky</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Specky</span>
+              
+              <span class="kw-chip">Spec</span>
+              
+              <span class="kw-chip">Driven</span>
+              
+              <span class="kw-chip">Development</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">60.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">44</td>
+            <td class="td-title">
+              <a href="https://github.com/McMutteer/keepvigil" target="_blank" rel="noopener">McMutteer/keepvigil</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#10b98122;color:#10b981;">
+                🧪 QA &amp; Testing
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Implement</span>
+              
+              <span class="kw-chip">PRs</span>
+              
+              <span class="kw-chip">Utilize</span>
+              
+              <span class="kw-chip">GitHub</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">60.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">45</td>
+            <td class="td-title">
+              <a href="https://github.com/Giskard-AI/giskard-oss" target="_blank" rel="noopener">Giskard-AI/giskard-oss</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Giskard</span>
+              
+              <span class="kw-chip">LLM</span>
+              
+              <span class="kw-chip">QA</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">59.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">46</td>
+            <td class="td-title">
+              <a href="https://github.com/SynapseKit/synapsekit-docs" target="_blank" rel="noopener">SynapseKit/synapsekit-docs</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">SynapseKit</span>
+              
+              <span class="kw-chip">Python</span>
+              
+              <span class="kw-chip">RAG</span>
+              
+              <span class="kw-chip">Docusaurus</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">59.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">47</td>
+            <td class="td-title">
+              <a href="https://github.com/openMF/mcp-mifosx" target="_blank" rel="noopener">openMF/mcp-mifosx</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">LLMs</span>
+              
+              <span class="kw-chip">Java</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">59.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">48</td>
+            <td class="td-title">
+              <a href="https://github.com/jackyilmaz/qa-orchestrator-platform" target="_blank" rel="noopener">jackyilmaz/qa-orchestrator-platform</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#10b98122;color:#10b981;">
+                🧪 QA &amp; Testing
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Jira</span>
+              
+              <span class="kw-chip">Integration</span>
+              
+              <span class="kw-chip">Docker</span>
+              
+              <span class="kw-chip">Spring</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">59.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">49</td>
+            <td class="td-title">
+              <a href="https://towardsdatascience.com/agentic-rag-failure-modes-retrieval-thrash-tool-storms-and-context-bloat-and-how-to-spot-them-early/" target="_blank" rel="noopener">Agentic RAG Failure Modes: Retrieval Thrash, Tool Storms, and Context Bloat</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#8b5cf622;color:#8b5cf6;">
+                🤖 GenAI &amp; LLMs
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Monitor</span>
+              
+              <span class="kw-chip">Implement</span>
+              
+              <span class="kw-chip">Regularly</span>
+              
+            </td>
+            <td class="date-cell">20 Mar 2026  12:00 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">57.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">50</td>
+            <td class="td-title">
+              <a href="https://github.com/GeoRetina/Arion" target="_blank" rel="noopener">GeoRetina/Arion</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Arion</span>
+              
+              <span class="kw-chip">LLMs</span>
+              
+              <span class="kw-chip">TypeScript</span>
+              
+              <span class="kw-chip">GitHub</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">57.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">51</td>
+            <td class="td-title">
+              <a href="https://arxiv.org/abs/2603.17356v1" target="_blank" rel="noopener">PACE-RAG: Patient-Aware Contextual and Evidence-based Policy RAG for Clinic</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#8b5cf622;color:#8b5cf6;">
+                🤖 GenAI &amp; LLMs
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">PACE</span>
+              
+              <span class="kw-chip">RAG</span>
+              
+              <span class="kw-chip">Evaluation</span>
+              
+            </td>
+            <td class="date-cell">18 Mar 2026  04:40 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:11 UTC</td>
+            <td class="score-cell score-mid">56.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">52</td>
+            <td class="td-title">
+              <a href="https://thenewstack.io/open-observability-ai-platforms/" target="_blank" rel="noopener">From pillars to platform: How open observability data is changing the indus</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#f59e0b22;color:#f59e0b;">
+                ⚙️ DevOps &amp; CI/CD
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Adoption</span>
+              
+              <span class="kw-chip">OpenTelemetry</span>
+              
+              <span class="kw-chip">Operators</span>
+              
+            </td>
+            <td class="date-cell">20 Mar 2026  13:00 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">54.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">53</td>
+            <td class="td-title">
+              <a href="https://thenewstack.io/copilot-reshapes-developer-work/" target="_blank" rel="noopener">GitHub Copilot’s effect on collaboration has stunned researchers</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#f59e0b22;color:#f59e0b;">
+                ⚙️ DevOps &amp; CI/CD
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Developers</span>
+              
+              <span class="kw-chip">GitHub</span>
+              
+              <span class="kw-chip">Copilot</span>
+              
+            </td>
+            <td class="date-cell">17 Mar 2026  18:42 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">54.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">54</td>
+            <td class="td-title">
+              <a href="https://github.com/christinekim8/postman-api-test-automation" target="_blank" rel="noopener">christinekim8/postman-api-test-automation</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Implement</span>
+              
+              <span class="kw-chip">API</span>
+              
+              <span class="kw-chip">Utilize</span>
+              
+              <span class="kw-chip">Postman</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">54.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">55</td>
+            <td class="td-title">
+              <a href="https://arxiv.org/abs/2603.16342v1" target="_blank" rel="noopener">Detecting Sentiment Steering Attacks on RAG-enabled Large Language Models</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#8b5cf622;color:#8b5cf6;">
+                🤖 GenAI &amp; LLMs
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Implement</span>
+              
+              <span class="kw-chip">CNN</span>
+              
+              <span class="kw-chip">LSTM</span>
+              
+              <span class="kw-chip">IDS</span>
+              
+            </td>
+            <td class="date-cell">17 Mar 2026  10:18 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:11 UTC</td>
+            <td class="score-cell score-mid">54.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">56</td>
+            <td class="td-title">
+              <a href="https://arxiv.org/abs/2603.14838v1" target="_blank" rel="noopener">The Impact of Ideological Discourses in RAG: A Case Study with COVID-19 Tre</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#8b5cf622;color:#8b5cf6;">
+                🤖 GenAI &amp; LLMs
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Ideological</span>
+              
+              <span class="kw-chip">LLM</span>
+              
+              <span class="kw-chip">RAG</span>
+              
+              <span class="kw-chip">Enhanced</span>
+              
+            </td>
+            <td class="date-cell">16 Mar 2026  05:32 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:11 UTC</td>
+            <td class="score-cell score-mid">53.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">57</td>
+            <td class="td-title">
+              <a href="https://thenewstack.io/kubernetes-network-security-hierarchies/" target="_blank" rel="noopener">Why flat Kubernetes networks fail at scale</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#f59e0b22;color:#f59e0b;">
+                ⚙️ DevOps &amp; CI/CD
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Flat</span>
+              
+              <span class="kw-chip">Kubernetes</span>
+              
+              <span class="kw-chip">Introducing</span>
+              
+              <span class="kw-chip">Implementing</span>
+              
+            </td>
+            <td class="date-cell">20 Mar 2026  14:00 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">52.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">58</td>
+            <td class="td-title">
+              <a href="https://towardsdatascience.com/how-to-effectively-review-claude-code-output/" target="_blank" rel="noopener">How to Effectively Review Claude Code Output</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#8b5cf622;color:#8b5cf6;">
+                🤖 GenAI &amp; LLMs
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Implement</span>
+              
+              <span class="kw-chip">Encourage</span>
+              
+            </td>
+            <td class="date-cell">17 Mar 2026  20:00 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">52.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">59</td>
+            <td class="td-title">
+              <a href="https://towardsdatascience.com/the-math-thats-killing-your-ai-agent/" target="_blank" rel="noopener">The Math That’s Killing Your AI Agent</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#8b5cf622;color:#8b5cf6;">
+                🤖 GenAI &amp; LLMs
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Understand</span>
+              
+              <span class="kw-chip">Implement</span>
+              
+              <span class="kw-chip">Focus</span>
+              
+            </td>
+            <td class="date-cell">20 Mar 2026  16:30 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">51.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">60</td>
+            <td class="td-title">
+              <a href="https://github.com/jarrodwatts/claude-hud" target="_blank" rel="noopener">jarrodwatts/claude-hud</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Integrate</span>
+              
+              <span class="kw-chip">Claude</span>
+              
+              <span class="kw-chip">Code</span>
+              
+              <span class="kw-chip">Utilize</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-mid">51.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">61</td>
+            <td class="td-title">
+              <a href="https://github.com/utsapoddar/job_application_automation" target="_blank" rel="noopener">utsapoddar/job_application_automation</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Utilizes</span>
+              
+              <span class="kw-chip">Incorporates</span>
+              
+              <span class="kw-chip">LLMs</span>
+              
+              <span class="kw-chip">Automates</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">49.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">62</td>
+            <td class="td-title">
+              <a href="https://thenewstack.io/kubernetes-native-ai-infrastructure/" target="_blank" rel="noopener">Building a Kubernetes-native pattern for AI infrastructure at scale</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#f59e0b22;color:#f59e0b;">
+                ⚙️ DevOps &amp; CI/CD
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Ensure</span>
+              
+              <span class="kw-chip">GPU</span>
+              
+              <span class="kw-chip">Standardize</span>
+              
+              <span class="kw-chip">Implement</span>
+              
+            </td>
+            <td class="date-cell">19 Mar 2026  12:00 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">48.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">63</td>
+            <td class="td-title">
+              <a href="https://arxiv.org/abs/2603.17292v1" target="_blank" rel="noopener">SEAL-Tag: Self-Tag Evidence Aggregation with Probabilistic Circuits for PII</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#8b5cf622;color:#8b5cf6;">
+                🤖 GenAI &amp; LLMs
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Implement</span>
+              
+              <span class="kw-chip">SEAL</span>
+              
+              <span class="kw-chip">Tag</span>
+              
+              <span class="kw-chip">Verify</span>
+              
+            </td>
+            <td class="date-cell">18 Mar 2026  02:40 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:11 UTC</td>
+            <td class="score-cell score-low">48.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">64</td>
+            <td class="td-title">
+              <a href="https://arxiv.org/abs/2603.16169v1" target="_blank" rel="noopener">Open-Source Reproduction and Explainability Analysis of Corrective Retrieva</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#8b5cf622;color:#8b5cf6;">
+                🤖 GenAI &amp; LLMs
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Open</span>
+              
+              <span class="kw-chip">CRAG</span>
+              
+              <span class="kw-chip">Explainability</span>
+              
+              <span class="kw-chip">SHAP</span>
+              
+            </td>
+            <td class="date-cell">17 Mar 2026  06:38 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:11 UTC</td>
+            <td class="score-cell score-low">47.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">65</td>
+            <td class="td-title">
+              <a href="https://github.com/pathwaycom/pathway" target="_blank" rel="noopener">pathwaycom/pathway</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">LLM</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">46.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">66</td>
+            <td class="td-title">
+              <a href="https://arxiv.org/abs/2603.14709v1" target="_blank" rel="noopener">Cross-RAG: Zero-Shot Retrieval-Augmented Time Series Forecasting via Cross-</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#8b5cf622;color:#8b5cf6;">
+                🤖 GenAI &amp; LLMs
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Cross</span>
+              
+              <span class="kw-chip">RAG</span>
+              
+              <span class="kw-chip">TSFMs</span>
+              
+            </td>
+            <td class="date-cell">16 Mar 2026  01:35 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:11 UTC</td>
+            <td class="score-cell score-low">46.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">67</td>
+            <td class="td-title">
+              <a href="https://thenewstack.io/ai-test-authoring-launch/" target="_blank" rel="noopener">Sauce Labs wants to solve an AI-created problem nobody wanted to work on</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#f59e0b22;color:#f59e0b;">
+                ⚙️ DevOps &amp; CI/CD
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Test</span>
+              
+              <span class="kw-chip">Authoring</span>
+              
+              <span class="kw-chip">Sauce</span>
+              
+              <span class="kw-chip">Labs</span>
+              
+            </td>
+            <td class="date-cell">18 Mar 2026  16:19 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">45.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">68</td>
+            <td class="td-title">
+              <a href="https://github.com/fitchmultz/spartan-scraper" target="_blank" rel="noopener">fitchmultz/spartan-scraper</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Integrates</span>
+              
+              <span class="kw-chip">Playwright</span>
+              
+              <span class="kw-chip">Emphasizes</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">45.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">69</td>
+            <td class="td-title">
+              <a href="https://arxiv.org/abs/2603.14778v1" target="_blank" rel="noopener">$p^2$RAG: Privacy-Preserving RAG Service Supporting Arbitrary Top-$k$ Retri</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#8b5cf622;color:#8b5cf6;">
+                🤖 GenAI &amp; LLMs
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Implementing</span>
+              
+              <span class="kw-chip">RAG</span>
+              
+            </td>
+            <td class="date-cell">16 Mar 2026  03:19 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:11 UTC</td>
+            <td class="score-cell score-low">45.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">70</td>
+            <td class="td-title">
+              <a href="https://github.com/mindsdb/mindsdb" target="_blank" rel="noopener">mindsdb/mindsdb</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">MindsDB</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">44.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">71</td>
+            <td class="td-title">
+              <a href="https://github.com/VSSK007/ZodicogAI" target="_blank" rel="noopener">VSSK007/ZodicogAI</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">LLM</span>
+              
+              <span class="kw-chip">MBTI</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">44.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">72</td>
+            <td class="td-title">
+              <a href="https://arxiv.org/abs/2603.17176v1" target="_blank" rel="noopener">Towards Unsupervised Adversarial Document Detection in Retrieval Augmented </a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#8b5cf622;color:#8b5cf6;">
+                🤖 GenAI &amp; LLMs
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Unsupervised</span>
+              
+              <span class="kw-chip">Generator</span>
+              
+              <span class="kw-chip">RAG</span>
+              
+              <span class="kw-chip">Context</span>
+              
+            </td>
+            <td class="date-cell">17 Mar 2026  22:09 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:11 UTC</td>
+            <td class="score-cell score-low">44.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">73</td>
+            <td class="td-title">
+              <a href="https://github.com/OpenTermsArchive/genai-contrib-snapshots" target="_blank" rel="noopener">OpenTermsArchive/genai-contrib-snapshots</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">generative AI</span>
+              
+              <span class="kw-chip">terms and conditions</span>
+              
+              <span class="kw-chip">GitHub Repository</span>
+              
+              <span class="kw-chip">open terms archive</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">43.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">74</td>
+            <td class="td-title">
+              <a href="https://github.com/OpenTermsArchive/genai-contrib-versions" target="_blank" rel="noopener">OpenTermsArchive/genai-contrib-versions</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">generative AI</span>
+              
+              <span class="kw-chip">open terms archive</span>
+              
+              <span class="kw-chip">terms of service</span>
+              
+              <span class="kw-chip">service agreements</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">43.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">75</td>
+            <td class="td-title">
+              <a href="https://github.com/davidgomesdev/PessoaFaladora" target="_blank" rel="noopener">davidgomesdev/PessoaFaladora</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Integration</span>
+              
+              <span class="kw-chip">Kotlin</span>
+              
+              <span class="kw-chip">Quarkus</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">43.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">76</td>
+            <td class="td-title">
+              <a href="https://github.com/squishai/squish" target="_blank" rel="noopener">squishai/squish</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">LLMs</span>
+              
+              <span class="kw-chip">Apple</span>
+              
+              <span class="kw-chip">Silicon</span>
+              
+              <span class="kw-chip">OpenAI</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">41.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">77</td>
+            <td class="td-title">
+              <a href="https://thenewstack.io/chainguard-os-packages-containers/" target="_blank" rel="noopener">Chainguard thinks most DevOps teams are solving container security the hard</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#f59e0b22;color:#f59e0b;">
+                ⚙️ DevOps &amp; CI/CD
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Chainguard</span>
+              
+              <span class="kw-chip">Packages</span>
+              
+              <span class="kw-chip">CVE</span>
+              
+              <span class="kw-chip">Dockerfiles</span>
+              
+            </td>
+            <td class="date-cell">17 Mar 2026  20:04 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">40.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">78</td>
+            <td class="td-title">
+              <a href="https://thenewstack.io/linux-kernel-cve-system/" target="_blank" rel="noopener">Linux kernel scale is swamping an already-flawed CVE system</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#f59e0b22;color:#f59e0b;">
+                ⚙️ DevOps &amp; CI/CD
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Linux kernel</span>
+              
+              <span class="kw-chip">CVE system</span>
+              
+              <span class="kw-chip">open source</span>
+              
+              <span class="kw-chip">backward compatibility</span>
+              
+            </td>
+            <td class="date-cell">20 Mar 2026  11:30 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">39.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">79</td>
+            <td class="td-title">
+              <a href="https://thenewstack.io/helm-webassembly-kubernetes-security/" target="_blank" rel="noopener">Why WebAssembly won’t replace Kubernetes but makes Helm more secure</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#f59e0b22;color:#f59e0b;">
+                ⚙️ DevOps &amp; CI/CD
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">WebAssembly</span>
+              
+              <span class="kw-chip">Kubernetes</span>
+              
+              <span class="kw-chip">Helm</span>
+              
+              <span class="kw-chip">WasmCloud</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  15:45 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">37.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">80</td>
+            <td class="td-title">
+              <a href="https://thenewstack.io/why-observability-bills-grow/" target="_blank" rel="noopener">Why your observability bill keeps growing (and it’s not your vendor’s fault</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#f59e0b22;color:#f59e0b;">
+                ⚙️ DevOps &amp; CI/CD
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">observability costs</span>
+              
+              <span class="kw-chip">engineering teams</span>
+              
+              <span class="kw-chip">production telemetry</span>
+              
+              <span class="kw-chip">anomaly alerts</span>
+              
+            </td>
+            <td class="date-cell">18 Mar 2026  11:00 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">37.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">81</td>
+            <td class="td-title">
+              <a href="https://towardsdatascience.com/beyond-prompt-caching-5-more-things-you-should-cache-in-rag-pipelines/" target="_blank" rel="noopener">Beyond Prompt Caching: 5 More Things You Should Cache in RAG Pipelines</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#8b5cf622;color:#8b5cf6;">
+                🤖 GenAI &amp; LLMs
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">RAG Pipelines</span>
+              
+              <span class="kw-chip">Caching Layers</span>
+              
+              <span class="kw-chip">Query Embeddings</span>
+              
+              <span class="kw-chip">Query-Response Reuse</span>
+              
+            </td>
+            <td class="date-cell">19 Mar 2026  15:00 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">37.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">82</td>
+            <td class="td-title">
+              <a href="https://towardsdatascience.com/hallucinations-in-llms-are-not-a-bug-in-the-data/" target="_blank" rel="noopener">Hallucinations in LLMs Are Not a Bug in the Data</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#8b5cf622;color:#8b5cf6;">
+                🤖 GenAI &amp; LLMs
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">LLM Hallucinations</span>
+              
+              <span class="kw-chip">Architecture Feature</span>
+              
+              <span class="kw-chip">Data Bug</span>
+              
+              <span class="kw-chip">Machine Learning</span>
+              
+            </td>
+            <td class="date-cell">16 Mar 2026  19:15 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">37.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">83</td>
+            <td class="td-title">
+              <a href="https://github.com/DataDog/integrations-core" target="_blank" rel="noopener">DataDog/integrations-core</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">DataDog</span>
+              
+              <span class="kw-chip">integrations</span>
+              
+              <span class="kw-chip">Datadog Agent</span>
+              
+              <span class="kw-chip">Python</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">37.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">84</td>
+            <td class="td-title">
+              <a href="https://thenewstack.io/btrfs-petabyte-cost-reduction/" target="_blank" rel="noopener">Scaling Btrfs to petabytes in production: a 74% cost reduction story</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#f59e0b22;color:#f59e0b;">
+                ⚙️ DevOps &amp; CI/CD
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Btrfs</span>
+              
+              <span class="kw-chip">copy-on-write</span>
+              
+              <span class="kw-chip">Linux filesystem</span>
+              
+              <span class="kw-chip">storage costs</span>
+              
+            </td>
+            <td class="date-cell">18 Mar 2026  12:00 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">36.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">85</td>
+            <td class="td-title">
+              <a href="https://towardsdatascience.com/escaping-the-sql-jungle/" target="_blank" rel="noopener">Escaping the SQL Jungle</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#8b5cf622;color:#8b5cf6;">
+                🤖 GenAI &amp; LLMs
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">SQL complexity</span>
+              
+              <span class="kw-chip">data platforms</span>
+              
+              <span class="kw-chip">business logic</span>
+              
+              <span class="kw-chip">SQL scripts</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  15:00 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">36.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">86</td>
+            <td class="td-title">
+              <a href="https://towardsdatascience.com/introducing-gemini-embeddings-2-preview/" target="_blank" rel="noopener">Introducing Gemini Embeddings 2 Preview</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#8b5cf622;color:#8b5cf6;">
+                🤖 GenAI &amp; LLMs
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Gemini Embeddings</span>
+              
+              <span class="kw-chip">embedding model</span>
+              
+              <span class="kw-chip">data science</span>
+              
+              <span class="kw-chip">AI tools</span>
+              
+            </td>
+            <td class="date-cell">17 Mar 2026  13:30 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">36.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">87</td>
+            <td class="td-title">
+              <a href="https://github.com/lordbasilaiassistant-sudo/thryx-launchpad" target="_blank" rel="noopener">lordbasilaiassistant-sudo/thryx-launchpad</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">THRYX Token</span>
+              
+              <span class="kw-chip">Token Launchpad</span>
+              
+              <span class="kw-chip">Gasless launches</span>
+              
+              <span class="kw-chip">DeFi</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">36.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">88</td>
+            <td class="td-title">
+              <a href="https://github.com/camgraphe/MaxVideoAi" target="_blank" rel="noopener">camgraphe/MaxVideoAi</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">AI Video Generation</span>
+              
+              <span class="kw-chip">Generative AI</span>
+              
+              <span class="kw-chip">Image to Video</span>
+              
+              <span class="kw-chip">Text to Video</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">36.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">89</td>
+            <td class="td-title">
+              <a href="https://github.com/open-archive-lab/openttd-public-game-server-timeseries" target="_blank" rel="noopener">open-archive-lab/openttd-public-game-server-timeseries</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">OpenTTD</span>
+              
+              <span class="kw-chip">time-series</span>
+              
+              <span class="kw-chip">ETL</span>
+              
+              <span class="kw-chip">Playwright</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">36.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">90</td>
+            <td class="td-title">
+              <a href="https://github.com/microsoft/qlib" target="_blank" rel="noopener">microsoft/qlib</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">AI-oriented Quant</span>
+              
+              <span class="kw-chip">Quant investment</span>
+              
+              <span class="kw-chip">ML modeling</span>
+              
+              <span class="kw-chip">supervised learning</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">35.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">91</td>
+            <td class="td-title">
+              <a href="https://github.com/opsfolio/qualityfolio" target="_blank" rel="noopener">opsfolio/qualityfolio</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">AI-native test management</span>
+              
+              <span class="kw-chip">continuous testing</span>
+              
+              <span class="kw-chip">quality engineering</span>
+              
+              <span class="kw-chip">test orchestration</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">35.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">92</td>
+            <td class="td-title">
+              <a href="https://towardsdatascience.com/a-gentle-introduction-to-nonlinear-constrained-optimization-with-piecewise-linear-approximations/" target="_blank" rel="noopener">A Gentle Introduction to Nonlinear Constrained Optimization with Piecewise </a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#8b5cf622;color:#8b5cf6;">
+                🤖 GenAI &amp; LLMs
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Nonlinear Optimization</span>
+              
+              <span class="kw-chip">Piecewise Linear</span>
+              
+              <span class="kw-chip">Constrained Models</span>
+              
+              <span class="kw-chip">LP Solvers</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  13:00 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">34.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">93</td>
+            <td class="td-title">
+              <a href="https://towardsdatascience.com/self-hosting-your-first-llm/" target="_blank" rel="noopener">Self-Hosting Your First LLM</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#8b5cf622;color:#8b5cf6;">
+                🤖 GenAI &amp; LLMs
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Self-Hosting</span>
+              
+              <span class="kw-chip">LLM</span>
+              
+              <span class="kw-chip">Privacy</span>
+              
+              <span class="kw-chip">Customization</span>
+              
+            </td>
+            <td class="date-cell">17 Mar 2026  18:06 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">34.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">94</td>
+            <td class="td-title">
+              <a href="https://towardsdatascience.com/how-a-neural-network-learned-its-own-fraud-rules-a-neuro-symbolic-ai-experiment/" target="_blank" rel="noopener">How a Neural Network Learned Its Own Fraud Rules: A Neuro-Symbolic AI Exper</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#8b5cf622;color:#8b5cf6;">
+                🤖 GenAI &amp; LLMs
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Neuro-Symbolic AI</span>
+              
+              <span class="kw-chip">Rule-Learning Module</span>
+              
+              <span class="kw-chip">Fraud Detection</span>
+              
+              <span class="kw-chip">Kaggle Dataset</span>
+              
+            </td>
+            <td class="date-cell">17 Mar 2026  12:00 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">33.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">95</td>
+            <td class="td-title">
+              <a href="https://github.com/skypilot-org/skypilot" target="_blank" rel="noopener">skypilot-org/skypilot</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">AI workloads</span>
+              
+              <span class="kw-chip">Kubernetes</span>
+              
+              <span class="kw-chip">Slurm</span>
+              
+              <span class="kw-chip">cloud computing</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">33.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">96</td>
+            <td class="td-title">
+              <a href="https://github.com/vllm-project/vllm-omni" target="_blank" rel="noopener">vllm-project/vllm-omni</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">vllm</span>
+              
+              <span class="kw-chip">model inference</span>
+              
+              <span class="kw-chip">omni-modality</span>
+              
+              <span class="kw-chip">Python</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">33.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">97</td>
+            <td class="td-title">
+              <a href="https://changelog.com/podcast/55" target="_blank" rel="noopener">Goliath, Event Machine, SPDY (Interview)</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Goliath</span>
+              
+              <span class="kw-chip">Event Machine</span>
+              
+              <span class="kw-chip">SPDY</span>
+              
+              <span class="kw-chip">async Ruby</span>
+              
+            </td>
+            <td class="date-cell">06 Apr 2011  13:00 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">32.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">98</td>
+            <td class="td-title">
+              <a href="https://thenewstack.io/java-26-performance-ai/" target="_blank" rel="noopener">Java 26 lands without an LTS badge. Here’s why developers should care anywa</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#f59e0b22;color:#f59e0b;">
+                ⚙️ DevOps &amp; CI/CD
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Java 26</span>
+              
+              <span class="kw-chip">JDK Enhancement Proposals</span>
+              
+              <span class="kw-chip">HTTP/3 support</span>
+              
+              <span class="kw-chip">garbage collection</span>
+              
+            </td>
+            <td class="date-cell">18 Mar 2026  16:35 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">32.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">99</td>
+            <td class="td-title">
+              <a href="https://github.com/PostHog/posthog" target="_blank" rel="noopener">PostHog/posthog</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">PostHog</span>
+              
+              <span class="kw-chip">product analytics</span>
+              
+              <span class="kw-chip">web analytics</span>
+              
+              <span class="kw-chip">session replay</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">32.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">100</td>
+            <td class="td-title">
+              <a href="https://github.com/ARISE-Initiative/robosuite" target="_blank" rel="noopener">ARISE-Initiative/robosuite</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">robosuite</span>
+              
+              <span class="kw-chip">robot learning</span>
+              
+              <span class="kw-chip">simulation framework</span>
+              
+              <span class="kw-chip">benchmark</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">32.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">101</td>
+            <td class="td-title">
+              <a href="https://changelog.com/podcast/64" target="_blank" rel="noopener">Pow, Rails 3.1 Asset Pipeline, CoffeeScript and More (Interview)</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Rails Asset Pipeline</span>
+              
+              <span class="kw-chip">CoffeeScript</span>
+              
+              <span class="kw-chip">Pow</span>
+              
+              <span class="kw-chip">RVM</span>
+              
+            </td>
+            <td class="date-cell">13 Jul 2011  13:00 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">31.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">102</td>
+            <td class="td-title">
+              <a href="https://changelog.com/podcast/38" target="_blank" rel="noopener">DevOps and Chef (Interview)</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">DevOps</span>
+              
+              <span class="kw-chip">Chef</span>
+              
+              <span class="kw-chip">agile infrastructure</span>
+              
+              <span class="kw-chip">configuration management</span>
+              
+            </td>
+            <td class="date-cell">12 Oct 2010  13:00 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">31.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">103</td>
+            <td class="td-title">
+              <a href="https://changelog.com/podcast/23" target="_blank" rel="noopener">The Ruby Racer (Interview)</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Ruby Racer</span>
+              
+              <span class="kw-chip">JavaScript engines</span>
+              
+              <span class="kw-chip">V8 Interpreter</span>
+              
+              <span class="kw-chip">Mozilla Rhino</span>
+              
+            </td>
+            <td class="date-cell">11 May 2010  13:00 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">31.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">104</td>
+            <td class="td-title">
+              <a href="https://towardsdatascience.com/how-to-measure-ai-value/" target="_blank" rel="noopener">How to Measure AI Value</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#8b5cf622;color:#8b5cf6;">
+                🤖 GenAI &amp; LLMs
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">AI Value</span>
+              
+              <span class="kw-chip">Efficiency</span>
+              
+              <span class="kw-chip">Measurement</span>
+              
+              <span class="kw-chip">Data Science</span>
+              
+            </td>
+            <td class="date-cell">20 Mar 2026  13:30 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">31.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">105</td>
+            <td class="td-title">
+              <a href="https://github.com/microsoft/presidio" target="_blank" rel="noopener">microsoft/presidio</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">open-source framework</span>
+              
+              <span class="kw-chip">sensitive data</span>
+              
+              <span class="kw-chip">PII detection</span>
+              
+              <span class="kw-chip">NLP support</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">31.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">106</td>
+            <td class="td-title">
+              <a href="https://changelog.com/podcast/31" target="_blank" rel="noopener">The WebSocket protocol (Interview)</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">WebSocket protocol</span>
+              
+              <span class="kw-chip">bi-directional communication</span>
+              
+              <span class="kw-chip">Socket.IO</span>
+              
+              <span class="kw-chip">Pusher App</span>
+              
+            </td>
+            <td class="date-cell">09 Aug 2010  13:00 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">30.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">107</td>
+            <td class="td-title">
+              <a href="https://towardsdatascience.com/building-robust-credit-scoring-models-part-3/" target="_blank" rel="noopener">Building Robust Credit Scoring Models (Part 3)</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#8b5cf622;color:#8b5cf6;">
+                🤖 GenAI &amp; LLMs
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Credit Scoring</span>
+              
+              <span class="kw-chip">Outliers Handling</span>
+              
+              <span class="kw-chip">Missing Values</span>
+              
+              <span class="kw-chip">Python</span>
+              
+            </td>
+            <td class="date-cell">20 Mar 2026  15:00 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">30.0</td>
+          </tr>
+          
+          
+          <tr>
+            <td style="text-align:center;color:var(--muted);">108</td>
+            <td class="td-title">
+              <a href="https://github.com/open-mmlab/mmpose" target="_blank" rel="noopener">open-mmlab/mmpose</a>
+            </td>
+            <td>
+              <span class="badge-cat"
+                    style="background:#6366f122;color:#6366f1;">
+                🛠️ Developer Tools
+              </span>
+            </td>
+            <td>
+              
+              <span class="kw-chip">Pose Estimation</span>
+              
+              <span class="kw-chip">OpenMMLab</span>
+              
+              <span class="kw-chip">Benchmark</span>
+              
+              <span class="kw-chip">GitHub</span>
+              
+            </td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="date-cell">21 Mar 2026  19:10 UTC</td>
+            <td class="score-cell score-low">30.0</td>
+          </tr>
+          
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- ── Articles by Category (cards with summaries) ── -->
+  <section>
+    <h2>📰 Articles by Category</h2>
+    
+    <div class="cat-section-header">
+      <span class="cat-icon">🕵️</span>
+      <span class="cat-title">AI Agents</span>
+      <span class="cat-badge">(14 articles)</span>
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://arxiv.org/abs/2603.18859v1" target="_blank" rel="noopener">RewardFlow: Topology-Aware Reward Propagation on State Graphs for Agentic RL with Large Language Models</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>82.0</strong></span>
+        <span>📅 Published: 19 Mar 2026  13:07 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:10 UTC</span>
+      </div>
+      
+      <div class="article-summary">The paper introduces RewardFlow, a method designed to enhance the agentic reasoning capabilities of large language models (LLMs) in reinforcement learning (RL) environments. RewardFlow addresses the challenge of sparse terminal rewards by estimating state-level rewards using the topological structure of state graphs. This approach allows for a more granular optimization process, improving performance and efficiency in agentic reasoning tasks. RewardFlow has demonstrated superior results compared to previous RL baselines across multiple benchmarks.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">RewardFlow</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://arxiv.org/abs/2603.15643v1" target="_blank" rel="noopener">GSI Agent: Domain Knowledge Enhancement for Large Language Models in Green Stormwater Infrastructure</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>82.0</strong></span>
+        <span>📅 Published: 03 Mar 2026  21:37 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:10 UTC</span>
+      </div>
+      
+      <div class="article-summary">The paper introduces the GSI Agent, a framework designed to enhance Large Language Models (LLMs) with domain-specific knowledge for Green Stormwater Infrastructure (GSI) tasks. It addresses the challenge of scattered GSI knowledge by integrating supervised fine-tuning, retrieval-augmented generation, and an agent-based reasoning pipeline. This approach significantly improves the LLM&#39;s performance on GSI-related tasks while maintaining its general knowledge capabilities.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">Supervised</span>
+        
+        <span class="article-kw-tag">GSI</span>
+        
+        <span class="article-kw-tag">LLM</span>
+        
+        <span class="article-kw-tag">Retrieval</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://arxiv.org/abs/2603.17239v1" target="_blank" rel="noopener">LAAF: Logic-layer Automated Attack Framework A Systematic Red-Teaming Methodology for LPCI Vulnerabilities in Agentic Large Language Model Systems</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>80.0</strong></span>
+        <span>📅 Published: 18 Mar 2026  00:51 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:10 UTC</span>
+      </div>
+      
+      <div class="article-summary">The paper introduces LAAF, a Logic-layer Automated Attack Framework designed for red-teaming Agentic Large Language Model (LLM) systems vulnerable to Logic-layer Prompt Control Injection (LPCI) attacks. LAAF is the first framework to offer a systematic methodology combining a taxonomy of LPCI-specific techniques with stage-sequential seed escalation, addressing limitations in existing tools like Garak and PyRIT. The framework includes a taxonomy of 49 techniques across six attack categories, enabling the generation of over 2.8 million unique payloads. Evaluations show LAAF&#39;s superior efficiency in stage-breakthroughs compared to random testing, with a high mean breakthrough rate of 84% across platforms.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">LAAF</span>
+        
+        <span class="article-kw-tag">LPCI</span>
+        
+        <span class="article-kw-tag">Persistent</span>
+        
+        <span class="article-kw-tag">Stage</span>
+        
+        <span class="article-kw-tag">Breaker</span>
+        
+        <span class="article-kw-tag">PSB</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://arxiv.org/abs/2603.16264v1" target="_blank" rel="noopener">Adaptive Theory of Mind for LLM-based Multi-Agent Coordination</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>79.0</strong></span>
+        <span>📅 Published: 17 Mar 2026  08:52 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:11 UTC</span>
+      </div>
+      
+      <div class="article-summary">The paper explores the concept of Theory of Mind (ToM) in the context of large language model (LLM)-driven agents, highlighting the challenges of misaligned ToM orders in multi-agent coordination. To address these challenges, the authors propose an adaptive ToM (A-ToM) agent that aligns its ToM order with its partner to improve coordination. Empirical evaluations across various tasks demonstrate the effectiveness of the A-ToM agent, and the paper also discusses its potential applicability to non-LLM-based agents.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">Misaligned</span>
+        
+        <span class="article-kw-tag">ToM</span>
+        
+        <span class="article-kw-tag">Empirical</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://arxiv.org/abs/2603.15371v1" target="_blank" rel="noopener">Brain-Inspired Graph Multi-Agent Systems for LLM Reasoning</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>79.0</strong></span>
+        <span>📅 Published: 16 Mar 2026  14:48 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:11 UTC</span>
+      </div>
+      
+      <div class="article-summary">The paper introduces Brain-Inspired Graph Multi-Agent Systems (BIGMAS) to enhance reasoning capabilities in Large Language Models (LLMs). By organizing specialized LLM agents as nodes in a graph with a centralized shared workspace, BIGMAS aims to overcome the limitations of traditional LLMs and Large Reasoning Models (LRMs) in complex reasoning tasks. The system uses a GraphDesigner for task-specific agent topology and a global Orchestrator for effective routing, leading to improved performance in reasoning tasks compared to existing multi-agent systems.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">Implementing</span>
+        
+        <span class="article-kw-tag">Task</span>
+        
+        <span class="article-kw-tag">LLMs</span>
+        
+        <span class="article-kw-tag">Multi</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://arxiv.org/abs/2603.12933v1" target="_blank" rel="noopener">Efficient and Interpretable Multi-Agent LLM Routing via Ant Colony Optimization</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>79.0</strong></span>
+        <span>📅 Published: 13 Mar 2026  12:26 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:11 UTC</span>
+      </div>
+      
+      <div class="article-summary">The paper introduces AMRO-S, a novel routing framework for Multi-Agent Systems (MAS) driven by Large Language Models (LLMs). It addresses the challenges of high inference costs, latency, and lack of transparency in existing routing strategies. AMRO-S enhances routing efficiency by using a supervised fine-tuned small language model for intent inference, task-specific pheromone specialists to reduce interference, and a quality-gated asynchronous update mechanism to optimize routing without increasing latency. The framework shows improved performance in quality-cost trade-offs and provides traceable routing evidence.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">AMRO</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://arxiv.org/abs/2603.17694v1" target="_blank" rel="noopener">MALLES: A Multi-agent LLMs-based Economic Sandbox with Consumer Preference Alignment</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>78.0</strong></span>
+        <span>📅 Published: 18 Mar 2026  13:11 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:11 UTC</span>
+      </div>
+      
+      <div class="article-summary">The paper introduces MALLES, a Multi-Agent Large Language Model-based Economic Sandbox designed to simulate complex economic environments. It leverages LLMs to align consumer preferences by training on diverse transaction records, addressing data sparsity issues. The framework uses a mean-field mechanism for stability and a multi-agent discussion framework to distribute cognitive load, enhancing decision-making accuracy and simulation stability. Experiments show improvements in product selection and prediction over existing models.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">MALLES</span>
+        
+        <span class="article-kw-tag">LLMs</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://arxiv.org/abs/2603.15255v2" target="_blank" rel="noopener">SAGE: Multi-Agent Self-Evolution for LLM Reasoning</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>73.0</strong></span>
+        <span>📅 Published: 16 Mar 2026  13:24 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:11 UTC</span>
+      </div>
+      
+      <div class="article-summary">The paper introduces SAGE, a multi-agent framework designed to enhance reasoning in large language models (LLMs) through self-evolution. SAGE employs four agents—Challenger, Planner, Solver, and Critic—that co-evolve using a shared LLM backbone, starting from a small seed dataset. This approach reduces reliance on large human-labeled datasets by using self-play with improved planning and quality control. SAGE demonstrates significant performance improvements in mathematical and code-generation tasks.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">SAGE</span>
+        
+        <span class="article-kw-tag">Challenger</span>
+        
+        <span class="article-kw-tag">Planner</span>
+        
+        <span class="article-kw-tag">Solver</span>
+        
+        <span class="article-kw-tag">Critic</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://arxiv.org/abs/2603.13189v1" target="_blank" rel="noopener">LLM Constitutional Multi-Agent Governance</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>72.0</strong></span>
+        <span>📅 Published: 13 Mar 2026  17:21 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:11 UTC</span>
+      </div>
+      
+      <div class="article-summary">The paper introduces Constitutional Multi-Agent Governance (CMAG), a framework designed to manage the influence of Large Language Models (LLMs) on multi-agent systems. CMAG combines hard constraint filtering with soft penalized-utility optimization to balance cooperation with autonomy and fairness. The Ethical Cooperation Score (ECS) is used to measure the ethical quality of cooperation, penalizing manipulative strategies. Experimental results show that CMAG improves ECS by 14.9% compared to unconstrained optimization, maintaining high levels of autonomy and integrity while reducing cooperation slightly.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">CMAG</span>
+        
+        <span class="article-kw-tag">ECS</span>
+        
+        <span class="article-kw-tag">Hard</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://arxiv.org/abs/2603.14054v1" target="_blank" rel="noopener">LegacyTranslate: LLM-based Multi-Agent Method for Legacy Code Translation</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>69.0</strong></span>
+        <span>📅 Published: 14 Mar 2026  17:51 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:11 UTC</span>
+      </div>
+      
+      <div class="article-summary">LegacyTranslate is a multi-agent framework designed to modernize legacy systems by translating code using LLM-based agents. It focuses on maintaining domain-specific logic while aligning with internal architectures and APIs. The framework consists of three agents: Initial Translation Agent, API Grounding Agent, and Refinement Agent, each contributing to improved translation quality. The approach was tested in a financial institution&#39;s migration project, showing significant improvements in code compilation and test-pass rates.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">Implement</span>
+        
+        <span class="article-kw-tag">API</span>
+        
+        <span class="article-kw-tag">Grounding</span>
+        
+        <span class="article-kw-tag">Agent</span>
+        
+        <span class="article-kw-tag">APIs</span>
+        
+        <span class="article-kw-tag">Incorporate</span>
+        
+      </div>
+      
+    </div>
+    
+    
+    <div class="cat-section-header">
+      <span class="cat-icon">🧪</span>
+      <span class="cat-title">QA &amp; Testing</span>
+      <span class="cat-badge">(4 articles)</span>
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://github.com/deepthapa3431/Automation-Framework-Selenium" target="_blank" rel="noopener">deepthapa3431/Automation-Framework-Selenium</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>81.0</strong></span>
+        <span>📅 Published: 21 Mar 2026  19:10 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:10 UTC</span>
+      </div>
+      
+      <div class="article-summary">The GitHub repository &#39;deepthapa3431/Automation-Framework-Selenium&#39; is a test automation framework leveraging Selenium and Pytest. It supports end-to-end testing with a Page Object Model (POM) architecture, integrates with CI/CD pipelines, and allows for parallel test execution. The framework is designed to enhance test coverage and efficiency in UI testing environments.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">Utilizes</span>
+        
+        <span class="article-kw-tag">Page</span>
+        
+        <span class="article-kw-tag">Object</span>
+        
+        <span class="article-kw-tag">Model</span>
+        
+        <span class="article-kw-tag">POM</span>
+        
+        <span class="article-kw-tag">Integrates</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://github.com/keploy/keploy" target="_blank" rel="noopener">keploy/keploy</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>65.0</strong></span>
+        <span>📅 Published: 21 Mar 2026  19:10 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:10 UTC</span>
+      </div>
+      
+      <div class="article-summary">Keploy is a GitHub repository focused on test automation, particularly for APIs, integration, and end-to-end (E2E) testing. It provides tools for generating tests and creating mocks or stubs, enhancing the testing process for developers. Written in Go, it has gained significant attention with over 16,000 stars, indicating its utility and popularity in the developer community.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">Keploy</span>
+        
+        <span class="article-kw-tag">APIs</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://github.com/McMutteer/keepvigil" target="_blank" rel="noopener">McMutteer/keepvigil</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>60.0</strong></span>
+        <span>📅 Published: 21 Mar 2026  19:10 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:10 UTC</span>
+      </div>
+      
+      <div class="article-summary">The GitHub repository &#39;keepvigil&#39; by McMutteer is focused on test automation using TypeScript. It provides confidence scores for AI-generated pull requests (PRs) by analyzing eight different signals. This tool aims to help developers identify which PRs require closer inspection, enhancing the efficiency of code review processes.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">Implement</span>
+        
+        <span class="article-kw-tag">PRs</span>
+        
+        <span class="article-kw-tag">Utilize</span>
+        
+        <span class="article-kw-tag">GitHub</span>
+        
+        <span class="article-kw-tag">Leverage</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://github.com/jackyilmaz/qa-orchestrator-platform" target="_blank" rel="noopener">jackyilmaz/qa-orchestrator-platform</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>59.0</strong></span>
+        <span>📅 Published: 21 Mar 2026  19:10 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:10 UTC</span>
+      </div>
+      
+      <div class="article-summary">The &#39;qa-orchestrator-platform&#39; is a Java-based GitHub project designed to enhance QA processes through AI. It integrates with Jira to transform issues into structured testing strategies, offering automation guidance and release risk analysis. The platform supports various technologies, including Docker and Spring Boot, to streamline test automation and QA operations.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">Jira</span>
+        
+        <span class="article-kw-tag">Integration</span>
+        
+        <span class="article-kw-tag">Docker</span>
+        
+        <span class="article-kw-tag">Spring</span>
+        
+        <span class="article-kw-tag">Boot</span>
+        
+        <span class="article-kw-tag">QA</span>
+        
+      </div>
+      
+    </div>
+    
+    
+    <div class="cat-section-header">
+      <span class="cat-icon">⚙️</span>
+      <span class="cat-title">DevOps &amp; CI/CD</span>
+      <span class="cat-badge">(25 articles)</span>
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://thenewstack.io/claude-dispatch-versus-openclaw/" target="_blank" rel="noopener">Anthropic’s response to the AI tool that caused lines around the block in Shenzhen</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>76.0</strong></span>
+        <span>📅 Published: 21 Mar 2026  17:00 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:10 UTC</span>
+      </div>
+      
+      <div class="article-summary">The article discusses the popularity of OpenClaw, an open-source AI agent, particularly in Shenzhen where engineers lined up to install it on their devices. OpenClaw&#39;s appeal lies in its LLM agent capabilities, local drive access, and mobile messaging control, allowing users to perform real work with familiar software. Anthropic has responded to this trend with Claude Dispatch for Cowork, which integrates AI agents with local drives, enhancing productivity without complex setups. Despite its potential, OpenClaw&#39;s lack of secure boundaries poses significant risks.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">OpenClaw</span>
+        
+        <span class="article-kw-tag">Anthropic</span>
+        
+        <span class="article-kw-tag">Claude</span>
+        
+        <span class="article-kw-tag">Dispatch</span>
+        
+        <span class="article-kw-tag">Cowork</span>
+        
+        <span class="article-kw-tag">Security</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://thenewstack.io/cursor-beats-opus-metas-agent-rogue-and-trump-america-ai-act/" target="_blank" rel="noopener">Cursor beats Opus at 10x less, Meta’s agent goes rogue, and the 300-page Trump America AI Act</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>75.0</strong></span>
+        <span>📅 Published: 21 Mar 2026  12:52 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:10 UTC</span>
+      </div>
+      
+      <div class="article-summary">The article discusses recent developments in AI, focusing on strategic consolidations in the tech industry. Cursor released its Composer 2 model, which outperforms Opus in coding benchmarks at a significantly lower cost, highlighting a shift towards more specialized AI models. Additionally, major players like Nvidia are forming coalitions to develop open base models, and OpenAI is merging apps to streamline user experiences. These moves indicate a trend where companies aim to control more of the AI technology stack.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">Cursor</span>
+        
+        <span class="article-kw-tag">Composer</span>
+        
+        <span class="article-kw-tag">Opus</span>
+        
+        <span class="article-kw-tag">Nvidia</span>
+        
+        <span class="article-kw-tag">OpenAI</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://thenewstack.io/china-leads-open-ai-models/" target="_blank" rel="noopener">China is winning the open source AI race — but a US company still controls everything underneath</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>70.0</strong></span>
+        <span>📅 Published: 20 Mar 2026  17:46 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:10 UTC</span>
+      </div>
+      
+      <div class="article-summary">The article discusses the growing influence of China in the open-source AI model landscape, particularly through platforms like Hugging Face. While US companies have historically dominated, recent data indicates that Chinese-developed models are now leading in terms of downloads and usage. Despite this shift in model development, the underlying infrastructure for these AI models remains controlled by US companies, particularly Nvidia.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">China</span>
+        
+        <span class="article-kw-tag">Hugging</span>
+        
+        <span class="article-kw-tag">Face</span>
+        
+        <span class="article-kw-tag">GitHub</span>
+        
+        <span class="article-kw-tag">Despite</span>
+        
+        <span class="article-kw-tag">Nvidia</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://thenewstack.io/spacelift-ai-infrastructure-code/" target="_blank" rel="noopener">AI can write your infrastructure code. There’s a reason most teams won’t let it.</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>69.0</strong></span>
+        <span>📅 Published: 20 Mar 2026  20:18 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:10 UTC</span>
+      </div>
+      
+      <div class="article-summary">The article discusses how AI is transforming Infrastructure as Code (IaC) by automating the writing of configuration languages like HCL, traditionally used in tools like Terraform. Marcin Wyszynski, co-founder of Spacelift and OpenTofu, highlights the risks of AI-generated code, such as the potential for critical infrastructure errors due to comprehension gaps. He contrasts the slow, ceremonial process of traditional IaC with the need for faster, democratized access to infrastructure provisioning, which AI can facilitate but also complicate.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">IaC</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://thenewstack.io/cursors-composer-2-beats-opus/" target="_blank" rel="noopener">Cursor’s Composer 2 beats Opus 4.6 on coding benchmarks at a fraction of the price</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>68.0</strong></span>
+        <span>📅 Published: 19 Mar 2026  15:39 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:10 UTC</span>
+      </div>
+      
+      <div class="article-summary">Cursor&#39;s Composer 2, a new coding model, surpasses Anthropic&#39;s Opus 4.6 on key coding benchmarks while being significantly more cost-effective. The model is priced at $0.5 per million input tokens and $2.5 per million output tokens, with a fast mode available at a higher cost. Composer 2 scored 61.7% on Terminal-Bench 2.0, outperforming Opus 4.6, but still trails behind OpenAI&#39;s GPT-5.4. The model introduces a novel training technique called &#39;self-summarization&#39; to enhance its performance on long-horizon tasks.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">Composer</span>
+        
+        <span class="article-kw-tag">Cursor</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://thenewstack.io/gpt-54-nano-mini/" target="_blank" rel="noopener">OpenAI’s GPT-5.4 mini and nano are built for the subagent era</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>68.0</strong></span>
+        <span>📅 Published: 17 Mar 2026  18:57 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:10 UTC</span>
+      </div>
+      
+      <div class="article-summary">OpenAI has launched GPT-5.4 mini and nano models, designed for efficient task delegation in agentic AI systems. These models are optimized for tasks like codebase searches and file reviews, offering a balance between performance and cost. The mini model performs nearly as well as the full GPT-5.4 on software engineering benchmarks, while the nano model is a cost-effective option for high-volume tasks. Both models are available via API, with mini also integrated into Codex and ChatGPT.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">GPT</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://thenewstack.io/webmcp-chrome-ai-agents/" target="_blank" rel="noopener">WebMCP turns any Chrome web page into an MCP server for AI agents</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>68.0</strong></span>
+        <span>📅 Published: 17 Mar 2026  18:50 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:10 UTC</span>
+      </div>
+      
+      <div class="article-summary">WebMCP is a Chrome extension that transforms web pages into MCP servers, facilitating AI agents&#39; interactions with the page&#39;s DOM. This innovation allows AI agents to perform actions using HTML components, similar to traditional web testing tools like Selenium. The approach, supported by Microsoft and Google, maintains human involvement, allowing users to interact with AI agents for contextual queries during browsing. WebMCP utilizes two APIs: a Declarative API for standard actions and an Imperative API for complex JavaScript-driven tasks.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">WebMCP</span>
+        
+        <span class="article-kw-tag">HTML</span>
+        
+        <span class="article-kw-tag">JavaScript</span>
+        
+        <span class="article-kw-tag">APIs</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://thenewstack.io/introduction-to-backend-development/" target="_blank" rel="noopener">Backend Development in 2026: What’s Changed, What Matters, and What to Learn Next</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>67.0</strong></span>
+        <span>📅 Published: 19 Mar 2026  18:37 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:10 UTC</span>
+      </div>
+      
+      <div class="article-summary">The article provides an overview of backend development, emphasizing its role in managing data and applying business logic on server-side applications. It contrasts backend with frontend development, noting the flexibility backend developers have in choosing programming languages. The piece highlights the increasing importance of integrating AI agents and large language models with backend services by 2026. It also touches on the debate around whether mobile development should be considered part of frontend development.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">Backend</span>
+        
+        <span class="article-kw-tag">Understanding</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://thenewstack.io/jellyfish-ai-engineering-trends/" target="_blank" rel="noopener">Jellyfish AI development study: The real sting has yet to land</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>66.0</strong></span>
+        <span>📅 Published: 19 Mar 2026  18:01 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:10 UTC</span>
+      </div>
+      
+      <div class="article-summary">The Jellyfish AI Engineering Trends study examines the impact of AI tools on software development, analyzing data from over 700 companies and 20 million pull requests. It highlights that AI coding tools are becoming the default for many engineering teams, with significant productivity gains for those who adopt them aggressively. However, fully autonomous code agent activity, while currently low, is growing rapidly and could significantly impact the industry in the future.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">Development</span>
+        
+        <span class="article-kw-tag">Fully</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://thenewstack.io/chainguard-repository-ai-agents/" target="_blank" rel="noopener">Chainguard has a fix for the open source packages your AI agents keep grabbing</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>66.0</strong></span>
+        <span>📅 Published: 18 Mar 2026  16:24 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:10 UTC</span>
+      </div>
+      
+      <div class="article-summary">Chainguard has launched Chainguard Repository, a secure repository for open source artifacts, addressing the security vulnerabilities introduced by AI coding assistants and autonomous agents. These agents often use outdated libraries due to their training data, leading to dependency sprawl and security risks. Attackers are also leveraging AI to exploit misconfigurations at scale, as demonstrated by recent breaches. Chainguard Repository aims to mitigate these risks by providing a governed endpoint with enforced security policies for open-source libraries.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">Attackers</span>
+        
+        <span class="article-kw-tag">Chainguard</span>
+        
+        <span class="article-kw-tag">Repository</span>
+        
+      </div>
+      
+    </div>
+    
+    
+    <div class="cat-section-header">
+      <span class="cat-icon">🛠️</span>
+      <span class="cat-title">Developer Tools</span>
+      <span class="cat-badge">(43 articles)</span>
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://github.com/hybridpicker/nex-code" target="_blank" rel="noopener">hybridpicker/nex-code</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>76.0</strong></span>
+        <span>📅 Published: 21 Mar 2026  19:10 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:10 UTC</span>
+      </div>
+      
+      <div class="article-summary">The GitHub repository &#39;hybridpicker/nex-code&#39; is an open-source command-line interface (CLI) tool designed for agentic coding. It supports integration with various AI platforms such as OpenAI, Anthropic, and Gemini, and is free to use with Ollama Cloud. The project is written in JavaScript and aims to assist developers by providing a flexible coding assistant environment.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">CLI</span>
+        
+        <span class="article-kw-tag">JavaScript</span>
+        
+        <span class="article-kw-tag">Node</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://github.com/augmentedmike/miniclaw-os" target="_blank" rel="noopener">augmentedmike/miniclaw-os</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>76.0</strong></span>
+        <span>📅 Published: 21 Mar 2026  19:10 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:10 UTC</span>
+      </div>
+      
+      <div class="article-summary">The &#39;miniclaw-os&#39; GitHub repository by augmentedmike is a TypeScript-based project focused on enhancing AI agents with cognitive architecture capabilities. It provides AI agents with memory, planning, continuity, and self-repair functionalities, designed to operate on macOS systems. The project aims to create a more robust and autonomous AI experience by integrating these advanced features.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">Apple</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://github.com/webpeel/webpeel" target="_blank" rel="noopener">webpeel/webpeel</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>74.0</strong></span>
+        <span>📅 Published: 21 Mar 2026  19:10 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:10 UTC</span>
+      </div>
+      
+      <div class="article-summary">The webpeel/webpeel GitHub repository is a tool designed for AI agents to fetch web data efficiently. It escalates from simple HTTP requests to using a headless browser for more complex tasks, and includes an MCP server. The project is implemented in TypeScript and is associated with several topics including AI agents and web scraping.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">HTTP</span>
+        
+        <span class="article-kw-tag">Incorporation</span>
+        
+        <span class="article-kw-tag">MCP</span>
+        
+        <span class="article-kw-tag">TypeScript</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://github.com/ortus-boxlang/bx-ai" target="_blank" rel="noopener">ortus-boxlang/bx-ai</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>73.0</strong></span>
+        <span>📅 Published: 21 Mar 2026  19:10 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:10 UTC</span>
+      </div>
+      
+      <div class="article-summary">The GitHub repository &#39;ortus-boxlang/bx-ai&#39; is a Java-based project focused on creating AI agents and workflows using BoxLang. It incorporates various advanced topics such as dynamic programming, LLMs, and OpenAI technologies. The project aims to provide a fluent and intuitive approach to developing AI solutions, leveraging the JVM ecosystem.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">BoxLang</span>
+        
+        <span class="article-kw-tag">Java</span>
+        
+        <span class="article-kw-tag">JVM</span>
+        
+        <span class="article-kw-tag">Incorporating</span>
+        
+        <span class="article-kw-tag">OpenAI</span>
+        
+        <span class="article-kw-tag">LLMs</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://github.com/sukethrp/agentos" target="_blank" rel="noopener">sukethrp/agentos</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>72.0</strong></span>
+        <span>📅 Published: 21 Mar 2026  19:10 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:10 UTC</span>
+      </div>
+      
+      <div class="article-summary">The GitHub repository &#39;sukethrp/agentos&#39; is an open-source project aimed at providing an operating system for AI agents. It focuses on building, testing, deploying, monitoring, and governing AI agents, utilizing technologies like Python and FastAPI. The project covers various topics including agent frameworks, monitoring, and testing, with a focus on safety and governance in AI development.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">AgentOS</span>
+        
+        <span class="article-kw-tag">OpenAI</span>
+        
+        <span class="article-kw-tag">FastAPI</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://github.com/proffesor-for-testing/agentic-qe" target="_blank" rel="noopener">proffesor-for-testing/agentic-qe</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>72.0</strong></span>
+        <span>📅 Published: 21 Mar 2026  19:10 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:10 UTC</span>
+      </div>
+      
+      <div class="article-summary">Agentic QE Fleet is an open-source platform that leverages AI to enhance QA and QE processes throughout the software development lifecycle. It is built using TypeScript and is designed to integrate with Coding Agents, particularly Claude Code, to support testing activities. The platform is based on the Agentic QE Framework by Dragan Spiridonov and encourages community contributions.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">Agentic</span>
+        
+        <span class="article-kw-tag">Fleet</span>
+        
+        <span class="article-kw-tag">QA</span>
+        
+        <span class="article-kw-tag">Integration</span>
+        
+        <span class="article-kw-tag">Coding</span>
+        
+        <span class="article-kw-tag">Agents</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://github.com/apankov1/quality-engineering" target="_blank" rel="noopener">apankov1/quality-engineering</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>69.0</strong></span>
+        <span>📅 Published: 21 Mar 2026  19:10 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:10 UTC</span>
+      </div>
+      
+      <div class="article-summary">The GitHub repository &#39;apankov1/quality-engineering&#39; focuses on quality engineering skills tailored for AI coding agents. It includes various topics such as fault injection, observability, pairwise testing, and test automation, all implemented in TypeScript. The repository aims to provide best practices and tools for enhancing the quality of AI-driven software development.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">Incorporate</span>
+        
+        <span class="article-kw-tag">Utilize</span>
+        
+        <span class="article-kw-tag">Leverage</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://github.com/mloda-ai/mloda-registry" target="_blank" rel="noopener">mloda-ai/mloda-registry</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>65.0</strong></span>
+        <span>📅 Published: 21 Mar 2026  19:10 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:10 UTC</span>
+      </div>
+      
+      <div class="article-summary">The GitHub repository &#39;mloda-ai/mloda-registry&#39; serves as a registry for official plugins associated with mloda.ai. It is a Python-based project focusing on various topics such as AI agents, context engineering, and MLOps. The repository aims to facilitate community-driven development and enhance data engineering processes through a plugin framework.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">MLOps</span>
+        
+        <span class="article-kw-tag">MLOPS</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://github.com/Gogeta767/flaky-test-prediction-ml" target="_blank" rel="noopener">Gogeta767/flaky-test-prediction-ml</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>64.0</strong></span>
+        <span>📅 Published: 21 Mar 2026  19:10 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:10 UTC</span>
+      </div>
+      
+      <div class="article-summary">The GitHub repository &#39;flaky-test-prediction-ml&#39; focuses on using machine learning to predict and detect flaky tests within CI/CD pipelines. This tool aims to enhance test stability and minimize false failures by identifying tests that are prone to flakiness. It leverages technologies like Selenium and Playwright for test automation and is written in Python.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">Implement</span>
+        
+        <span class="article-kw-tag">Integrate</span>
+        
+        <span class="article-kw-tag">CI/CD</span>
+        
+        <span class="article-kw-tag">Utilize</span>
+        
+        <span class="article-kw-tag">Selenium</span>
+        
+        <span class="article-kw-tag">Playwright</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://github.com/sigvardt/linkedin-buddy" target="_blank" rel="noopener">sigvardt/linkedin-buddy</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>63.0</strong></span>
+        <span>📅 Published: 21 Mar 2026  19:10 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:10 UTC</span>
+      </div>
+      
+      <div class="article-summary">The &#39;sigvardt/linkedin-buddy&#39; is an open-source project hosted on GitHub, designed as a LinkedIn MCP server and CLI tool. It uses TypeScript and Playwright for browser automation, focusing on LinkedIn functionalities such as inbox management, search, feed interaction, job applications, and profile updates. The toolkit emphasizes safe and confirmed actions, leveraging AI agents for automation tasks.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">Integrates</span>
+        
+        <span class="article-kw-tag">Playwright</span>
+        
+        <span class="article-kw-tag">LinkedIn</span>
+        
+        <span class="article-kw-tag">Utilizes</span>
+        
+        <span class="article-kw-tag">TypeScript</span>
+        
+      </div>
+      
+    </div>
+    
+    
+    <div class="cat-section-header">
+      <span class="cat-icon">🤖</span>
+      <span class="cat-title">GenAI &amp; LLMs</span>
+      <span class="cat-badge">(22 articles)</span>
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://arxiv.org/abs/2603.15712v1" target="_blank" rel="noopener">LLM-Driven Discovery of High-Entropy Catalysts via Retrieval-Augmented Generation</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>73.0</strong></span>
+        <span>📅 Published: 16 Mar 2026  14:10 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:11 UTC</span>
+      </div>
+      
+      <div class="article-summary">The paper explores the use of large language models (LLMs) in the discovery of high-entropy catalysts, a process traditionally hindered by long development cycles and the need for deep domain expertise. By employing a retrieval-augmented generation (RAG) framework, the researchers enable GPT-4 to efficiently navigate chemical spaces using a database of over 50,000 known materials. The approach generated over 250 catalyst candidates with significant improvements in thermodynamic stability, cost efficiency, and performance metrics. This method demonstrates a 200x increase in computational efficiency compared to traditional screening methods, showcasing the potential of LLMs to streamline materials discovery workflows.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">LLMs</span>
+        
+        <span class="article-kw-tag">Natural</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://arxiv.org/abs/2603.16817v1" target="_blank" rel="noopener">Is Conformal Factuality for RAG-based LLMs Robust? Novel Metrics and Systematic Insights</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>63.0</strong></span>
+        <span>📅 Published: 17 Mar 2026  17:20 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:11 UTC</span>
+      </div>
+      
+      <div class="article-summary">The paper examines the robustness of conformal factuality in retrieval-augmented generation (RAG) for large language models (LLMs), which often hallucinate in knowledge-intensive tasks. It highlights the limitations of RAG in providing statistical guarantees for correctness and explores conformal factuality filtering as a potential solution. The study introduces new metrics to assess the informativeness and utility of outputs under conformal filtering, revealing challenges such as low usefulness at high factuality levels and vulnerability to distribution shifts. The research suggests that lightweight entailment-based verifiers can be more efficient than LLM-based confidence scorers.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">Conformal</span>
+        
+        <span class="article-kw-tag">Lightweight</span>
+        
+        <span class="article-kw-tag">LLM</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://towardsdatascience.com/agentic-rag-failure-modes-retrieval-thrash-tool-storms-and-context-bloat-and-how-to-spot-them-early/" target="_blank" rel="noopener">Agentic RAG Failure Modes: Retrieval Thrash, Tool Storms, and Context Bloat (and How to Spot Them Early)</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>57.0</strong></span>
+        <span>📅 Published: 20 Mar 2026  12:00 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:10 UTC</span>
+      </div>
+      
+      <div class="article-summary">The article discusses the silent failure modes of agentic Retrieval-Augmented Generation (RAG) systems in production, focusing on issues like retrieval thrash, tool storms, and context bloat. It emphasizes the importance of early detection of these issues to prevent unexpected increases in cloud costs. The content provides insights into identifying these failure modes before they impact system performance and financial resources.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">Monitor</span>
+        
+        <span class="article-kw-tag">Implement</span>
+        
+        <span class="article-kw-tag">Regularly</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://arxiv.org/abs/2603.17356v1" target="_blank" rel="noopener">PACE-RAG: Patient-Aware Contextual and Evidence-based Policy RAG for Clinical Drug Recommendation</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>56.0</strong></span>
+        <span>📅 Published: 18 Mar 2026  04:40 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:11 UTC</span>
+      </div>
+      
+      <div class="article-summary">The paper introduces PACE-RAG, a novel framework for clinical drug recommendation that integrates patient-specific context with evidence-based policy. It addresses the limitations of existing RAG methods, which often fail to account for the unique clinical nuances of individual patients. PACE-RAG synthesizes treatment patterns tailored to specific clinical signals, achieving high F1 scores in evaluations on Parkinson&#39;s disease cohorts and the MIMIC-IV benchmark, demonstrating its effectiveness in personalized decision support.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">PACE</span>
+        
+        <span class="article-kw-tag">RAG</span>
+        
+        <span class="article-kw-tag">Evaluation</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://arxiv.org/abs/2603.16342v1" target="_blank" rel="noopener">Detecting Sentiment Steering Attacks on RAG-enabled Large Language Models</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>54.0</strong></span>
+        <span>📅 Published: 17 Mar 2026  10:18 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:11 UTC</span>
+      </div>
+      
+      <div class="article-summary">The paper discusses the security challenges posed by large-scale IoT networks, which, while enhancing operational efficiency, also expose vulnerabilities to unauthorized access and attacks. It introduces two deep learning-based intrusion detection systems (IDS) designed to secure these networks: a convolutional neural network (CNN)-based IDS and a long short-term memory (LSTM)-based IDS. Both systems were tested using the CICIoT2023 dataset and demonstrated high accuracy in identifying and classifying cyber threats across binary, grouped, and multi-class classifications.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">Implement</span>
+        
+        <span class="article-kw-tag">CNN</span>
+        
+        <span class="article-kw-tag">LSTM</span>
+        
+        <span class="article-kw-tag">IDS</span>
+        
+        <span class="article-kw-tag">IoT</span>
+        
+        <span class="article-kw-tag">Utilize</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://arxiv.org/abs/2603.14838v1" target="_blank" rel="noopener">The Impact of Ideological Discourses in RAG: A Case Study with COVID-19 Treatments</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>53.0</strong></span>
+        <span>📅 Published: 16 Mar 2026  05:32 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:11 UTC</span>
+      </div>
+      
+      <div class="article-summary">The paper explores how ideological discourses retrieved from external sources can influence the outputs of large language models (LLMs) within the Retrieval-Augmented Generation (RAG) framework. By analyzing a corpus of 1,117 academic articles about COVID-19 treatments, the study uses Lexical Multidimensional Analysis (LMDA) to identify ideological dimensions. The study demonstrates that LLMs&#39; responses are more aligned with the ideologies present in the retrieved texts, especially when enhanced prompts are used. This research underscores the need to identify and manage ideological biases in RAG to prevent unintended bias and manipulation.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">Ideological</span>
+        
+        <span class="article-kw-tag">LLM</span>
+        
+        <span class="article-kw-tag">RAG</span>
+        
+        <span class="article-kw-tag">Enhanced</span>
+        
+        <span class="article-kw-tag">Identifying</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://towardsdatascience.com/how-to-effectively-review-claude-code-output/" target="_blank" rel="noopener">How to Effectively Review Claude Code Output</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>52.0</strong></span>
+        <span>📅 Published: 17 Mar 2026  20:00 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:10 UTC</span>
+      </div>
+      
+      <div class="article-summary">The article discusses strategies for efficiently reviewing code outputs generated by Claude, a coding agent. It emphasizes the importance of structured review processes to enhance the productivity and accuracy of generative AI tools. The piece provides insights into optimizing the interaction between human reviewers and AI-generated code to ensure high-quality software development.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">Implement</span>
+        
+        <span class="article-kw-tag">Encourage</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://towardsdatascience.com/the-math-thats-killing-your-ai-agent/" target="_blank" rel="noopener">The Math That’s Killing Your AI Agent</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>51.0</strong></span>
+        <span>📅 Published: 20 Mar 2026  16:30 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:10 UTC</span>
+      </div>
+      
+      <div class="article-summary">The article discusses how an AI agent with an 85% accuracy rate can still fail frequently in multi-step tasks due to compound probability. It highlights the mathematical challenges that lead to production failures and introduces a four-step pre-deployment framework to mitigate these issues. The focus is on understanding the cumulative impact of errors across multiple task steps and improving AI agent reliability.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">Understand</span>
+        
+        <span class="article-kw-tag">Implement</span>
+        
+        <span class="article-kw-tag">Focus</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://arxiv.org/abs/2603.17292v1" target="_blank" rel="noopener">SEAL-Tag: Self-Tag Evidence Aggregation with Probabilistic Circuits for PII-Safe Retrieval-Augmented Generation</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>48.0</strong></span>
+        <span>📅 Published: 18 Mar 2026  02:40 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:11 UTC</span>
+      </div>
+      
+      <div class="article-summary">The paper introduces SEAL-Tag, a system designed to enhance privacy in Retrieval-Augmented Generation (RAG) systems by mitigating contextual leakage of Personally Identifiable Information (PII). SEAL-Tag employs a Verify-then-Route paradigm and a SEAL-Probe protocol to create a PII-Evidence Table, which is evaluated using Probabilistic Circuits to ensure robust decision-making. The system also addresses the privacy &#39;Cold Start&#39; problem with an Anchored Synthesis Pipeline and a Two-Stage Curriculum for optimizing entity detection and audit alignment. Evaluation shows significant reduction in adaptive leakage while maintaining performance standards.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">Implement</span>
+        
+        <span class="article-kw-tag">SEAL</span>
+        
+        <span class="article-kw-tag">Tag</span>
+        
+        <span class="article-kw-tag">Verify</span>
+        
+        <span class="article-kw-tag">Route</span>
+        
+        <span class="article-kw-tag">RAG</span>
+        
+      </div>
+      
+    </div>
+    
+    <div class="article-card">
+      <h4><a href="https://arxiv.org/abs/2603.16169v1" target="_blank" rel="noopener">Open-Source Reproduction and Explainability Analysis of Corrective Retrieval Augmented Generation</a></h4>
+      <div class="article-meta">
+        <span>Score: <strong>47.0</strong></span>
+        <span>📅 Published: 17 Mar 2026  06:38 UTC</span>
+        <span>🤖 Collected: 21 Mar 2026  19:11 UTC</span>
+      </div>
+      
+      <div class="article-summary">The paper discusses an open-source reproduction of the Corrective Retrieval Augmented Generation (CRAG) system, which enhances the robustness of RAG systems by evaluating and correcting retrieved document quality. The authors replace proprietary components with open-source alternatives, achieving comparable performance. They also conduct an explainability analysis using SHAP on the retrieval evaluator, identifying reliance on named entity alignment and highlighting failure modes such as domain transfer limitations.</div>
+      
+      
+      <div class="article-kws">
+        
+        <span class="article-kw-tag">Open</span>
+        
+        <span class="article-kw-tag">CRAG</span>
+        
+        <span class="article-kw-tag">Explainability</span>
+        
+        <span class="article-kw-tag">SHAP</span>
+        
+        <span class="article-kw-tag">Identifying</span>
+        
+      </div>
+      
+    </div>
+    
+    
+  </section>
+
+</div>
+
+<div class="footer">
+  QA Intelligence Agent &nbsp;|&nbsp; Daily Digest &nbsp;|&nbsp;
+  21 Mar 2026 &nbsp;|&nbsp; 22:29 UTC
+</div>
+
+</body>
+</html>
